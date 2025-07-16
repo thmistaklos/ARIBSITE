@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AnimatedButton from '@/components/AnimatedButton';
-import { useTranslation } => 'react-i18next';
+import { useTranslation } from 'react-i18next'; // Corrected '=>' to 'from'
 import { Link } from 'react-router-dom'; // Import Link
 
 interface ProductCardProps {
@@ -11,7 +11,7 @@ interface ProductCardProps {
     name: string;
     description: string;
     price: string;
-    image_url: string; // Changed from 'image' to 'image_url'
+    image_url: string;
   };
 }
 
@@ -29,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
         <CardHeader className="p-0">
           <img
-            src={product.image_url} // Changed from 'product.image' to 'product.image_url'
+            src={product.image_url}
             alt={product.name}
             className="w-full h-48 object-cover"
           />
@@ -41,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <p className="text-3xl font-bold text-dairy-blue mb-6">{product.price}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Link to={`/products/${product.id}`}> {/* Link to product detail page */}
+            <Link to={`/products/${product.id}`}>
               <AnimatedButton className="w-full bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3">
                 {t('view_details')}
               </AnimatedButton>
