@@ -10,7 +10,7 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image: string;
+  image_url: string; // Changed from 'image' to 'image_url'
 }
 
 const ProductsPage: React.FC = () => {

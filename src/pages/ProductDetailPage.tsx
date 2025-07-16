@@ -12,7 +12,7 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image: string;
+  image_url: string; // Changed from 'image' to 'image_url'
 }
 
 // This data should ideally come from your Supabase 'products' table
@@ -22,28 +22,28 @@ const DUMMY_PRODUCTS: Product[] = [
     name: 'Fresh Whole Milk',
     description: 'Pure, pasteurized whole milk from grass-fed cows. Rich in calcium and vitamins.',
     price: '$3.99/L',
-    image: 'https://via.placeholder.com/400x300/ADD8E6/000000?text=Whole+Milk',
+    image_url: 'https://via.placeholder.com/400x300/ADD8E6/000000?text=Whole+Milk', // Changed from 'image' to 'image_url'
   },
   {
     id: '2',
     name: 'Organic Greek Yogurt',
     description: 'Thick and creamy organic Greek yogurt, perfect for breakfast or a healthy snack.',
     price: '$5.49/500g',
-    image: 'https://via.placeholder.com/400x300/90EE90/000000?text=Greek+Yogurt',
+    image_url: 'https://via.placeholder.com/400x300/90EE90/000000?text=Greek+Yogurt', // Changed from 'image' to 'image_url'
   },
   {
     id: '3',
     name: 'Artisan Cheddar Cheese',
     description: 'Aged cheddar cheese with a sharp, nutty flavor. Ideal for cheese boards and cooking.',
     price: '$12.99/block',
-    image: 'https://via.placeholder.com/400x300/FFD700/000000?text=Cheddar+Cheese',
+    image_url: 'https://via.placeholder.com/400x300/FFD700/000000?text=Cheddar+Cheese', // Changed from 'image' to 'image_url'
   },
   {
     id: '4',
     name: 'Butter (Unsalted)',
     description: 'Premium unsalted butter, churned from fresh cream. Great for baking and cooking.',
     price: '$4.79/250g',
-    image: 'https://via.placeholder.com/400x300/FFB6C1/000000?text=Butter',
+    image_url: 'https://via.placeholder.com/400x300/FFB6C1/000000?text=Butter', // Changed from 'image' to 'image_url'
   },
 ];
 
@@ -91,7 +91,7 @@ const ProductDetailPage: React.FC = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <img
-            src={product.image}
+            src={product.image_url} // Changed from 'product.image' to 'product.image_url'
             alt={product.name}
             className="w-full h-auto max-h-[400px] object-contain rounded-lg shadow-md"
           />

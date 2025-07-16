@@ -16,7 +16,7 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image: string; // Still stores the URL
+  image_url: string; // Changed from 'image' to 'image_url'
 }
 
 const ProductsManagement: React.FC = () => {
@@ -29,8 +29,8 @@ const ProductsManagement: React.FC = () => {
     description: '',
     price: '',
   });
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // New state for the file object
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // New state for image preview
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -57,11 +57,10 @@ const ProductsManagement: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedFile(file);
-      setImagePreviewUrl(URL.createObjectURL(file)); // Create a preview URL for the selected file
+      setImagePreviewUrl(URL.createObjectURL(file));
     } else {
       setSelectedFile(null);
-      // If no file is selected, revert preview to current product's image or null
-      setImagePreviewUrl(currentProduct?.image || null);
+      setImagePreviewUrl(currentProduct?.image_url || null); // Changed from 'image' to 'image_url'
     }
   };
 
@@ -69,14 +68,13 @@ const ProductsManagement: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    let imageUrl = currentProduct?.image || ''; // Start with existing image URL if editing
+    let imageUrl = currentProduct?.image_url || ''; // Changed from 'image' to 'image_url'
 
     try {
       if (selectedFile) {
-        // Upload new image if a file is selected
         const fileExtension = selectedFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${selectedFile.name}`; // Unique file name
-        const filePath = `product-images/${fileName}`; // Assuming 'product-images' is your bucket name
+        const fileName = `${Date.now()}-${selectedFile.name}`;
+        const filePath = `product-images/${fileName}`;
 
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('product-images')
@@ -95,7 +93,6 @@ const ProductsManagement: React.FC = () => {
 
         imageUrl = publicUrlData.publicUrl;
       } else if (!currentProduct && !imageUrl) {
-        // If adding a new product and no file is selected, require an image
         toast.error('Image required', { description: 'Please upload an image for the new product.' });
         setIsSubmitting(false);
         return;
@@ -105,11 +102,10 @@ const ProductsManagement: React.FC = () => {
         name: formState.name,
         description: formState.description,
         price: formState.price,
-        image: imageUrl, // Use the obtained URL
+        image_url: imageUrl, // Changed from 'image' to 'image_url'
       };
 
       if (currentProduct) {
-        // Edit product
         const { error } = await supabase
           .from('products')
           .update(productData)
@@ -120,7 +116,6 @@ const ProductsManagement: React.FC = () => {
         }
         toast.success('Product updated successfully!');
       } else {
-        // Add new product
         const { error } = await supabase
           .from('products')
           .insert([productData]);
@@ -137,8 +132,8 @@ const ProductsManagement: React.FC = () => {
       toast.error('Operation Failed', { description: error.message });
     } finally {
       setIsSubmitting(false);
-      setSelectedFile(null); // Clear selected file after submission
-      setImagePreviewUrl(null); // Clear preview
+      setSelectedFile(null);
+      setImagePreviewUrl(null);
     }
   };
 
@@ -157,8 +152,8 @@ const ProductsManagement: React.FC = () => {
   const openAddDialog = () => {
     setCurrentProduct(null);
     setFormState({ name: '', description: '', price: '' });
-    setSelectedFile(null); // Clear file
-    setImagePreviewUrl(null); // Clear preview
+    setSelectedFile(null);
+    setImagePreviewUrl(null);
     setIsDialogOpen(true);
   };
 
@@ -169,8 +164,8 @@ const ProductsManagement: React.FC = () => {
       description: product.description,
       price: product.price,
     });
-    setSelectedFile(null); // No new file selected initially for edit
-    setImagePreviewUrl(product.image); // Show existing image
+    setSelectedFile(null);
+    setImagePreviewUrl(product.image_url); // Changed from 'product.image' to 'product.image_url'
     setIsDialogOpen(true);
   };
 
@@ -215,7 +210,7 @@ const ProductsManagement: React.FC = () => {
                 products.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>
-                      <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
+                      <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-md" /> {/* Changed from 'product.image' to 'product.image_url' */}
                     </TableCell>
                     <TableCell className="font-medium text-dairy-darkBlue">{product.name}</TableCell>
                     <TableCell className="text-dairy-text">{product.description}</TableCell>
@@ -297,12 +292,12 @@ const ProductsManagement: React.FC = () => {
                   type="file"
                   onChange={handleFileChange}
                   className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                  accept="image/*" // Restrict to image files
+                  accept="image/*"
                 />
                 {imagePreviewUrl && (
                   <img src={imagePreviewUrl} alt="Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
                 )}
-                {!selectedFile && currentProduct?.image && (
+                {!selectedFile && currentProduct?.image_url && ( // Changed from 'image' to 'image_url'
                   <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
                 )}
               </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AnimatedButton from '@/components/AnimatedButton';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } => 'react-i18next';
 import { Link } from 'react-router-dom'; // Import Link
 
 interface ProductCardProps {
@@ -11,7 +11,7 @@ interface ProductCardProps {
     name: string;
     description: string;
     price: string;
-    image: string;
+    image_url: string; // Changed from 'image' to 'image_url'
   };
 }
 
@@ -29,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
         <CardHeader className="p-0">
           <img
-            src={product.image}
+            src={product.image_url} // Changed from 'product.image' to 'product.image_url'
             alt={product.name}
             className="w-full h-48 object-cover"
           />

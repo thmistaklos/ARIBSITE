@@ -9,7 +9,7 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image: string;
+  image_url: string; // Changed from 'image' to 'image_url'
 }
 
 const ProductGallery: React.FC = () => {
@@ -71,7 +71,7 @@ const ProductGallery: React.FC = () => {
         {products.map((product) => (
           <motion.img
             key={product.id}
-            src={product.image}
+            src={product.image_url} // Changed from 'product.image' to 'product.image_url'
             alt={product.name}
             className="h-full object-cover overflow-hidden"
             style={{
