@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import AnimatedButton from '@/components/AnimatedButton';
 import { toast } from 'sonner';
-import { supabase } from '@/lib/supabase'; // Import supabase
+import { supabase } from '@/lib/supabase';
 
 interface Product {
   id: string;
@@ -45,11 +44,7 @@ const ProductDetailPage: React.FC = () => {
     };
 
     fetchProduct();
-  }, [id]); // Re-run effect if ID changes
-
-  const handleAddToCart = () => {
-    toast.success(t('added_to_cart', { product: product?.name || 'item' }));
-  };
+  }, [id]);
 
   if (loading) {
     return (
@@ -109,13 +104,6 @@ const ProductDetailPage: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-4">{product.name}</h1>
           <p className="text-lg text-dairy-text leading-relaxed mb-6">{product.description}</p>
           <p className="text-5xl font-bold text-dairy-blue mb-8">{product.price}</p>
-          <AnimatedButton
-            onClick={handleAddToCart}
-            className="w-full md:w-auto bg-dairy-darkBlue text-dairy-cream hover:bg-dairy-blue px-8 py-3 text-lg"
-            soundOnClick="/sounds/click.mp3"
-          >
-            <ShoppingCart className="mr-3 h-6 w-6" /> {t('add_to_cart')}
-          </AnimatedButton>
         </motion.div>
       </div>
     </motion.div>

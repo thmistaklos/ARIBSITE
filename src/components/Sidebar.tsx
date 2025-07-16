@@ -1,18 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, ShoppingCart, Users, FileText, Settings, Milk, LogOut, Truck, BookOpen, Newspaper } from 'lucide-react';
+import { LayoutDashboard, Package, Users, FileText, Settings, Milk, LogOut, Truck, BookOpen, Newspaper } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/context/AuthContext'; // Import useAuth
+import { useAuth } from '@/context/AuthContext';
 
 const navItems = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
   { name: 'Products', path: '/admin/products', icon: Package },
-  { name: 'Orders', path: '/admin/orders', icon: ShoppingCart },
   { name: 'Users', path: '/admin/users', icon: Users },
   { name: 'Distributors', path: '/admin/distributors', icon: Truck },
   { name: 'Recipes', path: '/admin/recipes', icon: BookOpen },
@@ -24,7 +23,7 @@ const navItems = [
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
-  const { signOut } = useAuth(); // Use signOut from AuthContext
+  const { signOut } = useAuth();
 
   const handleLogout = async () => {
     await signOut();

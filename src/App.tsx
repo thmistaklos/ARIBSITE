@@ -7,7 +7,6 @@ import NotFound from "./pages/NotFound";
 import DashboardLayout from "./pages/admin/DashboardLayout";
 import DashboardOverview from "./pages/admin/DashboardOverview";
 import ProductsManagement from "./pages/admin/ProductsManagement";
-import OrdersManagement from "./pages/admin/OrdersManagement";
 import UsersManagement from "./pages/admin/UsersManagement";
 import ContentManagement from "./pages/admin/ContentManagement";
 import SettingsPage from "./pages/admin/SettingsPage";
@@ -41,7 +40,6 @@ const App = () => (
                 <Route element={<DashboardLayout />}>
                   <Route index element={<DashboardOverview />} />
                   <Route path="products" element={<ProductsManagement />} />
-                  <Route path="orders" element={<OrdersManagement />} />
                   <Route path="users" element={<UsersManagement />} />
                   <Route path="distributors" element={<DistributorsManagement />} />
                   <Route path="recipes" element={<RecipesManagement />} />

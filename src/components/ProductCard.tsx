@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AnimatedButton from '@/components/AnimatedButton';
-import { useTranslation } from 'react-i18next'; // Corrected '=>' to 'from'
-import { Link } from 'react-router-dom'; // Import Link
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 interface ProductCardProps {
   product: {
@@ -46,9 +46,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 {t('view_details')}
               </AnimatedButton>
             </Link>
-            <AnimatedButton className="w-full bg-dairy-darkBlue text-dairy-cream hover:bg-dairy-blue" soundOnClick="/sounds/click.mp3">
-              {t('add_to_cart')}
-            </AnimatedButton>
           </div>
         </CardContent>
       </Card>
