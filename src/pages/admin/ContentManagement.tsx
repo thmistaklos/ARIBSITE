@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Ensure this import is present
 
 interface SiteContent {
   id: string;
@@ -122,7 +123,7 @@ const ContentManagement: React.FC = () => {
             <CardTitle className="text-dairy-darkBlue">Homepage Hero Section</CardTitle>
           </CardHeader>
           <CardContent>
-            <Form {...form}>
+            <Form {...form}> {/* Wrapped the form with Form component */}
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
