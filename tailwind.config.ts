@@ -60,7 +60,7 @@ export default {
           white: "hsl(0, 0%, 100%)", // Pure White
           blue: "hsl(200, 60%, 70%)", // Soft Blue
           darkBlue: "hsl(200, 80%, 30%)", // Darker Blue for text/accents
-          text: "hsl(220, 20%, 20%)", // Dark text
+          text: "hsl(0, 0%, 0%)", // Pure Black
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
