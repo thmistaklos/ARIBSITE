@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } => 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper } from 'lucide-react'; // Removed Milk icon
 import { cn } from '@/lib/utils';
@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/Auth/AuthContext';
 
 const navItems = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
