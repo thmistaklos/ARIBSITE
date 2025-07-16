@@ -7,12 +7,13 @@ import HomePage from '@/pages/HomePage';
 import ProductsPage from '@/pages/ProductsPage';
 import AboutPage from '@/pages/AboutPage';
 import ContactPage from '@/pages/ContactPage';
-import DistributorsPage from '@/pages/DistributorsPage'; // New import
-import RecipesPage from '@/pages/RecipesPage'; // New import
-import BlogPage from '@/pages/BlogPage'; // New import
-import BlogPostDetail from '@/pages/BlogPostDetail'; // New import
-import ProductDetailPage from '@/pages/ProductDetailPage'; // New import
-import NotFound from '@/pages/NotFound'; // Include NotFound for public paths not explicitly defined
+import DistributorsPage from '@/pages/DistributorsPage';
+import RecipesPage from '@/pages/RecipesPage';
+import BlogPage from '@/pages/BlogPage';
+import BlogPostDetail from '@/pages/BlogPostDetail';
+import ProductDetailPage from '@/pages/ProductDetailPage';
+import RecipeDetailPage from '@/pages/RecipeDetailPage'; // New import
+import NotFound from '@/pages/NotFound';
 
 const pageVariants = {
   initial: {
@@ -77,7 +78,7 @@ const PublicLayout: React.FC = () => {
               }
             />
             <Route
-              path="/products/:id" // New route for product detail
+              path="/products/:id"
               element={
                 <motion.div
                   key="product-detail"
@@ -93,7 +94,7 @@ const PublicLayout: React.FC = () => {
               }
             />
             <Route
-              path="/distributors" // New route
+              path="/distributors"
               element={
                 <motion.div
                   key="distributors"
@@ -109,7 +110,7 @@ const PublicLayout: React.FC = () => {
               }
             />
             <Route
-              path="/recipes" // New route
+              path="/recipes"
               element={
                 <motion.div
                   key="recipes"
@@ -125,7 +126,23 @@ const PublicLayout: React.FC = () => {
               }
             />
             <Route
-              path="/blog" // New route
+              path="/recipes/:id" {/* New route for recipe detail */}
+              element={
+                <motion.div
+                  key="recipe-detail"
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full w-full"
+                >
+                  <RecipeDetailPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/blog"
               element={
                 <motion.div
                   key="blog"
@@ -141,7 +158,7 @@ const PublicLayout: React.FC = () => {
               }
             />
             <Route
-              path="/blog/:id" // New route for blog post detail
+              path="/blog/:id"
               element={
                 <motion.div
                   key="blog-detail"

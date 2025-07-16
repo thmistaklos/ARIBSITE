@@ -5,6 +5,7 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom'; // Import Link
 
 interface RecipeCardProps {
   recipe: {
@@ -25,12 +26,12 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
       navigator.share({
         title: recipe.title,
         text: recipe.shortDescription,
-        url: window.location.href, // In a real app, this would be the specific recipe URL
+        url: `${window.location.origin}/recipes/${recipe.id}`, // Specific recipe URL
       })
       .then(() => toast.success(t('recipe_shared_success')))
       .catch((error) => toast.error(t('recipe_shared_error'), { description: error.message }));
     } else {
-      navigator.clipboard.writeText(`${recipe.title}: ${recipe.shortDescription} - ${window.location.href}`);
+      navigator.clipboard.writeText(`${recipe.title}: ${recipe.shortDescription} - ${window.location.origin}/recipes/${recipe.id}`);
       toast.info(t('recipe_link_copied'));
     }
   };
@@ -66,7 +67,16 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             >
               <Share2 className="h-4 w-4 mr-2" /> {t('share')}
             </AnimatedButton>
-            {/* In a real app, you might have a "View Recipe" button linking to a detail page */}
+            <Link to={`/recipes/${recipe.id}`}> {/* Link to RecipeDetailPage */}
+              <AnimatedButton
+                variant="default"
+                size="sm"
+                className="bg-dairy-darkBlue text-dairy-cream hover:bg-dairy-blue"
+                soundOnClick="/sounds/click.mp3"
+              >
+                {t('view_details')}
+              </AnimatedButton>
+            </Link>
           </div>
         </CardContent>
       </Card>
