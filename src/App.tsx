@@ -14,7 +14,10 @@ import SettingsPage from "./pages/admin/SettingsPage";
 import LoginPage from "./pages/admin/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
-import PublicLayout from "./components/PublicLayout"; // New import
+import PublicLayout from "./components/PublicLayout";
+import DistributorsManagement from "./pages/admin/DistributorsManagement"; // New import
+import RecipesManagement from "./pages/admin/RecipesManagement"; // New import
+import BlogManagement from "./pages/admin/BlogManagement"; // New import
 
 const queryClient = new QueryClient();
 
@@ -40,6 +43,9 @@ const App = () => (
                   <Route path="products" element={<ProductsManagement />} />
                   <Route path="orders" element={<OrdersManagement />} />
                   <Route path="users" element={<UsersManagement />} />
+                  <Route path="distributors" element={<DistributorsManagement />} /> {/* New Route */}
+                  <Route path="recipes" element={<RecipesManagement />} /> {/* New Route */}
+                  <Route path="blog" element={<BlogManagement />} /> {/* New Route */}
                   <Route path="content" element={<ContentManagement />} />
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, ShoppingCart, Users, FileText, Settings, Milk, LogOut } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Users, FileText, Settings, Milk, LogOut, Truck, BookOpen, Newspaper } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,9 @@ const navItems = [
   { name: 'Products', path: '/admin/products', icon: Package },
   { name: 'Orders', path: '/admin/orders', icon: ShoppingCart },
   { name: 'Users', path: '/admin/users', icon: Users },
+  { name: 'Distributors', path: '/admin/distributors', icon: Truck }, // New
+  { name: 'Recipes', path: '/admin/recipes', icon: BookOpen }, // New
+  { name: 'Blog', path: '/admin/blog', icon: Newspaper }, // New
   { name: 'Content', path: '/admin/content', icon: FileText },
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ];
