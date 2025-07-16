@@ -18,6 +18,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -51,6 +54,13 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        dairy: {
+          cream: "hsl(40, 100%, 95%)", // Soft Cream
+          white: "hsl(0, 0%, 100%)", // Pure White
+          blue: "hsl(200, 60%, 70%)", // Soft Blue
+          darkBlue: "hsl(200, 80%, 30%)", // Darker Blue for text/accents
+          text: "hsl(220, 20%, 20%)", // Dark text
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
