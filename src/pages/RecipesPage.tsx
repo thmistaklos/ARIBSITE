@@ -1,54 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import RecipeCard from '@/components/RecipeCard';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/lib/supabase';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Recipe {
   id: string;
   title: string;
-  image: string;
-  shortDescription: string;
+  image_url: string;
   ingredients: string[];
-  preparation: string[];
+  preparation_steps: string[];
 }
-
-const DUMMY_RECIPES: Recipe[] = [
-  {
-    id: '1',
-    title: 'Creamy Tomato Pasta',
-    image: 'https://via.placeholder.com/400x300/FFDAB9/000000?text=Creamy+Pasta',
-    shortDescription: 'A rich and creamy pasta dish made with fresh dairy cream and ripe tomatoes.',
-    ingredients: ['200g pasta', '1 cup heavy cream', '1 can crushed tomatoes', 'Garlic', 'Parmesan cheese'],
-    preparation: ['Cook pasta.', 'Sauté garlic, add tomatoes and cream.', 'Combine with pasta, serve with cheese.'],
-  },
-  {
-    id: '2',
-    title: 'Homemade Yogurt Parfait',
-    image: 'https://via.placeholder.com/400x300/B0E0E6/000000?text=Yogurt+Parfait',
-    shortDescription: 'Layers of homemade yogurt, fresh berries, and crunchy granola for a healthy breakfast.',
-    ingredients: ['1 cup plain yogurt', '1/2 cup mixed berries', '1/4 cup granola', 'Honey (optional)'],
-    preparation: ['Layer yogurt, berries, and granola in a glass.', 'Repeat layers.', 'Drizzle with honey if desired.'],
-  },
-  {
-    id: '3',
-    title: 'Classic Milkshake',
-    image: 'https://via.placeholder.com/400x300/F0E68C/000000?text=Milkshake',
-    shortDescription: 'A simple yet delicious classic milkshake, perfect for a sweet treat.',
-    ingredients: ['1 cup milk', '2 scoops vanilla ice cream', '1 tbsp sugar', 'Flavoring (chocolate/strawberry)'],
-    preparation: ['Blend all ingredients until smooth.', 'Pour into a tall glass and serve.'],
-  },
-  {
-    id: '4',
-    title: 'Cheesy Garlic Bread',
-    image: 'https://via.placeholder.com/400x300/D8BFD8/000000?text=Garlic+Bread',
-    shortDescription: 'Warm, crusty bread topped with melted cheese and aromatic garlic butter.',
-    ingredients: ['1 baguette', '1/2 cup shredded mozzarella', '2 tbsp butter', '2 cloves garlic', 'Parsley'],
-    preparation: ['Slice baguette, mix butter and minced garlic.', 'Spread on bread, top with cheese.', 'Bake until golden.'],
-  },
-];
 
 const RecipesPage: React.FC = () => {
   const { t } = useTranslation();
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('recipes').select('*').order('title', { ascending: true });
+      if (error) {
+        toast.error('Failed to load recipes', { description: error.message });
+      } else {
+        setRecipes(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchRecipes();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -77,11 +61,28 @@ const RecipesPage: React.FC = () => {
           {t('delicious_recipes')}
         </motion.h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-          {DUMMY_RECIPES.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
+          </div>
+        ) : recipes.length === 0 ? (
+          <div className="text-center text-xl text-dairy-text">
+            {t('no_recipes_available')}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
+            {recipes.map((recipe) => (
+              <RecipeCard key={recipe.id} recipe={{
+                id: recipe.id,
+                title: recipe.title,
+                image: recipe.image_url, // Use image_url from Supabase
+                shortDescription: recipe.preparation_steps[0] || '', // Use first step as short description
+                ingredients: recipe.ingredients,
+                preparation: recipe.preparation_steps,
+              }} />
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );

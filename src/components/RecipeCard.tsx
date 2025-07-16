@@ -5,13 +5,13 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 
 interface RecipeCardProps {
   recipe: {
     id: string;
     title: string;
-    image: string;
+    image: string; // This will now be image_url from Supabase
     shortDescription: string;
     ingredients: string[];
     preparation: string[];
@@ -67,7 +67,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             >
               <Share2 className="h-4 w-4 mr-2" /> {t('share')}
             </AnimatedButton>
-            <Link to={`/recipes/${recipe.id}`}> {/* Link to RecipeDetailPage */}
+            <Link to={`/recipes/${recipe.id}`}>
               <AnimatedButton
                 variant="default"
                 size="sm"
