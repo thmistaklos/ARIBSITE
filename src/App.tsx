@@ -3,13 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import ProductsPage from "./pages/ProductsPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import DashboardLayout from "./pages/admin/DashboardLayout";
 import DashboardOverview from "./pages/admin/DashboardOverview";
 import ProductsManagement from "./pages/admin/ProductsManagement";
@@ -20,7 +14,7 @@ import SettingsPage from "./pages/admin/SettingsPage";
 import LoginPage from "./pages/admin/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
-import { AnimatePresence, motion } from "framer-motion";
+import PublicLayout from "./components/PublicLayout"; // New import
 
 const queryClient = new QueryClient();
 
@@ -33,26 +27,8 @@ const App = () => (
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
             <Routes>
-              {/* Public Routes */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Header />
-                    <main className="flex-grow">
-                      <AnimatePresence mode="wait">
-                        <Routes location={location} key={location.pathname}>
-                          <Route index element={<HomePage />} />
-                          <Route path="/products" element={<ProductsPage />} />
-                          <Route path="/about" element={<AboutPage />} />
-                          <Route path="/contact" element={<ContactPage />} />
-                        </Routes>
-                      </AnimatePresence>
-                    </main>
-                    <Footer />
-                  </>
-                }
-              />
+              {/* Public Routes with common Header/Footer and animations */}
+              <Route path="/*" element={<PublicLayout />} /> {/* This will handle /, /products, /about, /contact */}
 
               {/* Admin Login Route */}
               <Route path="/admin/login" element={<LoginPage />} />
@@ -69,7 +45,7 @@ const App = () => (
                 </Route>
               </Route>
 
-              {/* Catch-all for 404 */}
+              {/* Catch-all for 404 - This will only catch routes not handled by PublicLayout or Admin routes */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
