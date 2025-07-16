@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import AnimatedButton from '@/components/AnimatedButton';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ProductGallery from '@/components/ProductGallery'; // Import ProductGallery
+import ProductGallery from '@/components/ProductGallery';
+import RecipesSection from '@/components/RecipesSection'; // Import RecipesSection
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -50,10 +51,13 @@ const HomePage: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* New Product Gallery Section */}
+      {/* Product Gallery Section */}
       <section className="w-full">
         <ProductGallery />
       </section>
+
+      {/* New Recipes Section */}
+      <RecipesSection />
     </motion.div>
   );
 };
