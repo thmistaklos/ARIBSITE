@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Milk, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react'; // Removed Milk icon
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -42,7 +42,7 @@ const Header: React.FC = () => {
             animate={{ rotate: [0, -10, 10, -10, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
           >
-            <Milk className="h-8 w-8 text-dairy-darkBlue" />
+            <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-10 w-10 object-contain" />
           </motion.div>
           <span className="text-2xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
         </Link>

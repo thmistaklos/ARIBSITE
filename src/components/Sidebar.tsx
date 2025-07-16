@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } => 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, Users, FileText, Settings, Milk, LogOut, Truck, BookOpen, Newspaper } from 'lucide-react';
+import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper } from 'lucide-react'; // Removed Milk icon
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,7 @@ const Sidebar: React.FC = () => {
     >
       <div className="flex h-16 items-center justify-center border-b border-dairy-blue/20 px-4">
         <Link to="/admin" className="flex items-center space-x-2">
-          <Milk className="h-7 w-7 text-dairy-darkBlue" />
+          <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
           <span className="text-xl font-bold text-dairy-darkBlue">ARIB ADMIN</span>
         </Link>
       </div>
@@ -83,7 +83,7 @@ const Sidebar: React.FC = () => {
             <SheetContent side="left" className="bg-dairy-white p-0">
               <div className="flex h-16 items-center justify-center border-b border-dairy-blue/20">
                 <Link to="/admin" className="flex items-center space-x-2">
-                  <Milk className="h-7 w-7 text-dairy-darkBlue" />
+                  <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
                   <span className="text-xl font-bold text-dairy-darkBlue">ARIB ADMIN</span>
                 </Link>
               </div>
