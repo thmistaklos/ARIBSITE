@@ -2,8 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedButton from '@/components/AnimatedButton';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const HomePage: React.FC = () => {
+  const { t } = useTranslation(); // Initialize useTranslation
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -28,12 +31,11 @@ const HomePage: React.FC = () => {
     >
       <section className="text-center max-w-4xl mx-auto">
         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold mb-6 text-dairy-darkBlue leading-tight">
-          Freshness in Every Drop
+          {t('freshness_in_every_drop')}
         </motion.h1>
         <motion.p variants={itemVariants} className="text-xl md:text-2xl mb-8 text-dairy-text">
-          Experience the pure taste of nature with ARIB DAIRY's finest products.
+          {t('experience_pure_taste')}
         </motion.p>
-        {/* The milk splash section has been removed */}
         <motion.div variants={itemVariants}>
           <Link to="/products">
             <AnimatedButton
@@ -41,7 +43,7 @@ const HomePage: React.FC = () => {
               className="bg-transparent text-cyan-glow border-2 border-cyan-glow rounded-md font-bold text-base shadow-glow transition-all duration-300 ease-in-out hover:bg-cyan-glow hover:text-black hover:shadow-hover-glow px-6 py-3"
               soundOnClick="/sounds/click.mp3"
             >
-              Explore Our Products
+              {t('explore_products')}
             </AnimatedButton>
           </Link>
         </motion.div>

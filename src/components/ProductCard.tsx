@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AnimatedButton from '@/components/AnimatedButton';
+import { useTranslation } from 'react-i18next';
 
 interface ProductCardProps {
   product: {
@@ -14,6 +15,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -35,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <CardDescription className="text-dairy-text mb-4">{product.description}</CardDescription>
           <p className="text-3xl font-bold text-dairy-blue mb-6">{product.price}</p>
           <AnimatedButton className="w-full bg-dairy-darkBlue text-dairy-cream hover:bg-dairy-blue" soundOnClick="/sounds/click.mp3">
-            Add to Cart
+            {t('add_to_cart')}
           </AnimatedButton>
         </CardContent>
       </Card>

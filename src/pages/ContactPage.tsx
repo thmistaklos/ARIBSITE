@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,8 @@ const formSchema = z.object({
 });
 
 const ContactPage: React.FC = () => {
+  const { t } = useTranslation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,8 +32,8 @@ const ContactPage: React.FC = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    toast.success('Your message has been sent!', {
-      description: 'We will get back to you shortly.',
+    toast.success(t('your_message_sent'), { // Assuming 'your_message_sent' and 'we_will_get_back' are in translation files
+      description: t('we_will_get_back'),
     });
     form.reset();
   };
@@ -54,12 +57,12 @@ const ContactPage: React.FC = () => {
           transition={{ type: 'spring', stiffness: 100, damping: 10 }}
           className="text-4xl md:text-5xl font-bold text-center text-dairy-darkBlue mb-12"
         >
-          Get in Touch
+          {t('get_in_touch')}
         </motion.h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <motion.div variants={itemVariants} className="bg-white p-8 rounded-xl shadow-md border border-dairy-blue/20">
-            <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-6">Send Us a Message</h2>
+            <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-6">{t('send_us_a_message')}</h2>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -67,9 +70,9 @@ const ContactPage: React.FC = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-dairy-text">Name</FormLabel>
+                      <FormLabel className="text-dairy-text">{t('name')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Name" {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                        <Input placeholder={t('your_name_placeholder')} {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -80,9 +83,9 @@ const ContactPage: React.FC = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-dairy-text">Email</FormLabel>
+                      <FormLabel className="text-dairy-text">{t('email')}</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="your@email.com" {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                        <Input type="email" placeholder={t('your_email_placeholder')} {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -93,23 +96,23 @@ const ContactPage: React.FC = () => {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-dairy-text">Message</FormLabel>
+                      <FormLabel className="text-dairy-text">{t('message')}</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Your message..." {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                        <Textarea placeholder={t('your_message_placeholder')} {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <AnimatedButton type="submit" className="w-full bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3">
-                  Send Message
+                  {t('send_message')}
                 </AnimatedButton>
               </form>
             </Form>
           </motion.div>
 
           <motion.div variants={itemVariants} className="bg-white p-8 rounded-xl shadow-md border border-dairy-blue/20">
-            <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-6">Contact Information</h2>
+            <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-6">{t('contact_information')}</h2>
             <div className="space-y-6 text-lg text-dairy-text">
               <motion.div whileHover={{ x: 5 }} className="flex items-center space-x-4">
                 <Mail className="text-dairy-blue flex-shrink-0" />

@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <motion.footer
       initial={{ y: 100 }}
@@ -12,7 +15,7 @@ const Footer: React.FC = () => {
     >
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4 md:px-6">
         <div className="text-center md:text-left mb-4 md:mb-0">
-          <p>&copy; {new Date().getFullYear()} ARIB DAIRY. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} ARIB DAIRY. {t('all_rights_reserved')}</p>
         </div>
         <div className="flex space-x-6">
           <motion.a

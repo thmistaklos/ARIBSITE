@@ -5,16 +5,19 @@ import { Milk, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-const navItems = [
-  { name: 'Home', path: '/' },
-  { name: 'Products', path: '/products' },
-  { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' },
-];
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher'; // Import LanguageSwitcher
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
+  const { t } = useTranslation();
+
+  const navItems = [
+    { name: t('home'), path: '/' },
+    { name: t('products'), path: '/products' },
+    { name: t('about'), path: '/about' },
+    { name: t('contact'), path: '/contact' },
+  ];
 
   const navLinkVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -41,45 +44,53 @@ const Header: React.FC = () => {
           <span className="text-2xl font-bold text-dairy-darkBlue">ARIB DAIRY</span>
         </Link>
 
-        {isMobile ? (
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6 text-dairy-darkBlue" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-dairy-cream p-6">
-              <nav className="flex flex-col space-y-4 mt-8">
+        <div className="flex items-center space-x-4"> {/* Wrapper for nav and switcher */}
+          {isMobile ? (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6 text-dairy-darkBlue" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="bg-dairy-cream p-6">
+                <nav className="flex flex-col space-y-4 mt-8">
+                  {navItems.map((item, index) => (
+                    <Link key={item.name} to={item.path} className="text-lg font-medium text-dairy-darkBlue hover:text-dairy-blue transition-colors">
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+                <div className="mt-8">
+                  <LanguageSwitcher />
+                </div>
+              </SheetContent>
+            </Sheet>
+          ) : (
+            <>
+              <nav className="hidden md:flex space-x-6">
                 {navItems.map((item, index) => (
-                  <Link key={item.name} to={item.path} className="text-lg font-medium text-dairy-darkBlue hover:text-dairy-blue transition-colors">
-                    {item.name}
-                  </Link>
+                  <motion.div
+                    key={item.name}
+                    variants={navLinkVariants}
+                    initial="hidden"
+                    animate="visible"
+                    whileHover="hover"
+                    custom={index}
+                  >
+                    <Link
+                      to={item.path}
+                      className="text-lg font-medium text-dairy-text hover:text-dairy-darkBlue transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
                 ))}
               </nav>
-            </SheetContent>
-          </Sheet>
-        ) : (
-          <nav className="hidden md:flex space-x-6">
-            {navItems.map((item, index) => (
-              <motion.div
-                key={item.name}
-                variants={navLinkVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                custom={index}
-              >
-                <Link
-                  to={item.path}
-                  className="text-lg font-medium text-dairy-text hover:text-dairy-darkBlue transition-colors"
-                >
-                  {item.name}
-                </Link>
-              </motion.div>
-            ))}
-          </nav>
-        )}
+              <LanguageSwitcher />
+            </>
+          )}
+        </div>
       </div>
     </motion.header>
   );
