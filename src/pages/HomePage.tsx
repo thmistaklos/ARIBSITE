@@ -33,18 +33,7 @@ const HomePage: React.FC = () => {
         <motion.p variants={itemVariants} className="text-xl md:text-2xl mb-8 text-dairy-text">
           Experience the pure taste of nature with ARIB DAIRY's finest products.
         </motion.p>
-        <motion.div variants={itemVariants} className="relative w-full max-w-lg mx-auto mb-12">
-          {/* Placeholder for milk splash image */}
-          <div className="w-full h-48 md:h-64 bg-dairy-blue/30 rounded-full flex items-center justify-center text-dairy-cream text-xl font-semibold shadow-xl">
-            Milk Splash Image Here
-          </div>
-          <motion.div
-            className="absolute inset-0 bg-dairy-blue/30 rounded-full"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 100, damping: 10, delay: 0.5 }}
-          />
-        </motion.div>
+        {/* The milk splash section has been removed */}
         <motion.div variants={itemVariants}>
           <Link to="/products">
             <AnimatedButton
