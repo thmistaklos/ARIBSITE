@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
+import NewFAQSection from '@/components/NewFAQSection'; // Import new component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -62,6 +63,9 @@ const HomePage: React.FC = () => {
 
       {/* Facts Section */}
       <FactsSection />
+
+      {/* New FAQ Section */}
+      <NewFAQSection />
     </motion.div>
   );
 };
