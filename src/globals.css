@@ -107,3 +107,22 @@
     font-family: 'Cairo', sans-serif;
   }
 }
+
+/* New Keyframes for Particle Animation */
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes fade-in-out {
+  0%, 100% { opacity: 0; }
+  25%, 75% { opacity: 0.5; }
+  50% { opacity: 1; }
+}

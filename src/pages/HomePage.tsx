@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
+import ParticleBackground from '@/components/ParticleBackground'; // Import the new component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -30,9 +31,11 @@ const HomePage: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-[calc(100vh-160px)] flex flex-col items-center bg-dairy-cream text-dairy-text py-12 px-4"
+      className="min-h-[calc(100vh-160px)] flex flex-col items-center bg-dairy-cream text-dairy-text py-12 px-4 relative overflow-hidden"
     >
-      <section className="text-center max-w-4xl mx-auto mb-12">
+      <ParticleBackground /> {/* Add the particle background */}
+
+      <section className="text-center max-w-4xl mx-auto mb-12 relative z-10">
         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold mb-6 text-dairy-darkBlue leading-tight">
           {t('freshness_in_every_drop')}
         </motion.h1>
@@ -53,7 +56,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Product Gallery Section */}
-      <section className="w-full">
+      <section className="w-full relative z-10">
         <ProductGallery />
       </section>
 

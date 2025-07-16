@@ -97,10 +97,23 @@ export default {
             height: "0",
           },
         },
+        // New keyframes for particle animation
+        "particle-float": {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "50%": { transform: "translateY(-20px) rotate(5deg)" },
+        },
+        "fade-in-out": {
+          "0%, 100%": { opacity: "0" },
+          "25%, 75%": { opacity: "0.5" },
+          "50%": { opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        // New animations for particles
+        "particle-float": "particle-float var(--animation-duration, 10s) ease-in-out infinite",
+        "fade-in-out": "fade-in-out var(--animation-duration, 10s) ease-in-out infinite",
       },
       boxShadow: {
         'glow': '0 0 5px #00eeff, 0 0 10px #00eeff',
