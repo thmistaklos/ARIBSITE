@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
-import FactsSection from '@/components/FactsSection'; // Import new component
+import FactsSection from '@/components/FactsSection';
+import FAQSection from '@/components/FAQSection'; // Import new component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -60,8 +61,11 @@ const HomePage: React.FC = () => {
       {/* Recipes Section */}
       <RecipesSection />
 
-      {/* New Facts Section */}
+      {/* Facts Section */}
       <FactsSection />
+
+      {/* FAQ Section */}
+      <FAQSection />
     </motion.div>
   );
 };

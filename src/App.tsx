@@ -17,6 +17,7 @@ import PublicLayout from "./components/PublicLayout";
 import DistributorsManagement from "./pages/admin/DistributorsManagement";
 import RecipesManagement from "./pages/admin/RecipesManagement";
 import BlogManagement from "./pages/admin/BlogManagement";
+import StarfallBackground from "./components/StarfallBackground"; // Import StarfallBackground
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
+            <StarfallBackground /> {/* Render StarfallBackground here */}
             <Routes>
               {/* Public Routes with common Header/Footer and animations */}
               <Route path="/*" element={<PublicLayout />} />
