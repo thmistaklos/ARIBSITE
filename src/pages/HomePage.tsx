@@ -2,10 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedButton from '@/components/AnimatedButton';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
+import ProductGallery from '@/components/ProductGallery'; // Import ProductGallery
 
 const HomePage: React.FC = () => {
-  const { t } = useTranslation(); // Initialize useTranslation
+  const { t } = useTranslation();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,7 +30,7 @@ const HomePage: React.FC = () => {
       variants={containerVariants}
       className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4"
     >
-      <section className="text-center max-w-4xl mx-auto">
+      <section className="text-center max-w-4xl mx-auto mb-12">
         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold mb-6 text-dairy-darkBlue leading-tight">
           {t('freshness_in_every_drop')}
         </motion.h1>
@@ -47,6 +48,11 @@ const HomePage: React.FC = () => {
             </AnimatedButton>
           </Link>
         </motion.div>
+      </section>
+
+      {/* New Product Gallery Section */}
+      <section className="w-full">
+        <ProductGallery />
       </section>
     </motion.div>
   );
