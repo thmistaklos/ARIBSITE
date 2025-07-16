@@ -1,60 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import AnimatedButton from '@/components/AnimatedButton';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase'; // Import supabase
 
 interface Product {
   id: string;
   name: string;
   description: string;
   price: string;
-  image_url: string; // Changed from 'image' to 'image_url'
+  image_url: string;
 }
-
-// This data should ideally come from your Supabase 'products' table
-const DUMMY_PRODUCTS: Product[] = [
-  {
-    id: '1',
-    name: 'Fresh Whole Milk',
-    description: 'Pure, pasteurized whole milk from grass-fed cows. Rich in calcium and vitamins.',
-    price: '$3.99/L',
-    image_url: 'https://via.placeholder.com/400x300/ADD8E6/000000?text=Whole+Milk', // Changed from 'image' to 'image_url'
-  },
-  {
-    id: '2',
-    name: 'Organic Greek Yogurt',
-    description: 'Thick and creamy organic Greek yogurt, perfect for breakfast or a healthy snack.',
-    price: '$5.49/500g',
-    image_url: 'https://via.placeholder.com/400x300/90EE90/000000?text=Greek+Yogurt', // Changed from 'image' to 'image_url'
-  },
-  {
-    id: '3',
-    name: 'Artisan Cheddar Cheese',
-    description: 'Aged cheddar cheese with a sharp, nutty flavor. Ideal for cheese boards and cooking.',
-    price: '$12.99/block',
-    image_url: 'https://via.placeholder.com/400x300/FFD700/000000?text=Cheddar+Cheese', // Changed from 'image' to 'image_url'
-  },
-  {
-    id: '4',
-    name: 'Butter (Unsalted)',
-    description: 'Premium unsalted butter, churned from fresh cream. Great for baking and cooking.',
-    price: '$4.79/250g',
-    image_url: 'https://via.placeholder.com/400x300/FFB6C1/000000?text=Butter', // Changed from 'image' to 'image_url'
-  },
-];
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const product = DUMMY_PRODUCTS.find(p => p.id === id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      if (!id) {
+        setLoading(false);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        toast.error('Failed to load product', { description: error.message });
+        setProduct(null);
+      } else {
+        setProduct(data || null);
+      }
+      setLoading(false);
+    };
+
+    fetchProduct();
+  }, [id]); // Re-run effect if ID changes
 
   const handleAddToCart = () => {
     toast.success(t('added_to_cart', { product: product?.name || 'item' }));
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
+        <Loader2 className="h-10 w-10 animate-spin text-dairy-blue" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -79,7 +82,7 @@ const ProductDetailPage: React.FC = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="min-h-[calc(100vh-160px)] bg-dairy-cream text-dairy-text py-12 px-4"
     >
-      <div className="container mx-auto max-w-5xl bg-white rounded-xl shadow-lg border-2 border-dairy-blue/20 p-6 md:p-10 flex flex-col md:flex-row gap-8">
+      <div className="container mx-auto max-w-5xl bg-white rounded-xl shadow-lg border-2 border-dairy-blue/20 p-6 md:p-10 flex flex-col md:flex-row gap-8 relative">
         <Link to="/products" className="absolute top-6 left-6 flex items-center text-dairy-blue hover:text-dairy-darkBlue transition-colors">
           <ArrowLeft className="mr-2 h-5 w-5" /> {t('back_to_products')}
         </Link>
@@ -91,7 +94,7 @@ const ProductDetailPage: React.FC = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <img
-            src={product.image_url} // Changed from 'product.image' to 'product.image_url'
+            src={product.image_url}
             alt={product.name}
             className="w-full h-auto max-h-[400px] object-contain rounded-lg shadow-md"
           />
