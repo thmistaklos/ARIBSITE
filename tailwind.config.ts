@@ -72,6 +72,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        'cyan-glow': '#00eeff', // New custom color for the glowing effect
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -99,6 +100,10 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      boxShadow: {
+        'glow': '0 0 5px #00eeff, 0 0 10px #00eeff',
+        'hover-glow': '0 0 10px #00eeff, 0 0 20px #00eeff, 0 0 40px #00eeff',
       },
     },
   },

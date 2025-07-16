@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
           <Link to="/products">
             <AnimatedButton
               size="lg"
-              className="bg-dairy-blue text-white hover:bg-dairy-darkBlue text-xl px-8 py-4 rounded-full shadow-lg"
+              className="bg-transparent text-cyan-glow border-2 border-cyan-glow rounded-md font-bold text-base shadow-glow transition-all duration-300 ease-in-out hover:bg-cyan-glow hover:text-black hover:shadow-hover-glow px-6 py-3"
               soundOnClick="/sounds/click.mp3"
             >
               Explore Our Products

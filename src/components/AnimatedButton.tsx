@@ -16,7 +16,7 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   onClick,
   soundOnClick,
   soundOnHover,
-  className,
+  className, // Destructure className here
   ...props
 }) => {
   const { play: playClickSound } = useSound(soundOnClick || '/sounds/click.mp3', { volume: 0.5 });
@@ -40,9 +40,9 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onMouseEnter={handleMouseEnter}
-      className={cn("inline-block", className)}
+      className="inline-block" // Keep this for the motion.div wrapper
     >
-      <Button onClick={handleClick} {...props}>
+      <Button onClick={handleClick} className={className} {...props}> {/* Pass className to Button */}
         {children}
       </Button>
     </motion.div>
