@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from '@/components/ProductCard';
-import { products } from '@/data/products';
+import { supabase } from '@/lib/supabase';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+}
 
 const ProductsPage: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('products').select('*').order('name', { ascending: true });
+      if (error) {
+        toast.error('Failed to load products', { description: error.message });
+      } else {
+        setProducts(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -31,11 +59,19 @@ const ProductsPage: React.FC = () => {
           Our Delicious Dairy Products
         </motion.h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center text-xl text-dairy-text">No products available yet.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );

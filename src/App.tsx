@@ -17,6 +17,9 @@ import OrdersManagement from "./pages/admin/OrdersManagement";
 import UsersManagement from "./pages/admin/UsersManagement";
 import ContentManagement from "./pages/admin/ContentManagement";
 import SettingsPage from "./pages/admin/SettingsPage";
+import LoginPage from "./pages/admin/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 const queryClient = new QueryClient();
@@ -27,43 +30,50 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Routes>
-            {/* Public Routes */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Header />
-                  <main className="flex-grow">
-                    <AnimatePresence mode="wait">
-                      <Routes location={location} key={location.pathname}>
-                        <Route index element={<HomePage />} />
-                        <Route path="/products" element={<ProductsPage />} />
-                        <Route path="/about" element={<AboutPage />} />
-                        <Route path="/contact" element={<ContactPage />} />
-                      </Routes>
-                    </AnimatePresence>
-                  </main>
-                  <Footer />
-                </>
-              }
-            />
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen">
+            <Routes>
+              {/* Public Routes */}
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Header />
+                    <main className="flex-grow">
+                      <AnimatePresence mode="wait">
+                        <Routes location={location} key={location.pathname}>
+                          <Route index element={<HomePage />} />
+                          <Route path="/products" element={<ProductsPage />} />
+                          <Route path="/about" element={<AboutPage />} />
+                          <Route path="/contact" element={<ContactPage />} />
+                        </Routes>
+                      </AnimatePresence>
+                    </main>
+                    <Footer />
+                  </>
+                }
+              />
 
-            {/* Admin Dashboard Routes */}
-            <Route path="/admin" element={<DashboardLayout />}>
-              <Route index element={<DashboardOverview />} />
-              <Route path="products" element={<ProductsManagement />} />
-              <Route path="orders" element={<OrdersManagement />} />
-              <Route path="users" element={<UsersManagement />} />
-              <Route path="content" element={<ContentManagement />} />
-              <Route path="settings" element={<SettingsPage />} />
-            </Route>
+              {/* Admin Login Route */}
+              <Route path="/admin/login" element={<LoginPage />} />
 
-            {/* Catch-all for 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+              {/* Protected Admin Dashboard Routes */}
+              <Route path="/admin" element={<ProtectedRoute />}>
+                <Route element={<DashboardLayout />}>
+                  <Route index element={<DashboardOverview />} />
+                  <Route path="products" element={<ProductsManagement />} />
+                  <Route path="orders" element={<OrdersManagement />} />
+                  <Route path="users" element={<UsersManagement />} />
+                  <Route path="content" element={<ContentManagement />} />
+                  <Route path="settings" element={<SettingsPage />} />
+                </Route>
+              </Route>
+
+              {/* Catch-all for 404 */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
