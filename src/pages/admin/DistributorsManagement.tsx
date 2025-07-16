@@ -275,106 +275,108 @@ const DistributorsManagement: React.FC = () => {
               {currentDistributor ? 'Make changes to the distributor details here.' : 'Add a new distributor to your list.'}
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Name</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="region"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Region</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Phone</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Email</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input type="email" {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Address</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="logo" className="text-right text-dairy-text">
-                Logo
-              </Label>
-              <div className="col-span-3 flex flex-col gap-2">
-                <Input
-                  id="logo"
-                  name="logo"
-                  type="file"
-                  onChange={handleFileChange}
-                  className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                  accept="image/*"
-                />
-                {imagePreviewUrl && (
-                  <img src={imagePreviewUrl} alt="Logo Preview" className="w-24 h-24 object-contain rounded-md mt-2" />
+          <Form {...form}> {/* Added this wrapper */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Name</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
                 )}
-                {!selectedFile && currentDistributor?.logo_url && (
-                  <p className="text-xs text-muted-foreground mt-1">Current logo will be used if no new file is selected.</p>
+              />
+              <FormField
+                control={form.control}
+                name="region"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Region</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
                 )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Phone</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Email</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input type="email" {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Address</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="logo" className="text-right text-dairy-text">
+                  Logo
+                </Label>
+                <div className="col-span-3 flex flex-col gap-2">
+                  <Input
+                    id="logo"
+                    name="logo"
+                    type="file"
+                    onChange={handleFileChange}
+                    className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                    accept="image/*"
+                  />
+                  {imagePreviewUrl && (
+                    <img src={imagePreviewUrl} alt="Logo Preview" className="w-24 h-24 object-contain rounded-md mt-2" />
+                  )}
+                  {!selectedFile && currentDistributor?.logo_url && (
+                    <p className="text-xs text-muted-foreground mt-1">Current logo will be used if no new file is selected.</p>
+                  )}
+                </div>
               </div>
-            </div>
-            <DialogFooter>
-              <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {currentDistributor ? 'Saving...' : 'Adding...'}
-                  </>
-                ) : (
-                  currentDistributor ? 'Save Changes' : 'Add Distributor'
-                )}
-              </AnimatedButton>
-            </DialogFooter>
-          </form>
+              <DialogFooter>
+                <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {currentDistributor ? 'Saving...' : 'Adding...'}
+                    </>
+                  ) : (
+                    currentDistributor ? 'Save Changes' : 'Add Distributor'
+                  )}
+                </AnimatedButton>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </motion.div>
