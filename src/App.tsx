@@ -15,9 +15,9 @@ import LoginPage from "./pages/admin/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import PublicLayout from "./components/PublicLayout";
-import DistributorsManagement from "./pages/admin/DistributorsManagement"; // New import
-import RecipesManagement from "./pages/admin/RecipesManagement"; // New import
-import BlogManagement from "./pages/admin/BlogManagement"; // New import
+import DistributorsManagement from "./pages/admin/DistributorsManagement";
+import RecipesManagement from "./pages/admin/RecipesManagement";
+import BlogManagement from "./pages/admin/BlogManagement";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +31,7 @@ const App = () => (
           <div className="flex flex-col min-h-screen">
             <Routes>
               {/* Public Routes with common Header/Footer and animations */}
-              <Route path="/*" element={<PublicLayout />} /> {/* This will handle /, /products, /about, /contact */}
+              <Route path="/*" element={<PublicLayout />} />
 
               {/* Admin Login Route */}
               <Route path="/admin/login" element={<LoginPage />} />
@@ -43,9 +43,9 @@ const App = () => (
                   <Route path="products" element={<ProductsManagement />} />
                   <Route path="orders" element={<OrdersManagement />} />
                   <Route path="users" element={<UsersManagement />} />
-                  <Route path="distributors" element={<DistributorsManagement />} /> {/* New Route */}
-                  <Route path="recipes" element={<RecipesManagement />} /> {/* New Route */}
-                  <Route path="blog" element={<BlogManagement />} /> {/* New Route */}
+                  <Route path="distributors" element={<DistributorsManagement />} />
+                  <Route path="recipes" element={<RecipesManagement />} />
+                  <Route path="blog" element={<BlogManagement />} />
                   <Route path="content" element={<ContentManagement />} />
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>
