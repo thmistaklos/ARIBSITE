@@ -7,11 +7,12 @@ import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
 import DistributorsPage from "../pages/DistributorsPage";
 import RecipesPage from "../pages/RecipesPage";
+import BlogPage from "../pages/BlogPage"; // Added missing import
 import BlogPostDetail from "../pages/BlogPostDetail";
 import ProductsPage from "../pages/ProductsPage";
 import ProductDetailPage from "../pages/ProductDetailPage";
 import Footer from "./Footer";
-import RecipeDetailPage from "../pages/RecipeDetailPage"; // Added missing import
+import RecipeDetailPage from "../pages/RecipeDetailPage";
 
 const PublicLayout: React.FC = () => {
   const location = useLocation();
