@@ -12,6 +12,7 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Added this import
 
 interface Distributor {
   id: string;
