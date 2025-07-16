@@ -30,10 +30,8 @@
   "quality_you_can_taste_desc": "Every drop of ARIB DAIRY milk undergoes rigorous quality checks from the moment it leaves our farms until it reaches your home. We use state-of-the-art processing techniques that preserve the natural goodness and rich flavor of our dairy products, ensuring you receive only the freshest and most nutritious milk, yogurt, and cheese.",
   "committed_to_community": "Committed to Community and Sustainability",
   "committed_to_community_desc": "ARIB DAIRY is more than just a dairy company; we are a part of the community. We are dedicated to sustainable practices that protect our environment and support local farmers. By choosing ARIB DAIRY, you're not just enjoying delicious dairy; you're also contributing to a healthier planet and a thriving local economy.",
-  "our_distributors": "Our Distributors",
   "search_distributors_placeholder": "Search by name or location...",
   "no_distributors_found": "No distributors found matching your search.",
-  "our_blog": "Our Blog",
   "read_more": "Read More",
   "load_more": "Load More",
   "post_not_found": "Blog Post Not Found",
@@ -52,5 +50,11 @@
   "we_will_get_back": "We will get back to you shortly.",
   "contact_information": "Contact Information",
   "arib_address": "GIPLAIT ARIB, Zone Industrielle, Arib, Wilaya de Tipaza, Algeria",
-  "all_rights_reserved": "All Rights Reserved."
+  "all_rights_reserved": "All Rights Reserved.",
+
+  "fact_milk_production": "ARIB Dairy produces more than 100,000 liters of milk daily, directed straight for consumption, not counting other dairy products, and this amount is in Aïn Defla province alone.",
+  "fact_largest_producer": "ARIB Dairy is one of the largest producers in central Algeria and covers many provinces.",
+  "fact_quality_tests": "At ARIB Dairy, we conduct daily safety and quality tests to ensure trust.",
+  "fact_points_of_sale": "ARIB Dairy has more than 18 points of sale in Aïn Defla province alone.",
+  "fact_organic_products": "The dairy’s products are 100% organic, with no food additives or artificial colors."
 }
