@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 
 const FAQSection: React.FC = () => {
   const { t } = useTranslation();
+  const [openFaqId, setOpenFaqId] = useState<string | null>(null); // State to manage open FAQ
 
   const faqs = [
     {
-      id: 'faq1',
+      id: 'faq1', // Add unique ID for state management
       questionKey: 'faq_q1',
       answerKey: 'faq_a1',
     },
@@ -54,30 +56,87 @@ const FAQSection: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-      className="faq-section py-10 px-6 bg-dairy-cream text-dairy-text"
+      className="relative z-20 overflow-hidden bg-dairy-cream pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]"
     >
-      <div className="container mx-auto max-w-3xl">
-        <motion.h2
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 100, damping: 10 }}
-          className="text-4xl md:text-5xl font-bold text-center text-dairy-darkBlue mb-12"
-        >
-          {t('faq_title')}
-        </motion.h2>
-        <div className="space-y-8">
-          {faqs.map((faq, index) => (
-            <motion.div key={index} variants={itemVariants} className="bg-white p-6 rounded-xl shadow-md border border-dairy-blue/20">
-              <h3 className="text-xl font-semibold text-dairy-darkBlue mb-3">{t(faq.questionKey)}</h3>
-              <p className="text-lg leading-relaxed">
-                {t(faq.answerKey, {
-                  interpolation: { escapeValue: false }, // Allow HTML in translations for links
-                  careersLink: <Link to="/careers" className="text-dairy-blue underline">{t('careers_page')}</Link>,
-                  productsLink: <Link to="/products" className="text-dairy-blue underline">{t('products_page')}</Link>
-                })}
-              </p>
-            </motion.div>
-          ))}
+      <div className="container mx-auto">
+        <div className="-mx-4 flex flex-wrap">
+          <div className="w-full px-4">
+            <div className="mx-auto mb-[60px] max-w-[520px] text-center lg:mb-20">
+              <span className="mb-2 block text-lg font-semibold text-dairy-blue">{t('faq_section_tag')}</span>
+              <h2 className="mb-4 text-3xl font-bold text-dairy-darkBlue sm:text-[40px]/[48px]">{t('faq_title')}</h2>
+              <p className="text-base text-dairy-text">{t('faq_description')}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="-mx-4 flex flex-wrap">
+          {/* Left Column */}
+          <div className="w-full px-4 lg:w-1/2">
+            {faqs.slice(0, Math.ceil(faqs.length / 2)).map((faq) => (
+              <motion.div
+                key={faq.id}
+                variants={itemVariants}
+                className="mb-8 w-full rounded-lg bg-white p-4 shadow sm:p-8 lg:px-6 xl:px-8 border border-dairy-blue/20"
+              >
+                <button
+                  className="faq-btn flex w-full text-left items-center"
+                  onClick={() => setOpenFaqId(openFaqId === faq.id ? null : faq.id)}
+                >
+                  <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-dairy-blue/10 text-dairy-blue">
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${openFaqId === faq.id ? 'rotate-180' : ''}`} />
+                  </div>
+                  <div className="w-full">
+                    <h4 className="mt-1 text-lg font-semibold text-dairy-darkBlue">{t(faq.questionKey)}</h4>
+                  </div>
+                </button>
+                {openFaqId === faq.id && (
+                  <div className="faq-content pl-[62px]">
+                    <p className="py-3 text-base leading-relaxed text-dairy-text">
+                      {t(faq.answerKey, {
+                        interpolation: { escapeValue: false },
+                        careersLink: <Link to="/careers" className="text-dairy-blue underline">{t('careers_page')}</Link>,
+                        productsLink: <Link to="/products" className="text-dairy-blue underline">{t('products_page')}</Link>
+                      })}
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Right Column */}
+          <div className="w-full px-4 lg:w-1/2">
+            {faqs.slice(Math.ceil(faqs.length / 2)).map((faq) => (
+              <motion.div
+                key={faq.id}
+                variants={itemVariants}
+                className="mb-8 w-full rounded-lg bg-white p-4 shadow sm:p-8 lg:px-6 xl:px-8 border border-dairy-blue/20"
+              >
+                <button
+                  className="faq-btn flex w-full text-left items-center"
+                  onClick={() => setOpenFaqId(openFaqId === faq.id ? null : faq.id)}
+                >
+                  <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-dairy-blue/10 text-dairy-blue">
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${openFaqId === faq.id ? 'rotate-180' : ''}`} />
+                  </div>
+                  <div className="w-full">
+                    <h4 className="mt-1 text-lg font-semibold text-dairy-darkBlue">{t(faq.questionKey)}</h4>
+                  </div>
+                </button>
+                {openFaqId === faq.id && (
+                  <div className="faq-content pl-[62px]">
+                    <p className="py-3 text-base leading-relaxed text-dairy-text">
+                      {t(faq.answerKey, {
+                        interpolation: { escapeValue: false },
+                        careersLink: <Link to="/careers" className="text-dairy-blue underline">{t('careers_page')}</Link>,
+                        productsLink: <Link to="/products" className="text-dairy-blue underline">{t('products_page')}</Link>
+                      })}
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </motion.section>
