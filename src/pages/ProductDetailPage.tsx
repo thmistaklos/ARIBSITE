@@ -103,7 +103,7 @@ const ProductDetailPage: React.FC = () => {
         >
           <h1 className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-4">{product.name}</h1>
           <p className="text-lg text-dairy-text leading-relaxed mb-6">{product.description}</p>
-          <p className="text-5xl font-bold text-dairy-blue mb-8">{product.price}</p>
+          <p className="text-5xl font-bold text-dairy-blue mb-8">{product.price} DA</p>
         </motion.div>
       </div>
     </motion.div>

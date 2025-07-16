@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div>
             <CardTitle className="text-2xl font-semibold text-dairy-darkBlue mb-2">{product.name}</CardTitle>
             <CardDescription className="text-dairy-text mb-4">{product.description}</CardDescription>
-            <p className="text-3xl font-bold text-dairy-blue mb-6">{product.price}</p>
+            <p className="text-3xl font-bold text-dairy-blue mb-6">{product.price} DA</p>
           </div>
           <div className="flex flex-col gap-2">
             <Link to={`/products/${product.id}`}>

@@ -214,7 +214,7 @@ const ProductsManagement: React.FC = () => {
                     </TableCell>
                     <TableCell className="font-medium text-dairy-darkBlue">{product.name}</TableCell>
                     <TableCell className="text-dairy-text">{product.description}</TableCell>
-                    <TableCell className="text-dairy-blue font-semibold">{product.price}</TableCell>
+                    <TableCell className="text-dairy-blue font-semibold">{product.price} DA</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end space-x-2">
                         <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(product)} soundOnClick="/sounds/click.mp3">
