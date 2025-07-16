@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Plus, Minus } from 'lucide-react';
+import { Link } from 'react-router-dom'; // Import Link for internal navigation
 
 interface FAQItem {
   id: string;
@@ -16,28 +17,38 @@ const NewFAQSection: React.FC = () => {
   const faqs: FAQItem[] = [
     {
       id: 'faq1',
-      questionKey: 'new_faq_q1',
-      answerKey: 'new_faq_a1',
+      questionKey: 'faq_job_application_q',
+      answerKey: 'faq_job_application_a',
     },
     {
       id: 'faq2',
-      questionKey: 'new_faq_q2',
-      answerKey: 'new_faq_a2',
+      questionKey: 'faq_job_status_q',
+      answerKey: 'faq_job_status_a',
     },
     {
       id: 'faq3',
-      questionKey: 'new_faq_q3',
-      answerKey: 'new_faq_a3',
+      questionKey: 'faq_training_program_q',
+      answerKey: 'faq_training_program_a',
     },
     {
       id: 'faq4',
-      questionKey: 'new_faq_q4',
-      answerKey: 'new_faq_a4',
+      questionKey: 'faq_product_feedback_q',
+      answerKey: 'faq_product_feedback_a',
     },
     {
       id: 'faq5',
-      questionKey: 'new_faq_q5',
-      answerKey: 'new_faq_a5',
+      questionKey: 'faq_brands_products_q',
+      answerKey: 'faq_brands_products_a',
+    },
+    {
+      id: 'faq6',
+      questionKey: 'faq_factory_visit_q',
+      answerKey: 'faq_factory_visit_a',
+    },
+    {
+      id: 'faq7',
+      questionKey: 'faq_social_sponsorship_q',
+      answerKey: 'faq_social_sponsorship_a',
     },
   ];
 
@@ -82,7 +93,13 @@ const NewFAQSection: React.FC = () => {
                 >
                   <span className="border border-dairy-blue"></span>
                   <p className="max-w-3xl px-4 text-dairy-text">
-                    {t(faq.answerKey)}
+                    {t(faq.answerKey, {
+                      interpolation: { escapeValue: false }, // Allow HTML in translations
+                      email: 'aribgipliat@gmail.com',
+                      phone: '+213 670 106 308',
+                      careersLink: <Link to="/careers" className="text-dairy-blue underline">{t('careers_page')}</Link>,
+                      productsLink: <Link to="/products" className="text-dairy-blue underline">{t('products_page')}</Link>
+                    })}
                   </p>
                 </motion.div>
               )}
