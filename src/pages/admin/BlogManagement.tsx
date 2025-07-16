@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Import Form components
 
 interface BlogPost {
   id: string;
@@ -302,105 +303,107 @@ const BlogManagement: React.FC = () => {
               {currentPost ? 'Make changes to the blog post here.' : 'Create a new blog post.'}
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Title</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="author"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Author</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="image" className="text-right text-dairy-text">
-                Image
-              </Label>
-              <div className="col-span-3 flex flex-col gap-2">
-                <Input
-                  id="image"
-                  name="image"
-                  type="file"
-                  onChange={handleFileChange}
-                  className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                  accept="image/*"
-                />
-                {imagePreviewUrl && (
-                  <img src={imagePreviewUrl} alt="Post Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
+          <Form {...form}> {/* Wrapped the form with Form component */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Title</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
                 )}
-                {!selectedFile && currentPost?.image_url && (
-                  <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
+              />
+              <FormField
+                control={form.control}
+                name="author"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Author</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
                 )}
+              />
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="image" className="text-right text-dairy-text">
+                  Image
+                </Label>
+                <div className="col-span-3 flex flex-col gap-2">
+                  <Input
+                    id="image"
+                    name="image"
+                    type="file"
+                    onChange={handleFileChange}
+                    className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                    accept="image/*"
+                  />
+                  {imagePreviewUrl && (
+                    <img src={imagePreviewUrl} alt="Post Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
+                  )}
+                  {!selectedFile && currentPost?.image_url && (
+                    <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
+                  )}
+                </div>
               </div>
-            </div>
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-start gap-4">
-                  <FormLabel className="text-right text-dairy-text">Content</FormLabel>
-                  <FormControl className="col-span-3">
-                    <ReactQuill
-                      theme="snow"
-                      value={field.value}
-                      onChange={field.onChange}
-                      modules={quillModules}
-                      formats={quillFormats}
-                      className="bg-white rounded-md"
-                    />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="published"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-4">
-                  <FormLabel className="text-right text-dairy-text">Publish</FormLabel>
-                  <FormControl className="col-span-3">
-                    <input
-                      type="checkbox"
-                      checked={field.value}
-                      onChange={field.onChange}
-                      className="h-5 w-5 text-dairy-blue focus:ring-dairy-blue border-gray-300 rounded"
-                    />
-                  </FormControl>
-                  <FormMessage className="col-span-4 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <DialogFooter>
-              <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {currentPost ? 'Saving...' : 'Adding...'}
-                  </>
-                ) : (
-                  currentPost ? 'Save Changes' : 'Add Post'
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-start gap-4">
+                    <FormLabel className="text-right text-dairy-text">Content</FormLabel>
+                    <FormControl className="col-span-3">
+                      <ReactQuill
+                        theme="snow"
+                        value={field.value}
+                        onChange={field.onChange}
+                        modules={quillModules}
+                        formats={quillFormats}
+                        className="bg-white rounded-md"
+                      />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
                 )}
-              </AnimatedButton>
-            </DialogFooter>
-          </form>
+              />
+              <FormField
+                control={form.control}
+                name="published"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Publish</FormLabel>
+                    <FormControl className="col-span-3">
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={field.onChange}
+                        className="h-5 w-5 text-dairy-blue focus:ring-dairy-blue border-gray-300 rounded"
+                      />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {currentPost ? 'Saving...' : 'Adding...'}
+                    </>
+                  ) : (
+                    currentPost ? 'Save Changes' : 'Add Post'
+                  )}
+                </AnimatedButton>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 

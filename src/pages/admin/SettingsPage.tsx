@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Import Form components
 
 interface SiteSetting {
   id: string;
@@ -174,7 +175,7 @@ const SettingsPage: React.FC = () => {
             <CardTitle className="text-dairy-darkBlue">General Settings</CardTitle>
           </CardHeader>
           <CardContent>
-            <Form {...form}>
+            <Form {...form}> {/* Wrapped the form with Form component */}
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                   <Label htmlFor="site_logo" className="md:text-right text-dairy-text">
@@ -276,6 +277,25 @@ const SettingsPage: React.FC = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* Live Preview Dialog */}
+      <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+        <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg">
+          <DialogHeader>
+            <DialogTitle className="text-dairy-darkBlue">Homepage Hero Preview</DialogTitle>
+            <DialogDescription className="text-dairy-text">
+              This is how the hero section will look on your homepage.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 text-center space-y-4">
+            <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.homepage_hero_title}</h2>
+            <p className="text-xl text-dairy-text">{previewContent?.homepage_hero_subtitle}</p>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setIsPreviewOpen(false)} className="bg-dairy-blue text-white hover:bg-dairy-darkBlue">Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };
