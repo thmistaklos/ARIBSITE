@@ -41,7 +41,7 @@ const Header: React.FC = () => {
           >
             <Milk className="h-8 w-8 text-dairy-darkBlue" />
           </motion.div>
-          <span className="text-2xl font-bold text-dairy-darkBlue">ARIB DAIRY</span>
+          <span className="text-2xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
         </Link>
 
         <div className="flex items-center space-x-4"> {/* Wrapper for nav and switcher */}
