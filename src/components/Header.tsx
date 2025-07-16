@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher'; // Import LanguageSwitcher
-import ThemeToggle from './ThemeToggle'; // Import ThemeToggle
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -65,9 +64,8 @@ const Header: React.FC = () => {
                     </Link>
                   ))}
                 </nav>
-                <div className="mt-8 flex flex-col space-y-4">
+                <div className="mt-8">
                   <LanguageSwitcher />
-                  <ThemeToggle />
                 </div>
               </SheetContent>
             </Sheet>
@@ -93,7 +91,6 @@ const Header: React.FC = () => {
                 ))}
               </nav>
               <LanguageSwitcher />
-              <ThemeToggle />
             </>
           )}
         </div>
