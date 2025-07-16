@@ -34,11 +34,10 @@ const HomePage: React.FC = () => {
           Experience the pure taste of nature with ARIB DAIRY's finest products.
         </motion.p>
         <motion.div variants={itemVariants} className="relative w-full max-w-lg mx-auto mb-12">
-          <img
-            src="/images/milk-splash.png" // Placeholder image for milk splash
-            alt="Milk Splash"
-            className="w-full h-auto rounded-full object-cover shadow-xl"
-          />
+          {/* Placeholder for milk splash image */}
+          <div className="w-full h-48 md:h-64 bg-dairy-blue/30 rounded-full flex items-center justify-center text-dairy-cream text-xl font-semibold shadow-xl">
+            Milk Splash Image Here
+          </div>
           <motion.div
             className="absolute inset-0 bg-dairy-blue/30 rounded-full"
             initial={{ scale: 0 }}
