@@ -7,6 +7,11 @@ import HomePage from '@/pages/HomePage';
 import ProductsPage from '@/pages/ProductsPage';
 import AboutPage from '@/pages/AboutPage';
 import ContactPage from '@/pages/ContactPage';
+import DistributorsPage from '@/pages/DistributorsPage'; // New import
+import RecipesPage from '@/pages/RecipesPage'; // New import
+import BlogPage from '@/pages/BlogPage'; // New import
+import BlogPostDetail from '@/pages/BlogPostDetail'; // New import
+import ProductDetailPage from '@/pages/ProductDetailPage'; // New import
 import NotFound from '@/pages/NotFound'; // Include NotFound for public paths not explicitly defined
 
 const pageVariants = {
@@ -68,6 +73,86 @@ const PublicLayout: React.FC = () => {
                   className="h-full w-full"
                 >
                   <ProductsPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/products/:id" // New route for product detail
+              element={
+                <motion.div
+                  key="product-detail"
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full w-full"
+                >
+                  <ProductDetailPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/distributors" // New route
+              element={
+                <motion.div
+                  key="distributors"
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full w-full"
+                >
+                  <DistributorsPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/recipes" // New route
+              element={
+                <motion.div
+                  key="recipes"
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full w-full"
+                >
+                  <RecipesPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/blog" // New route
+              element={
+                <motion.div
+                  key="blog"
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full w-full"
+                >
+                  <BlogPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/blog/:id" // New route for blog post detail
+              element={
+                <motion.div
+                  key="blog-detail"
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  className="h-full w-full"
+                >
+                  <BlogPostDetail />
                 </motion.div>
               }
             />

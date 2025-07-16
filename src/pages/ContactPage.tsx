@@ -32,7 +32,7 @@ const ContactPage: React.FC = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    toast.success(t('your_message_sent'), { // Assuming 'your_message_sent' and 'we_will_get_back' are in translation files
+    toast.success(t('your_message_sent'), {
       description: t('we_will_get_back'),
     });
     form.reset();
@@ -116,15 +116,15 @@ const ContactPage: React.FC = () => {
             <div className="space-y-6 text-lg text-dairy-text">
               <motion.div whileHover={{ x: 5 }} className="flex items-center space-x-4">
                 <Mail className="text-dairy-blue flex-shrink-0" />
-                <span>info@aribdairy.com</span>
+                <span>aribgiplait@gmail.com</span>
               </motion.div>
               <motion.div whileHover={{ x: 5 }} className="flex items-center space-x-4">
                 <Phone className="text-dairy-blue flex-shrink-0" />
-                <span>+1 (123) 456-7890</span>
+                <span>+213 670 106 308</span>
               </motion.div>
               <motion.div whileHover={{ x: 5 }} className="flex items-center space-x-4">
                 <MapPin className="text-dairy-blue flex-shrink-0" />
-                <span>123 Dairy Lane, Milkville, USA</span>
+                <span>{t('arib_address')}</span>
               </motion.div>
             </div>
             <motion.div

@@ -15,6 +15,9 @@ const Header: React.FC = () => {
   const navItems = [
     { name: t('home'), path: '/' },
     { name: t('products'), path: '/products' },
+    { name: t('our_distributors'), path: '/distributors' }, // New nav item
+    { name: t('recipes'), path: '/recipes' }, // New nav item
+    { name: t('our_blog'), path: '/blog' }, // New nav item
     { name: t('about'), path: '/about' },
     { name: t('contact'), path: '/contact' },
   ];

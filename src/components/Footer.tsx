@@ -19,21 +19,25 @@ const Footer: React.FC = () => {
         </div>
         <div className="flex space-x-6">
           <motion.a
-            href="#"
+            href="https://www.facebook.com/GiplaitArib" // Updated Facebook link
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.2, color: 'hsl(var(--dairy-blue))' }}
             className="text-dairy-cream hover:text-dairy-blue transition-colors"
           >
             <Facebook size={24} />
           </motion.a>
           <motion.a
-            href="#"
+            href="https://www.instagram.com/aribgiplait/" // Updated Instagram link
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.2, color: 'hsl(var(--dairy-blue))' }}
             className="text-dairy-cream hover:text-dairy-blue transition-colors"
           >
             <Instagram size={24} />
           </motion.a>
           <motion.a
-            href="#"
+            href="#" // Twitter link (no specific one provided, keeping placeholder)
             whileHover={{ scale: 1.2, color: 'hsl(var(--dairy-blue))' }}
             className="text-dairy-cream hover:text-dairy-blue transition-colors"
           >
