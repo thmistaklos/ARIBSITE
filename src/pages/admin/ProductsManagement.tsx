@@ -16,7 +16,7 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image: string;
+  image: string; // Still stores the URL
 }
 
 const ProductsManagement: React.FC = () => {
@@ -28,8 +28,9 @@ const ProductsManagement: React.FC = () => {
     name: '',
     description: '',
     price: '',
-    image: '',
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // New state for the file object
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // New state for image preview
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -52,39 +53,93 @@ const ProductsManagement: React.FC = () => {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setImagePreviewUrl(URL.createObjectURL(file)); // Create a preview URL for the selected file
+    } else {
+      setSelectedFile(null);
+      // If no file is selected, revert preview to current product's image or null
+      setImagePreviewUrl(currentProduct?.image || null);
+    }
+  };
+
   const handleAddEditProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (currentProduct) {
-      // Edit product
-      const { error } = await supabase
-        .from('products')
-        .update(formState)
-        .eq('id', currentProduct.id);
+    let imageUrl = currentProduct?.image || ''; // Start with existing image URL if editing
 
-      if (error) {
-        toast.error('Failed to update product', { description: error.message });
-      } else {
+    try {
+      if (selectedFile) {
+        // Upload new image if a file is selected
+        const fileExtension = selectedFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${selectedFile.name}`; // Unique file name
+        const filePath = `product-images/${fileName}`; // Assuming 'product-images' is your bucket name
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(filePath, selectedFile, {
+            cacheControl: '3600',
+            upsert: false,
+          });
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data: publicUrlData } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+
+        imageUrl = publicUrlData.publicUrl;
+      } else if (!currentProduct && !imageUrl) {
+        // If adding a new product and no file is selected, require an image
+        toast.error('Image required', { description: 'Please upload an image for the new product.' });
+        setIsSubmitting(false);
+        return;
+      }
+
+      const productData = {
+        name: formState.name,
+        description: formState.description,
+        price: formState.price,
+        image: imageUrl, // Use the obtained URL
+      };
+
+      if (currentProduct) {
+        // Edit product
+        const { error } = await supabase
+          .from('products')
+          .update(productData)
+          .eq('id', currentProduct.id);
+
+        if (error) {
+          throw error;
+        }
         toast.success('Product updated successfully!');
-        setIsDialogOpen(false);
-        fetchProducts();
-      }
-    } else {
-      // Add new product
-      const { error } = await supabase
-        .from('products')
-        .insert([formState]);
-
-      if (error) {
-        toast.error('Failed to add product', { description: error.message });
       } else {
+        // Add new product
+        const { error } = await supabase
+          .from('products')
+          .insert([productData]);
+
+        if (error) {
+          throw error;
+        }
         toast.success('Product added successfully!');
-        setIsDialogOpen(false);
-        fetchProducts();
       }
+
+      setIsDialogOpen(false);
+      fetchProducts();
+    } catch (error: any) {
+      toast.error('Operation Failed', { description: error.message });
+    } finally {
+      setIsSubmitting(false);
+      setSelectedFile(null); // Clear selected file after submission
+      setImagePreviewUrl(null); // Clear preview
     }
-    setIsSubmitting(false);
   };
 
   const handleDeleteProduct = async (id: string) => {
@@ -101,7 +156,9 @@ const ProductsManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentProduct(null);
-    setFormState({ name: '', description: '', price: '', image: '' });
+    setFormState({ name: '', description: '', price: '' });
+    setSelectedFile(null); // Clear file
+    setImagePreviewUrl(null); // Clear preview
     setIsDialogOpen(true);
   };
 
@@ -111,8 +168,9 @@ const ProductsManagement: React.FC = () => {
       name: product.name,
       description: product.description,
       price: product.price,
-      image: product.image,
     });
+    setSelectedFile(null); // No new file selected initially for edit
+    setImagePreviewUrl(product.image); // Show existing image
     setIsDialogOpen(true);
   };
 
@@ -230,17 +288,24 @@ const ProductsManagement: React.FC = () => {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="image" className="text-right text-dairy-text">
-                Image URL
+                Image
               </Label>
-              <Input
-                id="image"
-                name="image"
-                value={formState.image}
-                onChange={handleInputChange}
-                className="col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                placeholder="/images/milk.jpg"
-                required
-              />
+              <div className="col-span-3 flex flex-col gap-2">
+                <Input
+                  id="image"
+                  name="image"
+                  type="file"
+                  onChange={handleFileChange}
+                  className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                  accept="image/*" // Restrict to image files
+                />
+                {imagePreviewUrl && (
+                  <img src={imagePreviewUrl} alt="Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
+                )}
+                {!selectedFile && currentProduct?.image && (
+                  <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
+                )}
+              </div>
             </div>
             <DialogFooter>
               <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
