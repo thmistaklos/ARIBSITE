@@ -13,7 +13,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Ensure this import is present
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'; // Added this import
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 interface SiteSetting {
   id: string;
@@ -175,7 +176,7 @@ const SettingsPage: React.FC = () => {
             <CardTitle className="text-dairy-darkBlue">General Settings</CardTitle>
           </CardHeader>
           <CardContent>
-            <Form {...form}> {/* Wrapped the form with Form component */}
+            <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                   <Label htmlFor="site_logo" className="md:text-right text-dairy-text">
