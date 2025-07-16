@@ -1,28 +1,31 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Droplet, Truck, FlaskConical, Store, Leaf } from 'lucide-react';
+import { useTranslation } from 'react-i18next'; // Re-import useTranslation
 
 const FactsSection: React.FC = () => {
+  const { t } = useTranslation(); // Re-initialize useTranslation
+
   const facts = [
     {
       icon: Droplet,
-      text: 'ARIB Dairy produces more than 100,000 liters of milk daily, directed straight for consumption, not counting other dairy products, and this amount is in Aïn Defla province alone.',
+      textKey: 'fact_milk_production',
     },
     {
       icon: Truck,
-      text: 'ARIB Dairy is one of the largest producers in central Algeria and covers many provinces.',
+      textKey: 'fact_largest_producer',
     },
     {
       icon: FlaskConical,
-      text: 'At ARIB Dairy, we conduct daily safety and quality tests to ensure trust.',
+      textKey: 'fact_quality_tests',
     },
     {
       icon: Store,
-      text: 'ARIB Dairy has more than 18 points of sale in Aïn Defla province alone.',
+      textKey: 'fact_points_of_sale',
     },
     {
       icon: Leaf,
-      text: 'The dairy’s products are 100% organic, with no food additives or artificial colors.',
+      textKey: 'fact_organic_products',
     },
   ];
 
@@ -59,7 +62,7 @@ const FactsSection: React.FC = () => {
               className="flex flex-col items-center text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20"
             >
               <fact.icon className="h-16 w-16 text-white mb-4" />
-              <p className="text-lg font-medium text-white">{fact.text}</p>
+              <p className="text-lg font-medium text-white">{t(fact.textKey)}</p> {/* Use translation key */}
             </motion.div>
           ))}
         </div>
