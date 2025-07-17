@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Menu } from 'lucide-react'; // Removed Milk icon
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher'; // Import LanguageSwitcher
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -15,9 +15,9 @@ const Header: React.FC = () => {
   const navItems = [
     { name: t('home'), path: '/' },
     { name: t('products'), path: '/products' },
-    { name: t('our_distributors'), path: '/distributors' }, // New nav item
-    { name: t('recipes'), path: '/recipes' }, // New nav item
-    { name: t('our_blog'), path: '/blog' }, // New nav item
+    { name: t('our_distributors'), path: '/distributors' },
+    { name: t('recipes'), path: '/recipes' },
+    { name: t('our_blog'), path: '/blog' },
     { name: t('about'), path: '/about' },
     { name: t('contact'), path: '/contact' },
   ];
@@ -45,9 +45,15 @@ const Header: React.FC = () => {
             <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-10 w-10 object-contain" />
           </motion.div>
           <span className="text-2xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
+          {/* New logo added here */}
+          <img
+            src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//ChatGPT_Image_Jul_17__2025__10_17_07_PM-removebg-preview.png"
+            alt="New Logo"
+            className="h-8 w-8 object-contain ml-2"
+          />
         </Link>
 
-        <div className="flex items-center space-x-4"> {/* Wrapper for nav and switcher */}
+        <div className="flex items-center space-x-4">
           {isMobile ? (
             <Sheet>
               <SheetTrigger asChild>
