@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Milk, Factory, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'; // Ensure Card components are imported
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
@@ -14,6 +15,12 @@ const AboutPage: React.FC = () => {
   const iconVariants = {
     hidden: { scale: 0, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 150, damping: 10, delay: 0.3 } },
+  };
+
+  const teamMemberVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    hover: { scale: 1.03, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)' },
   };
 
   return (
@@ -61,6 +68,46 @@ const AboutPage: React.FC = () => {
           <p className="text-lg leading-relaxed text-center">
             {t('committed_to_community_desc')}
           </p>
+        </motion.section>
+
+        {/* New Leadership Section */}
+        <motion.section variants={sectionVariants} className="mt-16 text-center">
+          <h2 className="text-4xl font-bold text-dairy-darkBlue mb-10">{t('our_leadership')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+            <motion.div variants={teamMemberVariants} whileHover="hover" className="w-full max-w-sm">
+              <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
+                <CardHeader className="p-0">
+                  <img
+                    src="/images/female-gm.png" 
+                    alt={t('gm_giplait_group')}
+                    className="w-full h-64 object-cover"
+                  />
+                </CardHeader>
+                <CardContent className="p-6 text-center flex-grow flex flex-col justify-center">
+                  <CardTitle className="text-2xl font-semibold text-dairy-darkBlue mb-2">
+                    {t('gm_giplait_group')}
+                  </CardTitle>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={teamMemberVariants} whileHover="hover" className="w-full max-w-sm">
+              <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
+                <CardHeader className="p-0">
+                  <img
+                    src="/images/male-gm.png" 
+                    alt={t('gm_arib_dairy')}
+                    className="w-full h-64 object-cover"
+                  />
+                </CardHeader>
+                <CardContent className="p-6 text-center flex-grow flex flex-col justify-center">
+                  <CardTitle className="text-2xl font-semibold text-dairy-darkBlue mb-2">
+                    {t('gm_arib_dairy')}
+                  </CardTitle>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </motion.section>
       </div>
     </motion.div>
