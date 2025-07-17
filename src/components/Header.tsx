@@ -54,7 +54,7 @@ const Header: React.FC = () => {
             <img
               src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//ChatGPT_Image_Jul_17__2025__10_17_07_PM-removebg-preview.png"
               alt="New Logo"
-              className="h-16 w-16 object-contain ml-2"
+              className="h-14 w-14 object-contain ml-2"
             />
           </motion.div>
         </Link>
