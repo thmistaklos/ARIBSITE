@@ -15,7 +15,7 @@ interface BlogPost {
 const ALL_BLOG_POSTS: BlogPost[] = [
   {
     id: '1',
-    title: 'The Health Benefits of Dairy',
+    title: 'The Amazing Benefits of Dairy', // Changed title here
     image: 'https://via.placeholder.com/400x300/ADD8E6/000000?text=Dairy+Health',
     shortDescription: 'Discover how dairy products contribute to a healthy lifestyle, from strong bones to improved immunity.',
     content: 'Dairy products are packed with essential nutrients like calcium, vitamin D, and protein, which are crucial for bone health. Regular consumption can also support muscle growth and overall well-being. Beyond calcium, milk, yogurt, and cheese offer a range of vitamins and minerals that play vital roles in various bodily functions, including nerve function and energy production. Incorporating dairy into your diet can be a delicious way to boost your nutrient intake.',
