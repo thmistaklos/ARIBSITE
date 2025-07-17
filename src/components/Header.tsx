@@ -42,7 +42,7 @@ const Header: React.FC = () => {
             animate={{ rotate: [0, -10, 10, -10, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
           >
-            <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-12 w-12 object-contain" />
+            <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-16 w-16 object-contain" />
           </motion.div>
           <span className="text-2xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
           {/* New logo with same size and animation */}
@@ -54,7 +54,7 @@ const Header: React.FC = () => {
             <img
               src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//ChatGPT_Image_Jul_17__2025__10_17_07_PM-removebg-preview.png"
               alt="New Logo"
-              className="h-12 w-12 object-contain ml-2"
+              className="h-16 w-16 object-contain ml-2"
             />
           </motion.div>
         </Link>
