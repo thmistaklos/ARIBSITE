@@ -78,7 +78,7 @@ const AboutPage: React.FC = () => {
               <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
                 <CardHeader className="p-0">
                   <img
-                    src="/images/female-gm.png" 
+                    src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//2025-07-17_221513.png" 
                     alt={t('gm_giplait_group')}
                     className="w-full h-64 object-cover"
                   />
@@ -95,7 +95,7 @@ const AboutPage: React.FC = () => {
               <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
                 <CardHeader className="p-0">
                   <img
-                    src="/images/male-gm.png" 
+                    src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//ceo.png" 
                     alt={t('gm_arib_dairy')}
                     className="w-full h-64 object-cover"
                   />
