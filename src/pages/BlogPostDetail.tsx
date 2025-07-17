@@ -1,60 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { supabase } from '@/lib/supabase';
+import { ALL_BLOG_POSTS } from '@/data/blogPosts'; // Import from new data file
 
 interface BlogPost {
   id: string;
   title: string;
-  image_url: string; // Changed to image_url to match Supabase schema
+  image: string;
   content: string;
-  author: string; // Added author
-  created_at: string; // Added created_at
+  shortDescription: string; // Added shortDescription for consistency with ALL_BLOG_POSTS
 }
 
 const BlogPostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      setLoading(true);
-      if (!id) {
-        setLoading(false);
-        return;
-      }
-      const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('id', id)
-        .eq('published', true) // Only show published posts on public detail page
-        .single();
-
-      if (error) {
-        toast.error('Failed to load blog post', { description: error.message });
-        setPost(null);
-      } else {
-        setPost(data || null);
-      }
-      setLoading(false);
-    };
-
-    fetchPost();
+    // Find the post from the hardcoded array
+    const foundPost = ALL_BLOG_POSTS.find(p => p.id === id);
+    setPost(foundPost || null);
   }, [id]);
-
-  if (loading) {
-    return (
-      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
-        <Loader2 className="h-10 w-10 animate-spin text-dairy-blue" />
-      </div>
-    );
-  }
 
   if (!post) {
     return (
@@ -85,7 +54,7 @@ const BlogPostDetail: React.FC = () => {
         </Link>
 
         <motion.img
-          src={post.image_url}
+          src={post.image}
           alt={post.title}
           className="w-full h-64 md:h-96 object-cover rounded-lg mb-8 shadow-md"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -101,15 +70,6 @@ const BlogPostDetail: React.FC = () => {
         >
           {post.title}
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="text-sm text-gray-600 mb-4"
-        >
-          By {post.author} on {new Date(post.created_at).toLocaleDateString()}
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

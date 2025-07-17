@@ -3,51 +3,21 @@ import { motion } from 'framer-motion';
 import BlogPostCard from '@/components/BlogPostCard';
 import AnimatedButton from '@/components/AnimatedButton';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/lib/supabase';
-import { Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { ALL_BLOG_POSTS } from '@/data/blogPosts'; // Import from new data file
 
 interface BlogPost {
   id: string;
   title: string;
-  image_url: string; // Changed to image_url to match Supabase schema
+  image: string;
   shortDescription: string;
   content: string;
-  published: boolean; // Added published status
 }
 
 const POSTS_PER_LOAD = 3;
 
 const BlogPage: React.FC = () => {
   const { t } = useTranslation();
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const [visiblePosts, setVisiblePosts] = useState(POSTS_PER_LOAD);
-
-  useEffect(() => {
-    const fetchBlogPosts = async () => {
-      setLoading(true);
-      // Fetch only published posts for the public blog
-      const { data, error } = await supabase.from('blog_posts').select('*').eq('published', true).order('created_at', { ascending: false });
-      if (error) {
-        toast.error('Failed to load blog posts', { description: error.message });
-      } else {
-        // Map Supabase data to BlogPost interface, extracting shortDescription from content
-        const mappedPosts = data.map(post => ({
-          id: post.id,
-          title: post.title,
-          image_url: post.image_url,
-          shortDescription: post.content ? post.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...' : '', // Strip HTML and truncate
-          content: post.content,
-          published: post.published,
-        }));
-        setBlogPosts(mappedPosts || []);
-      }
-      setLoading(false);
-    };
-
-    fetchBlogPosts();
-  }, []);
 
   const loadMorePosts = () => {
     setVisiblePosts(prev => prev + POSTS_PER_LOAD);
@@ -80,28 +50,19 @@ const BlogPage: React.FC = () => {
           {t('our_blog')}
         </motion.h1>
 
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
-          </div>
-        ) : blogPosts.length === 0 ? (
+        {ALL_BLOG_POSTS.length === 0 ? (
           <div className="text-center text-xl text-dairy-text">
             {t('no_blog_posts_available')}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-            {blogPosts.slice(0, visiblePosts).map((post) => (
-              <BlogPostCard key={post.id} post={{
-                id: post.id,
-                title: post.title,
-                image: post.image_url, // Pass image_url as image prop
-                shortDescription: post.shortDescription,
-              }} />
+            {ALL_BLOG_POSTS.slice(0, visiblePosts).map((post) => (
+              <BlogPostCard key={post.id} post={post} />
             ))}
           </div>
         )}
 
-        {visiblePosts < blogPosts.length && (
+        {visiblePosts < ALL_BLOG_POSTS.length && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
