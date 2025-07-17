@@ -42,7 +42,7 @@ const Header: React.FC = () => {
             animate={{ rotate: [0, -10, 10, -10, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
           >
-            <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-16 w-16 object-contain" />
+            <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-10 w-10 object-contain" />
           </motion.div>
           <span className="text-2xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
           {/* New logo with same size and animation */}
