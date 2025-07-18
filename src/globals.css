@@ -162,14 +162,14 @@
 
 .sweet-title {
   order: 2;
-  color: yellow; /* Changed to yellow */
+  color: #fff; /* Changed to white */
   font-weight: 900;
   text-transform: uppercase;
   font-size: clamp(3rem, 10vw, 6rem);
   line-height: 0.75em;
   text-align: center;
-  text-shadow: 0 0 15px yellow, 0 0 25px yellow; /* Applied glowing text shadow */
-  animation: glow 1.5s linear infinite; /* Applied glowing animation */
+  text-shadow: none; /* Removed text shadow */
+  animation: none; /* Removed animation */
   font-family: "Exo 2", sans-serif;
 }
 
@@ -181,8 +181,8 @@
 .sweet-title span:before {
   content: attr(data-text);
   position: absolute;
-  color: yellow; /* Ensure pseudo-element also glows */
-  text-shadow: 0 0 15px yellow, 0 0 25px yellow; /* Applied glowing text shadow */
+  color: #fff; /* Changed to white */
+  text-shadow: none; /* Removed text shadow */
   z-index: 1;
 }
 
@@ -194,12 +194,4 @@
   padding-left: 2.25rem;
 }
 
-/* New Keyframes for the glow effect */
-@keyframes glow {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
+/* Removed @keyframes glow as it's no longer used */
