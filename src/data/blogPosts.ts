@@ -38,7 +38,7 @@ export const ALL_BLOG_POSTS: BlogPost[] = [
   {
     id: '5',
     title: 'Seasonal Dairy Delights',
-    image: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg',
+    image: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(3).jpg',
     shortDescription: 'Discover unique dairy products and recipes that are perfect for each season of the year.',
     content: 'Embrace the changing seasons with our special dairy delights! In spring, enjoy light and fresh yogurt parfaits with seasonal berries. Summer calls for refreshing homemade ice creams and chilled milkshakes. As autumn arrives, warm up with creamy pumpkin spice lattes made with our rich milk. Winter is perfect for indulging in hearty cheese fondues and comforting hot chocolates. Each season brings new opportunities to enjoy the versatility of dairy.',
   },
