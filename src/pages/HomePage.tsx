@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/lib/supabase';
-import { Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+// import { supabase } from '@/lib/supabase'; // No longer needed for hero content
+// import { Loader2 } from 'lucide-react'; // No longer needed for hero content
+// import { toast } from 'sonner'; // No longer needed for hero content
 
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
@@ -11,45 +11,33 @@ import FactsSection from '@/components/FactsSection';
 import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
 
-interface HomePageContent {
-  homepage_hero_title: string;
-  homepage_hero_subtitle: string;
-}
+// Define the hero texts
+const heroTexts = [
+  { title: "From Our Farms to Your Table", subtitle: "Pure, Fresh, and Healthy." },
+  { title: "Experience Dairy the Way Nature Intended", subtitle: "Fresh, Pure, Local." },
+  { title: "Quality You Can Taste", subtitle: "Fresh Dairy Products Every Day." },
+  { title: "Wholesome Goodness", subtitle: "In Every Sip and Bite." },
+  { title: "Bringing You the Freshest Dairy", subtitle: "Straight from ARIB." },
+];
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
-  const [heroContent, setHeroContent] = useState<HomePageContent | null>(null);
-  const [loadingHero, setLoadingHero] = useState(true);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   useEffect(() => {
-    const fetchHeroContent = async () => {
-      setLoadingHero(true);
-      const { data, error } = await supabase
-        .from('site_content')
-        .select('content_data')
-        .eq('section_name', 'homepage_hero')
-        .single();
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % heroTexts.length);
+    }, 5000); // Change every 5 seconds
 
-      if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
-        toast.error('Failed to load homepage hero content', { description: error.message });
-      } else if (data) {
-        setHeroContent(data.content_data as HomePageContent);
-      } else {
-        // Fallback to default content if not found
-        setHeroContent({
-          homepage_hero_title: t('arib_dairy_brand'),
-          homepage_hero_subtitle: t('fresh_delicious_dairy'),
-        });
-      }
-      setLoadingHero(false);
-    };
+    return () => clearInterval(interval);
+  }, []);
 
-    fetchHeroContent();
-  }, [t]);
+  const currentHero = heroTexts[currentTextIndex];
 
-  const heroVariants = {
+  const textVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
   return (
@@ -59,26 +47,24 @@ const HomePage: React.FC = () => {
       {/* Hero Section */}
       <section className="relative z-10 flex items-center justify-center min-h-[calc(100vh-64px)] bg-dairy-blue text-white overflow-hidden">
         <div className="container mx-auto px-4 py-20 text-center relative z-10">
-          {loadingHero ? (
-            <div className="flex justify-center items-center h-48">
-              <Loader2 className="h-10 w-10 animate-spin text-white" />
-            </div>
-          ) : (
+          <AnimatePresence mode="wait">
             <motion.div
+              key={currentTextIndex} // Key is important for AnimatePresence to detect changes
               initial="hidden"
               animate="visible"
-              variants={heroVariants}
+              exit="exit"
+              variants={textVariants}
               className="title-wrapper"
             >
               <span className="top-title">{t('welcome_to')}</span>
               <h1 className="sweet-title">
-                <span data-text={heroContent?.homepage_hero_title || t('arib_dairy_brand')}>
-                  {heroContent?.homepage_hero_title || t('arib_dairy_brand')}
+                <span data-text={currentHero.title}>
+                  {currentHero.title}
                 </span>
               </h1>
-              <span className="bottom-title">{heroContent?.homepage_hero_subtitle || t('fresh_delicious_dairy')}</span>
+              <span className="bottom-title">{currentHero.subtitle}</span>
             </motion.div>
-          )}
+          </AnimatePresence>
         </div>
       </section>
 
