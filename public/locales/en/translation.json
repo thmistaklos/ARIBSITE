@@ -74,5 +74,8 @@
   "faq_question_5": "How do you ensure the freshness of your milk?",
   "faq_answer_5": "Freshness is paramount. Our milk is collected daily from local farms and transported to our processing facility within hours. We use advanced chilling and pasteurization techniques to lock in freshness and nutrients, ensuring it reaches you in optimal condition.",
   "faq_question_6": "Can I visit your farms or facilities?",
-  "faq_answer_6": "For health and safety reasons, public tours of our farms and processing facilities are not regularly offered. However, we occasionally host special events or virtual tours. Please follow our social media for updates!"
+  "faq_answer_6": "For health and safety reasons, public tours of our farms and processing facilities are not regularly offered. However, we occasionally host special events or virtual tours. Please follow our social media for updates!",
+  "not_found_heading": "Oops! That page can’t be found",
+  "not_found_description": "The page you are looking for might have been deleted or does not exist.",
+  "go_to_home": "Go To Home"
 }
