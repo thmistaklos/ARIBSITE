@@ -8,15 +8,19 @@ import { toast } from 'sonner';
 
 interface FaqItem {
   id: string;
-  question: string;
-  answer: string;
+  question_en: string;
+  answer_en: string;
+  question_ar: string;
+  answer_ar: string;
+  question_fr: string;
+  answer_fr: string;
   order_index: number;
 }
 
 interface AccordionSectionProps {}
 
 const AccordionSection: React.FC<AccordionSectionProps> = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation(); // Destructure i18n
   const [faqItems, setFaqItems] = useState<FaqItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +38,20 @@ const AccordionSection: React.FC<AccordionSectionProps> = () => {
 
     fetchFaqItems();
   }, []);
+
+  const getQuestion = (faq: FaqItem) => {
+    const lang = i18n.language;
+    if (lang === 'ar') return faq.question_ar || faq.question_en;
+    if (lang === 'fr') return faq.question_fr || faq.question_en;
+    return faq.question_en;
+  };
+
+  const getAnswer = (faq: FaqItem) => {
+    const lang = i18n.language;
+    if (lang === 'ar') return faq.answer_ar || faq.answer_en;
+    if (lang === 'fr') return faq.answer_fr || faq.answer_en;
+    return faq.answer_en;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -84,8 +102,8 @@ const AccordionSection: React.FC<AccordionSectionProps> = () => {
             faqItems.map((item, index) => (
               <div key={item.id} className="w-full px-4 lg:w-1/2">
                 <AccordionItem
-                  header={item.question}
-                  text={item.answer}
+                  header={getQuestion(item)}
+                  text={getAnswer(item)}
                 />
               </div>
             ))

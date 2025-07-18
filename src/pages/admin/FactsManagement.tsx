@@ -19,13 +19,17 @@ import { LucideIcons } from '@/utils/lucide-icons'; // Import the icon map
 interface FactItem {
   id: string;
   icon_name: string;
-  text_content: string;
+  text_content_en: string;
+  text_content_ar: string;
+  text_content_fr: string;
   order_index: number;
 }
 
 const factSchema = z.object({
   icon_name: z.string().min(1, { message: 'Icon name cannot be empty.' }),
-  text_content: z.string().min(1, { message: 'Text content cannot be empty.' }),
+  text_content_en: z.string().min(1, { message: 'English content cannot be empty.' }),
+  text_content_ar: z.string().min(1, { message: 'Arabic content cannot be empty.' }),
+  text_content_fr: z.string().min(1, { message: 'French content cannot be empty.' }),
   order_index: z.number().int().min(0, { message: 'Order must be a non-negative integer.' }).optional(),
 });
 
@@ -40,7 +44,9 @@ const FactsManagement: React.FC = () => {
     resolver: zodResolver(factSchema),
     defaultValues: {
       icon_name: '',
-      text_content: '',
+      text_content_en: '',
+      text_content_ar: '',
+      text_content_fr: '',
       order_index: 0,
     },
   });
@@ -65,7 +71,9 @@ const FactsManagement: React.FC = () => {
     try {
       const factData = {
         icon_name: values.icon_name,
-        text_content: values.text_content,
+        text_content_en: values.text_content_en,
+        text_content_ar: values.text_content_ar,
+        text_content_fr: values.text_content_fr,
         order_index: values.order_index || 0,
       };
 
@@ -113,7 +121,13 @@ const FactsManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentFact(null);
-    form.reset({ icon_name: '', text_content: '', order_index: factItems.length > 0 ? Math.max(...factItems.map(f => f.order_index)) + 1 : 0 });
+    form.reset({
+      icon_name: '',
+      text_content_en: '',
+      text_content_ar: '',
+      text_content_fr: '',
+      order_index: factItems.length > 0 ? Math.max(...factItems.map(f => f.order_index)) + 1 : 0
+    });
     setIsDialogOpen(true);
   };
 
@@ -149,7 +163,7 @@ const FactsManagement: React.FC = () => {
                 <TableRow className="bg-dairy-blue/10">
                   <TableHead className="w-[80px] text-dairy-darkBlue">Order</TableHead>
                   <TableHead className="w-[100px] text-dairy-darkBlue">Icon</TableHead>
-                  <TableHead className="text-dairy-darkBlue">Text Content</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Text Content (EN)</TableHead>
                   <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -173,7 +187,7 @@ const FactsManagement: React.FC = () => {
                             <span className="text-red-500 text-xs">Invalid Icon</span>
                           )}
                         </TableCell>
-                        <TableCell className="text-dairy-text line-clamp-2">{fact.text_content}</TableCell>
+                        <TableCell className="text-dairy-text line-clamp-2">{fact.text_content_en}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end space-x-2">
                             <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(fact)} soundOnClick="/sounds/click.mp3">
@@ -219,10 +233,36 @@ const FactsManagement: React.FC = () => {
               />
               <FormField
                 control={form.control}
-                name="text_content"
+                name="text_content_en"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Text Content</FormLabel>
+                    <FormLabel className="text-right text-dairy-text">Text Content (English)</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="text_content_ar"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-start gap-4">
+                    <FormLabel className="text-right text-dairy-text">Text Content (Arabic)</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="text_content_fr"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-start gap-4">
+                    <FormLabel className="text-right text-dairy-text">Text Content (French)</FormLabel>
                     <FormControl className="col-span-3">
                       <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>

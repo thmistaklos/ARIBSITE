@@ -9,12 +9,14 @@ import { LucideIcons } from '@/utils/lucide-icons'; // Import the icon map
 interface FactItem {
   id: string;
   icon_name: string;
-  text_content: string;
+  text_content_en: string;
+  text_content_ar: string;
+  text_content_fr: string;
   order_index: number;
 }
 
 const FactsSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation(); // Destructure i18n
   const [facts, setFacts] = useState<FactItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +34,13 @@ const FactsSection: React.FC = () => {
 
     fetchFacts();
   }, []);
+
+  const getFactText = (fact: FactItem) => {
+    const lang = i18n.language;
+    if (lang === 'ar') return fact.text_content_ar || fact.text_content_en;
+    if (lang === 'fr') return fact.text_content_fr || fact.text_content_en;
+    return fact.text_content_en;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -74,11 +83,11 @@ const FactsSection: React.FC = () => {
       className="container mx-auto relative z-10"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
-        {facts.map((fact, index) => {
-          const IconComponent = LucideIcons[fact.icon_name]; // Get the icon component dynamically
+        {facts.map((fact) => {
+          const IconComponent = LucideIcons[fact.icon_name];
           return (
             <motion.div
-              key={fact.id} // Use fact.id as key
+              key={fact.id}
               variants={itemVariants}
               className="flex flex-col items-center text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20"
             >
@@ -86,11 +95,10 @@ const FactsSection: React.FC = () => {
                 <IconComponent className="h-16 w-16 text-white mb-4" />
               ) : (
                 <div className="h-16 w-16 text-white mb-4 flex items-center justify-center text-sm">
-                  {/* Fallback if icon name is invalid */}
                   <span className="text-red-300">?</span>
                 </div>
               )}
-              <p className="text-lg font-medium text-white">{fact.text_content}</p>
+              <p className="text-lg font-medium text-white">{getFactText(fact)}</p>
             </motion.div>
           );
         })}

@@ -13,18 +13,26 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Import Form components
 
 interface FaqItem {
   id: string;
-  question: string;
-  answer: string;
+  question_en: string;
+  answer_en: string;
+  question_ar: string;
+  answer_ar: string;
+  question_fr: string;
+  answer_fr: string;
   order_index: number; // For custom sorting
 }
 
 const faqSchema = z.object({
-  question: z.string().min(5, { message: 'Question must be at least 5 characters.' }),
-  answer: z.string().min(10, { message: 'Answer must be at least 10 characters.' }),
+  question_en: z.string().min(5, { message: 'English question must be at least 5 characters.' }),
+  answer_en: z.string().min(10, { message: 'English answer must be at least 10 characters.' }),
+  question_ar: z.string().min(5, { message: 'Arabic question must be at least 5 characters.' }),
+  answer_ar: z.string().min(10, { message: 'Arabic answer must be at least 10 characters.' }),
+  question_fr: z.string().min(5, { message: 'French question must be at least 5 characters.' }),
+  answer_fr: z.string().min(10, { message: 'French answer must be at least 10 characters.' }),
   order_index: z.number().int().min(0, { message: 'Order must be a non-negative integer.' }).optional(),
 });
 
@@ -38,8 +46,12 @@ const FaqManagement: React.FC = () => {
   const form = useForm<z.infer<typeof faqSchema>>({
     resolver: zodResolver(faqSchema),
     defaultValues: {
-      question: '',
-      answer: '',
+      question_en: '',
+      answer_en: '',
+      question_ar: '',
+      answer_ar: '',
+      question_fr: '',
+      answer_fr: '',
       order_index: 0,
     },
   });
@@ -63,8 +75,12 @@ const FaqManagement: React.FC = () => {
     setIsSubmitting(true);
     try {
       const faqData = {
-        question: values.question,
-        answer: values.answer,
+        question_en: values.question_en,
+        answer_en: values.answer_en,
+        question_ar: values.question_ar,
+        answer_ar: values.answer_ar,
+        question_fr: values.question_fr,
+        answer_fr: values.answer_fr,
         order_index: values.order_index || 0,
       };
 
@@ -112,7 +128,15 @@ const FaqManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentFaq(null);
-    form.reset({ question: '', answer: '', order_index: faqItems.length > 0 ? Math.max(...faqItems.map(f => f.order_index)) + 1 : 0 });
+    form.reset({
+      question_en: '',
+      answer_en: '',
+      question_ar: '',
+      answer_ar: '',
+      question_fr: '',
+      answer_fr: '',
+      order_index: faqItems.length > 0 ? Math.max(...faqItems.map(f => f.order_index)) + 1 : 0
+    });
     setIsDialogOpen(true);
   };
 
@@ -147,8 +171,8 @@ const FaqManagement: React.FC = () => {
               <TableHeader>
                 <TableRow className="bg-dairy-blue/10">
                   <TableHead className="w-[50px] text-dairy-darkBlue">Order</TableHead>
-                  <TableHead className="text-dairy-darkBlue">Question</TableHead>
-                  <TableHead className="text-dairy-darkBlue">Answer</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Question (EN)</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Answer (EN)</TableHead>
                   <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -163,8 +187,8 @@ const FaqManagement: React.FC = () => {
                   faqItems.map((faq) => (
                     <TableRow key={faq.id}>
                       <TableCell className="font-medium text-dairy-darkBlue">{faq.order_index}</TableCell>
-                      <TableCell className="font-medium text-dairy-darkBlue">{faq.question}</TableCell>
-                      <TableCell className="text-dairy-text line-clamp-2">{faq.answer}</TableCell>
+                      <TableCell className="font-medium text-dairy-darkBlue">{faq.question_en}</TableCell>
+                      <TableCell className="text-dairy-text line-clamp-2">{faq.answer_en}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
                           <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(faq)} soundOnClick="/sounds/click.mp3">
@@ -196,10 +220,10 @@ const FaqManagement: React.FC = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
               <FormField
                 control={form.control}
-                name="question"
+                name="question_en"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Question</FormLabel>
+                    <FormLabel className="text-right text-dairy-text">Question (English)</FormLabel>
                     <FormControl className="col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
@@ -209,10 +233,62 @@ const FaqManagement: React.FC = () => {
               />
               <FormField
                 control={form.control}
-                name="answer"
+                name="answer_en"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Answer</FormLabel>
+                    <FormLabel className="text-right text-dairy-text">Answer (English)</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Textarea {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="question_ar"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Question (Arabic)</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="answer_ar"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-start gap-4">
+                    <FormLabel className="text-right text-dairy-text">Answer (Arabic)</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Textarea {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="question_fr"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Question (French)</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="answer_fr"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-start gap-4">
+                    <FormLabel className="text-right text-dairy-text">Answer (French)</FormLabel>
                     <FormControl className="col-span-3">
                       <Textarea {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
