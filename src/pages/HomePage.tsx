@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-// import { supabase } from '@/lib/supabase'; // No longer needed for hero content
-// import { Loader2 } from 'lucide-react'; // No longer needed for hero content
-// import { toast } from 'sonner'; // No longer needed for hero content
 
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
@@ -44,9 +41,9 @@ const HomePage: React.FC = () => {
     <div className="relative min-h-screen bg-dairy-cream text-dairy-text overflow-hidden">
       <ParticleBackground />
 
-      {/* Hero Section */}
-      <section className="relative z-10 flex items-center justify-center min-h-[calc(100vh-64px)] bg-dairy-blue text-white overflow-hidden">
-        <div className="container mx-auto px-4 py-20 text-center relative z-10">
+      {/* New Hero Section */}
+      <section className="relative z-10 flex items-center justify-center min-h-[calc(100vh-64px)] bg-dairy-blue text-white overflow-hidden px-4 py-20">
+        <div className="container mx-auto text-center relative z-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentTextIndex} // Key is important for AnimatePresence to detect changes
@@ -54,15 +51,14 @@ const HomePage: React.FC = () => {
               animate="visible"
               exit="exit"
               variants={textVariants}
-              className="title-wrapper"
+              className="space-y-4"
             >
-              <span className="top-title">{t('welcome_to')}</span>
-              <h1 className="sweet-title">
-                <span data-text={currentHero.title}>
-                  {currentHero.title}
-                </span>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
+                {currentHero.title}
               </h1>
-              <span className="bottom-title">{currentHero.subtitle}</span>
+              <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
+                {currentHero.subtitle}
+              </p>
             </motion.div>
           </AnimatePresence>
         </div>
