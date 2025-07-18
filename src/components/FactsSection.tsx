@@ -36,7 +36,7 @@ const FactsSection: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="container mx-auto relative z-10" /* Removed w-full py-20 px-4 bg-cover bg-center bg-no-repeat relative and style prop */
+      className="container mx-auto relative z-10"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
         {facts.map((fact, index) => (

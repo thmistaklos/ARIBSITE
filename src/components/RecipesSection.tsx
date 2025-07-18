@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import RecipeCard from '@/components/RecipeCard';
 import AnimatedButton from '@/components/AnimatedButton';
-import { cn } from '@/lib/utils'; // Import cn utility
 
 interface Recipe {
   id: string;
@@ -17,11 +16,9 @@ interface Recipe {
   preparation_steps: string[];
 }
 
-interface RecipesSectionProps {
-  className?: string; // Add className prop
-}
+interface RecipesSectionProps {}
 
-const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
+const RecipesSection: React.FC<RecipesSectionProps> = () => {
   const { t } = useTranslation();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +50,7 @@ const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
 
   if (loading) {
     return (
-      <div className={cn("flex justify-center items-center h-64", className)}>
+      <div className="flex justify-center items-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
       </div>
     );
@@ -61,7 +58,7 @@ const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
 
   if (recipes.length === 0) {
     return (
-      <div className={cn("text-center text-xl text-dairy-text mt-8", className)}>
+      <div className="text-center text-xl text-dairy-text mt-8">
         {t('no_recipes_available')}
       </div>
     );
@@ -72,7 +69,7 @@ const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className={cn("w-full py-8 px-4", className)} /* Changed py-12 to py-8 */
+      className="w-full py-8 px-4"
     >
       <div className="container mx-auto">
         <motion.h2
@@ -90,7 +87,7 @@ const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
               id: recipe.id,
               title: recipe.title,
               image: recipe.image_url,
-              shortDescription: recipe.preparation_steps[0] || '', // Use first step as short description
+              shortDescription: recipe.preparation_steps[0] || '',
               ingredients: recipe.ingredients,
               preparation: recipe.preparation_steps,
             }} />

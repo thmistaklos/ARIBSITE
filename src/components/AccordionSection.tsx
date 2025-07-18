@@ -3,15 +3,13 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-interface AccordionSectionProps {
-  className?: string; // Add className prop
-}
+interface AccordionSectionProps {}
 
-const AccordionSection: React.FC<AccordionSectionProps> = ({ className }) => {
+const AccordionSection: React.FC<AccordionSectionProps> = () => {
   const { t } = useTranslation();
 
   return (
-    <section className={cn("relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px]", className)}> {/* Changed pb-12 pt-20 to pb-8 pt-10 */}
+    <section className="relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px]">
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
@@ -111,16 +109,16 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ header, text }) => {
   return (
     <div className={cn(
       "mb-8 w-full rounded-lg border border-dairy-blue/20 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)]",
-      active ? "bg-dairy-darkBlue" : "bg-dairy-blue" // Background changes based on active state
+      active ? "bg-dairy-darkBlue" : "bg-dairy-blue"
     )}>
       <button
         className="flex w-full items-center justify-between p-4 sm:p-8 lg:px-6 xl:px-8 text-left"
         onClick={handleToggle}
       >
-        <h4 className="mt-1 text-lg font-semibold text-dairy-cream"> {/* Text color is always cream */}
+        <h4 className="mt-1 text-lg font-semibold text-dairy-cream">
           {header}
         </h4>
-        <div className="flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-dairy-cream/20 text-dairy-cream"> {/* Icon background and color */}
+        <div className="flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-dairy-cream/20 text-dairy-cream">
           <svg
             className={cn(
               "fill-dairy-cream stroke-dairy-cream duration-200 ease-in-out",
@@ -146,7 +144,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ header, text }) => {
           active ? "block" : "hidden"
         )}
       >
-        <p className="py-3 text-base leading-relaxed text-dairy-cream"> {/* Text color is always cream */}
+        <p className="py-3 text-base leading-relaxed text-dairy-cream">
           {text}
         </p>
       </div>
