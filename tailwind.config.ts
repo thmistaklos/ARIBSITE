@@ -20,7 +20,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
-        cairo: ["Cairo", "sans-serif"], // Added Cairo font family
+        cairo: ["Cairo", "sans-serif"],
+        exo: ["Exo 2", "sans-serif"], // Added Exo 2 font family
       },
       colors: {
         border: "hsl(var(--border))",
