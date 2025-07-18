@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
 import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
-import AnimatedButton from '@/components/AnimatedButton'; // Import AnimatedButton
+import AnimatedButton from '@/components/AnimatedButton';
 
 // Define the hero texts
 const heroTexts = [
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
 
       {/* New Hero Section */}
       <section
-        className="relative z-10 flex items-center justify-center min-h-[calc(100vh-64px)] bg-cover bg-center bg-no-repeat text-white overflow-hidden px-4 py-20"
+        className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-64px)] bg-cover bg-center bg-no-repeat text-white overflow-hidden px-4 py-20"
         style={{ backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg')` }}
       >
         {/* Overlay for better text readability */}
@@ -58,30 +58,31 @@ const HomePage: React.FC = () => {
               animate="visible"
               exit="exit"
               variants={textVariants}
-              className="space-y-4"
+              className="space-y-4 mb-8" // Added mb-8 for spacing between text and button
             >
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
                 {currentHero.title}
               </h1>
-              <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto mb-8">
+              <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
                 {currentHero.subtitle}
               </p>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-              >
-                <Link to="/products">
-                  <AnimatedButton
-                    className="bg-dairy-blue text-white hover:bg-dairy-darkBlue px-8 py-3 text-lg"
-                    soundOnClick="/sounds/click.mp3"
-                  >
-                    {t('explore_products')}
-                  </AnimatedButton>
-                </Link>
-              </motion.div>
             </motion.div>
           </AnimatePresence>
+          {/* Button moved outside AnimatePresence */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }} // Adjusted delay
+          >
+            <Link to="/products">
+              <AnimatedButton
+                className="bg-dairy-blue text-white hover:bg-dairy-darkBlue px-8 py-3 text-lg"
+                soundOnClick="/sounds/click.mp3"
+              >
+                {t('explore_products')}
+              </AnimatedButton>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
