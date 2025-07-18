@@ -7,7 +7,8 @@ import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
 import ParticleBackground from '@/components/ParticleBackground';
-import AccordionSection from '@/components/AccordionSection'; // Import the new component
+import AccordionSection from '@/components/AccordionSection';
+import FloatingStats from '@/components/FloatingStats'; // Import the new component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const HomePage: React.FC = () => {
       className="min-h-[calc(100vh-160px)] flex flex-col items-center bg-dairy-cream text-dairy-text py-12 px-4 relative overflow-hidden"
     >
       <ParticleBackground />
+      <FloatingStats /> {/* Add the FloatingStats component here */}
 
       <section className="text-center max-w-4xl mx-auto mb-12 relative z-10">
         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold mb-6 text-dairy-darkBlue leading-tight">
