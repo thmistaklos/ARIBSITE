@@ -72,7 +72,7 @@ const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className={cn("w-full py-12 px-4", className)} /* Apply className here */
+      className={cn("w-full py-8 px-4", className)} /* Changed py-12 to py-8 */
     >
       <div className="container mx-auto">
         <motion.h2

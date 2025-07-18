@@ -11,7 +11,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({ className }) => {
   const { t } = useTranslation();
 
   return (
-    <section className={cn("relative z-20 overflow-hidden pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]", className)}> {/* Apply className here */}
+    <section className={cn("relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px]", className)}> {/* Changed pb-12 pt-20 to pb-8 pt-10 */}
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">

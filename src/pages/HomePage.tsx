@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Product Gallery Section with section-bubble2 */}
-      <section className="w-full relative z-10 py-12 section-bubble section-bubble2">
+      <section className="w-full relative z-10 py-8 section-bubble section-bubble2"> {/* Changed py-12 to py-8 */}
         <ProductGallery />
       </section>
 
@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
 
       {/* Facts Section with section-bubble4 */}
       <section
-        className="w-full relative z-10 py-20 px-4 bg-cover bg-center bg-no-repeat section-bubble section-bubble4"
+        className="w-full relative z-10 py-10 px-4 bg-cover bg-center bg-no-repeat section-bubble section-bubble4" {/* Changed py-20 to py-10 */}
         style={{
           backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg')`
         }}
