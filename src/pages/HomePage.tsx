@@ -7,7 +7,7 @@ import FactsSection from '@/components/FactsSection';
 import ParticleBackground from '@/components/ParticleBackground';
 import AccordionSection from '@/components/AccordionSection';
 import FloatingStats from '@/components/FloatingStats';
-import HeroSlider from '@/components/HeroSlider'; // Import the new HeroSlider component
+import BeerSlider from '@/components/BeerSlider'; // Import the new BeerSlider component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -32,8 +32,10 @@ const HomePage: React.FC = () => {
       <ParticleBackground />
       <FloatingStats />
 
-      {/* Hero Slider Section */}
-      <HeroSlider />
+      {/* Beer Slider Section */}
+      <section className="w-full relative z-10">
+        <BeerSlider start={30} /> {/* You can adjust the start value here */}
+      </section>
 
       {/* Product Gallery Section */}
       <section className="w-full relative z-10 py-12">
