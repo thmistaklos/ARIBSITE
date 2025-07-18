@@ -7,6 +7,7 @@ import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
 import ParticleBackground from '@/components/ParticleBackground';
+import ShapeDivider from '@/components/ShapeDivider'; // Import ShapeDivider
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -31,11 +32,12 @@ const HomePage: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-[calc(100vh-160px)] flex flex-col items-center bg-dairy-cream text-dairy-text py-12 px-4 relative overflow-hidden"
+      className="min-h-[calc(100vh-160px)] flex flex-col relative overflow-hidden" // Removed bg-dairy-cream here
     >
       <ParticleBackground />
 
-      <section className="text-center max-w-4xl mx-auto mb-12 relative z-10">
+      {/* Hero Section */}
+      <section className="text-center max-w-4xl mx-auto mb-12 relative z-10 py-12 px-4 bg-dairy-cream w-full"> {/* Added bg-dairy-cream and padding */}
         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold mb-6 text-dairy-darkBlue leading-tight">
           {t('freshness_in_every_drop')}
         </motion.h1>
@@ -52,16 +54,24 @@ const HomePage: React.FC = () => {
               {t('explore_products')}
             </AnimatedButton>
           </Link>
-        </motion.div>
-      </section>
+        </section>
+
+      {/* Shape Divider between Hero and Product Gallery */}
+      <ShapeDivider fillColor="hsl(0, 0%, 100%)" className="relative z-10 -mt-1" /> {/* White for ProductGallery */}
 
       {/* Product Gallery Section */}
-      <section className="w-full relative z-10">
+      <section className="w-full relative z-10 bg-white py-12 px-4"> {/* Added bg-white and padding */}
         <ProductGallery />
       </section>
 
+      {/* Shape Divider between Product Gallery and Recipes Section */}
+      <ShapeDivider fillColor="hsl(40, 100%, 95%)" className="relative z-10 -mt-1" /> {/* Dairy Cream for RecipesSection */}
+
       {/* Recipes Section */}
-      <RecipesSection />
+      <RecipesSection /> {/* RecipesSection already has bg-dairy-cream */}
+
+      {/* Shape Divider between Recipes Section and Facts Section */}
+      <ShapeDivider fillColor="hsl(200, 80%, 30%)" className="relative z-10 -mt-1" /> {/* Dairy Dark Blue for FactsSection */}
 
       {/* Facts Section */}
       <FactsSection />
