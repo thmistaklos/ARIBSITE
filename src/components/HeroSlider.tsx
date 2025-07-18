@@ -13,56 +13,41 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg',
-    altText: 'Fresh milk production',
-  },
-  {
-    id: 2,
-    imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(1).jpg',
-    altText: 'Healthy dairy products',
-  },
-  {
-    id: 3,
-    imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(2).jpg',
-    altText: 'Sustainable farming practices',
-  },
-  {
-    id: 4,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg',
     altText: 'Dairy farm landscape',
   },
   {
-    id: 5,
+    id: 2,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(8).jpg',
     altText: 'Milk pouring',
   },
   {
-    id: 6,
+    id: 3,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(7).jpg',
     altText: 'Cheese production',
   },
   {
-    id: 7,
+    id: 4,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(6).jpg',
     altText: 'Yogurt and fruits',
   },
   {
-    id: 8,
+    id: 5,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(5).jpg',
     altText: 'Dairy products display',
   },
   {
-    id: 9,
+    id: 6,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(4).jpg',
     altText: 'Fresh butter',
   },
   {
-    id: 10,
+    id: 7,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(3).jpg',
     altText: 'Glass of milk',
   },
   {
-    id: 11,
+    id: 8,
     imageUrl: 'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(2).jpg',
     altText: 'Dairy cow in field',
   },
