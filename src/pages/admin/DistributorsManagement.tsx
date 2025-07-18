@@ -350,7 +350,12 @@ const DistributorsManagement: React.FC = () => {
                         className="rounded-md"
                       ></iframe>
                     ) : (
-                      <img src={form.watch('logo_url') || ''} alt="Preview" className="w-24 h-24 object-contain rounded-md" />
+                      // Check if it's a common image extension
+                      /\.(jpeg|jpg|gif|png|svg|webp)$/i.test(form.watch('logo_url') || '') ? (
+                        <img src={form.watch('logo_url') || ''} alt="Preview" className="w-24 h-24 object-contain rounded-md" />
+                      ) : (
+                        <p className="text-red-500 text-sm">Invalid URL format. Please use a direct image URL or a Google Maps embed URL.</p>
+                      )
                     )}
                   </div>
                 </div>
