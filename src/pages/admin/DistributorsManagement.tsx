@@ -176,68 +176,70 @@ const DistributorsManagement: React.FC = () => {
         </div>
       ) : (
         <div className="rounded-md border border-dairy-blue/20 bg-white shadow-md overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-dairy-blue/10">
-                <TableHead className="w-[80px] text-dairy-darkBlue">Logo/Map</TableHead>
-                <TableHead className="text-dairy-darkBlue">Name</TableHead>
-                <TableHead className="text-dairy-darkBlue">Location</TableHead>
-                <TableHead className="text-dairy-darkBlue">Contact</TableHead>
-                <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredDistributors.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="h-24 text-center text-dairy-text">
-                    No distributors found.
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Added for horizontal scrolling */}
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-dairy-blue/10">
+                  <TableHead className="w-[80px] text-dairy-darkBlue">Logo/Map</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Name</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Location</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Contact</TableHead>
+                  <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
-              ) : (
-                filteredDistributors.map((distributor) => (
-                  <TableRow key={distributor.id}>
-                    <TableCell>
-                      {distributor.logo_url ? (
-                        distributor.logo_url.startsWith('https://www.google.com/maps/embed?') ? (
-                          <iframe
-                            src={distributor.logo_url}
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen={true}
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            title={`${distributor.name} Location`}
-                            className="w-12 h-12 object-cover rounded-md"
-                          ></iframe>
-                        ) : (
-                          <img src={distributor.logo_url} alt={distributor.name} className="w-12 h-12 object-contain rounded-md" />
-                        )
-                      ) : (
-                        <div className="w-12 h-12 flex items-center justify-center text-dairy-text/50 text-xs">N/A</div>
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium text-dairy-darkBlue">{distributor.name}</TableCell>
-                    <TableCell className="text-dairy-text">{distributor.location}</TableCell>
-                    <TableCell className="text-dairy-text">
-                      <p>{distributor.email}</p>
-                      <p>{distributor.phone}</p>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end space-x-2">
-                        <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(distributor)} soundOnClick="/sounds/click.mp3">
-                          <Edit className="h-4 w-4" />
-                        </AnimatedButton>
-                        <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteDistributor(distributor.id)} soundOnClick="/sounds/click.mp3">
-                          <Trash2 className="h-4 w-4" />
-                        </AnimatedButton>
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {filteredDistributors.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center text-dairy-text">
+                      No distributors found.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  filteredDistributors.map((distributor) => (
+                    <TableRow key={distributor.id}>
+                      <TableCell>
+                        {distributor.logo_url ? (
+                          distributor.logo_url.startsWith('https://www.google.com/maps/embed?') ? (
+                            <iframe
+                              src={distributor.logo_url}
+                              width="100%"
+                              height="100%"
+                              style={{ border: 0 }}
+                              allowFullScreen={true}
+                              loading="lazy"
+                              referrerPolicy="no-referrer-when-downgrade"
+                              title={`${distributor.name} Location`}
+                              className="w-12 h-12 object-cover rounded-md"
+                            ></iframe>
+                          ) : (
+                            <img src={distributor.logo_url} alt={distributor.name} className="w-12 h-12 object-contain rounded-md" />
+                          )
+                        ) : (
+                          <div className="w-12 h-12 flex items-center justify-center text-dairy-text/50 text-xs">N/A</div>
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium text-dairy-darkBlue">{distributor.name}</TableCell>
+                      <TableCell className="text-dairy-text">{distributor.location}</TableCell>
+                      <TableCell className="text-dairy-text">
+                        <p>{distributor.email}</p>
+                        <p>{distributor.phone}</p>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end space-x-2">
+                          <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(distributor)} soundOnClick="/sounds/click.mp3">
+                            <Edit className="h-4 w-4" />
+                          </AnimatedButton>
+                          <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteDistributor(distributor.id)} soundOnClick="/sounds/click.mp3">
+                            <Trash2 className="h-4 w-4" />
+                          </AnimatedButton>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       )}
 

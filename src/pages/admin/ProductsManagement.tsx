@@ -189,47 +189,49 @@ const ProductsManagement: React.FC = () => {
         </div>
       ) : (
         <div className="rounded-md border border-dairy-blue/20 bg-white shadow-md overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-dairy-blue/10">
-                <TableHead className="w-[100px] text-dairy-darkBlue">Image</TableHead>
-                <TableHead className="text-dairy-darkBlue">Name</TableHead>
-                <TableHead className="text-dairy-darkBlue">Description</TableHead>
-                <TableHead className="text-dairy-darkBlue">Price</TableHead>
-                <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {products.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="h-24 text-center text-dairy-text">
-                    No products found.
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Added for horizontal scrolling */}
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-dairy-blue/10">
+                  <TableHead className="w-[100px] text-dairy-darkBlue">Image</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Name</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Description</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Price</TableHead>
+                  <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
-              ) : (
-                products.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell>
-                      <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-md" /> {/* Changed from 'product.image' to 'product.image_url' */}
-                    </TableCell>
-                    <TableCell className="font-medium text-dairy-darkBlue">{product.name}</TableCell>
-                    <TableCell className="text-dairy-text">{product.description}</TableCell>
-                    <TableCell className="text-dairy-blue font-semibold">{product.price} DA</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end space-x-2">
-                        <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(product)} soundOnClick="/sounds/click.mp3">
-                          <Edit className="h-4 w-4" />
-                        </AnimatedButton>
-                        <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteProduct(product.id)} soundOnClick="/sounds/click.mp3">
-                          <Trash2 className="h-4 w-4" />
-                        </AnimatedButton>
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {products.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center text-dairy-text">
+                      No products found.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  products.map((product) => (
+                    <TableRow key={product.id}>
+                      <TableCell>
+                        <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-md" /> {/* Changed from 'product.image' to 'product.image_url' */}
+                      </TableCell>
+                      <TableCell className="font-medium text-dairy-darkBlue">{product.name}</TableCell>
+                      <TableCell className="text-dairy-text">{product.description}</TableCell>
+                      <TableCell className="text-dairy-blue font-semibold">{product.price} DA</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end space-x-2">
+                          <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(product)} soundOnClick="/sounds/click.mp3">
+                            <Edit className="h-4 w-4" />
+                          </AnimatedButton>
+                          <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteProduct(product.id)} soundOnClick="/sounds/click.mp3">
+                            <Trash2 className="h-4 w-4" />
+                          </AnimatedButton>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       )}
 

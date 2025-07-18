@@ -207,50 +207,52 @@ const RecipesManagement: React.FC = () => {
         </div>
       ) : (
         <div className="rounded-md border border-dairy-blue/20 bg-white shadow-md overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-dairy-blue/10">
-                <TableHead className="w-[80px] text-dairy-darkBlue">Image</TableHead>
-                <TableHead className="text-dairy-darkBlue">Title</TableHead>
-                <TableHead className="text-dairy-darkBlue">Ingredients</TableHead>
-                <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {recipes.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="h-24 text-center text-dairy-text">
-                    No recipes found.
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Added for horizontal scrolling */}
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-dairy-blue/10">
+                  <TableHead className="w-[80px] text-dairy-darkBlue">Image</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Title</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Ingredients</TableHead>
+                  <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
-              ) : (
-                recipes.map((recipe) => (
-                  <TableRow key={recipe.id}>
-                    <TableCell>
-                      {recipe.image_url && (
-                        <img src={recipe.image_url} alt={recipe.title} className="w-12 h-12 object-cover rounded-md" />
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium text-dairy-darkBlue">{recipe.title}</TableCell>
-                    <TableCell className="text-dairy-text line-clamp-2">{recipe.ingredients.join(', ')}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end space-x-2">
-                        <AnimatedButton variant="outline" size="sm" onClick={() => openPreviewDialog(recipe)} soundOnClick="/sounds/click.mp3">
-                          <Eye className="h-4 w-4" />
-                        </AnimatedButton>
-                        <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(recipe)} soundOnClick="/sounds/click.mp3">
-                          <Edit className="h-4 w-4" />
-                        </AnimatedButton>
-                        <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteRecipe(recipe.id)} soundOnClick="/sounds/click.mp3">
-                          <Trash2 className="h-4 w-4" />
-                        </AnimatedButton>
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {recipes.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center text-dairy-text">
+                      No recipes found.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  recipes.map((recipe) => (
+                    <TableRow key={recipe.id}>
+                      <TableCell>
+                        {recipe.image_url && (
+                          <img src={recipe.image_url} alt={recipe.title} className="w-12 h-12 object-cover rounded-md" />
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium text-dairy-darkBlue">{recipe.title}</TableCell>
+                      <TableCell className="text-dairy-text line-clamp-2">{recipe.ingredients.join(', ')}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end space-x-2">
+                          <AnimatedButton variant="outline" size="sm" onClick={() => openPreviewDialog(recipe)} soundOnClick="/sounds/click.mp3">
+                            <Eye className="h-4 w-4" />
+                          </AnimatedButton>
+                          <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(recipe)} soundOnClick="/sounds/click.mp3">
+                            <Edit className="h-4 w-4" />
+                          </AnimatedButton>
+                          <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteRecipe(recipe.id)} soundOnClick="/sounds/click.mp3">
+                            <Trash2 className="h-4 w-4" />
+                          </AnimatedButton>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       )}
 
