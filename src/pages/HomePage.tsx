@@ -31,9 +31,13 @@ const HomePage: React.FC = () => {
       <ParticleBackground />
       <FloatingStats />
 
-      {/* New Hero Section */}
-      <section className="header w-full h-[calc(100vh-160px)] flex items-center justify-center text-center relative z-10">
-        <div className="title-wrapper">
+      {/* New Hero Section with image background */}
+      <section
+        className="header w-full h-[calc(100vh-160px)] flex items-center justify-center text-center relative z-10 bg-cover bg-center"
+        style={{ backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg')` }}
+      >
+        <div className="absolute inset-0 bg-dairy-darkBlue/60"></div> {/* Overlay for text readability */}
+        <div className="title-wrapper relative z-10">
           <span className="top-title"></span>
           <h1 className="sweet-title">
             <span data-text="Freshness">Freshness</span>
