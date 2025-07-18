@@ -14,7 +14,7 @@ const heroTexts = [
   { title: "Experience Dairy the Way Nature Intended", subtitle: "Fresh, Pure, Local." },
   { title: "Quality You Can Taste", subtitle: "Fresh Dairy Products Every Day." },
   { title: "Wholesome Goodness", subtitle: "In Every Sip and Bite." },
-  { title: "Bringing You the Freshest Dairy, Straight from ARIB." },
+  { title: "Bringing You the Freshest Dairy", subtitle: "Straight from ARIB." },
 ];
 
 const HomePage: React.FC = () => {
@@ -42,7 +42,12 @@ const HomePage: React.FC = () => {
       <ParticleBackground />
 
       {/* New Hero Section */}
-      <section className="relative z-10 flex items-center justify-center min-h-[calc(100vh-64px)] bg-dairy-blue text-white overflow-hidden px-4 py-20">
+      <section
+        className="relative z-10 flex items-center justify-center min-h-[calc(100vh-64px)] bg-cover bg-center bg-no-repeat text-white overflow-hidden px-4 py-20"
+        style={{ backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg')` }}
+      >
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
         <div className="container mx-auto text-center relative z-10">
           <AnimatePresence mode="wait">
             <motion.div
