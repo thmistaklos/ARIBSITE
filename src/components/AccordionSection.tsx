@@ -105,18 +105,21 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ header, text }) => {
   };
 
   return (
-    <div className="mb-8 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)] sm:p-8 lg:px-6 xl:px-8">
+    <div className={cn(
+      "mb-8 w-full rounded-lg border border-dairy-blue/20 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)]",
+      active ? "bg-dairy-darkBlue" : "bg-dairy-blue" // Background changes based on active state
+    )}>
       <button
-        className={cn(
-          "flex w-full text-left",
-          active ? "text-dairy-darkBlue" : "text-dairy-text"
-        )}
+        className="flex w-full items-center justify-between p-4 sm:p-8 lg:px-6 xl:px-8 text-left"
         onClick={handleToggle}
       >
-        <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-dairy-blue/10 text-dairy-blue">
+        <h4 className="mt-1 text-lg font-semibold text-dairy-cream"> {/* Text color is always cream */}
+          {header}
+        </h4>
+        <div className="flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-dairy-cream/20 text-dairy-cream"> {/* Icon background and color */}
           <svg
             className={cn(
-              "fill-dairy-blue stroke-dairy-blue duration-200 ease-in-out",
+              "fill-dairy-cream stroke-dairy-cream duration-200 ease-in-out",
               active ? "rotate-180" : ""
             )}
             width="17"
@@ -131,21 +134,15 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ header, text }) => {
             />
           </svg>
         </div>
-
-        <div className="w-full">
-          <h4 className="mt-1 text-lg font-semibold text-dairy-darkBlue">
-            {header}
-          </h4>
-        </div>
       </button>
 
       <div
         className={cn(
-          "pl-[62px] duration-200 ease-in-out",
+          "px-4 pb-4 sm:px-8 lg:px-6 xl:px-8 duration-200 ease-in-out",
           active ? "block" : "hidden"
         )}
       >
-        <p className="py-3 text-base leading-relaxed text-dairy-text">
+        <p className="py-3 text-base leading-relaxed text-dairy-cream"> {/* Text color is always cream */}
           {text}
         </p>
       </div>
