@@ -7,6 +7,7 @@ import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
 import ParticleBackground from '@/components/ParticleBackground';
+import AccordionSection from '@/components/AccordionSection'; // Import the new component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -65,6 +66,9 @@ const HomePage: React.FC = () => {
 
       {/* Facts Section */}
       <FactsSection />
+
+      {/* FAQ Accordion Section */}
+      <AccordionSection />
     </motion.div>
   );
 };
