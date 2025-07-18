@@ -32,32 +32,25 @@ const FactsSection: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="w-full py-20 px-4 bg-cover bg-center bg-no-repeat relative"
-      style={{
-        backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg')`
-      }}
+      className="container mx-auto relative z-10" /* Removed w-full py-20 px-4 bg-cover bg-center bg-no-repeat relative and style prop */
     >
-      <div className="absolute inset-0 bg-dairy-darkBlue/70"></div>
-      {/* Overlay for text readability */}
-      <div className="container mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
-          {facts.map((fact, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className="flex flex-col items-center text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20"
-            >
-              <fact.icon className="h-16 w-16 text-white mb-4" />
-              <p className="text-lg font-medium text-white">{t(fact.textKey)}</p>
-            </motion.div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
+        {facts.map((fact, index) => (
+          <motion.div
+            key={index}
+            variants={itemVariants}
+            className="flex flex-col items-center text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20"
+          >
+            <fact.icon className="h-16 w-16 text-white mb-4" />
+            <p className="text-lg font-medium text-white">{t(fact.textKey)}</p>
+          </motion.div>
+        ))}
       </div>
-    </motion.section>
+    </motion.div>
   );
 };
 

@@ -3,11 +3,15 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-const AccordionSection: React.FC = () => {
+interface AccordionSectionProps {
+  className?: string; // Add className prop
+}
+
+const AccordionSection: React.FC<AccordionSectionProps> = ({ className }) => {
   const { t } = useTranslation();
 
   return (
-    <section className="relative z-20 overflow-hidden bg-dairy-cream pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]">
+    <section className={cn("relative z-20 overflow-hidden pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]", className)}> {/* Apply className here */}
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">

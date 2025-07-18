@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import RecipeCard from '@/components/RecipeCard';
 import AnimatedButton from '@/components/AnimatedButton';
+import { cn } from '@/lib/utils'; // Import cn utility
 
 interface Recipe {
   id: string;
@@ -16,7 +17,11 @@ interface Recipe {
   preparation_steps: string[];
 }
 
-const RecipesSection: React.FC = () => {
+interface RecipesSectionProps {
+  className?: string; // Add className prop
+}
+
+const RecipesSection: React.FC<RecipesSectionProps> = ({ className }) => {
   const { t } = useTranslation();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +53,7 @@ const RecipesSection: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className={cn("flex justify-center items-center h-64", className)}>
         <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
       </div>
     );
@@ -56,7 +61,7 @@ const RecipesSection: React.FC = () => {
 
   if (recipes.length === 0) {
     return (
-      <div className="text-center text-xl text-dairy-text mt-8">
+      <div className={cn("text-center text-xl text-dairy-text mt-8", className)}>
         {t('no_recipes_available')}
       </div>
     );
@@ -67,7 +72,7 @@ const RecipesSection: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="w-full py-12 px-4 bg-dairy-cream"
+      className={cn("w-full py-12 px-4", className)} /* Apply className here */
     >
       <div className="container mx-auto">
         <motion.h2
