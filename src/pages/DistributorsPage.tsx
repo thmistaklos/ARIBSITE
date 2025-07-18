@@ -1,75 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import DistributorCard from '@/components/DistributorCard';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 interface Distributor {
   id: string;
   name: string;
-  location: string;
+  location: string; // Changed from 'region' to 'location' to match public display
   email: string;
   phone: string;
-  logo: string;
+  address: string;
+  logo_url: string | null;
 }
-
-const DUMMY_DISTRIBUTORS: Distributor[] = [
-  {
-    id: '1',
-    name: 'Fresh Dairy Supplies Inc.',
-    location: 'New York, USA',
-    email: 'info@freshdairy.com',
-    phone: '+1-212-555-0100',
-    logo: 'https://via.placeholder.com/150/ADD8E6/000000?text=Fresh+Dairy',
-  },
-  {
-    id: '2',
-    name: 'Global Milk Distributors',
-    location: 'London, UK',
-    email: 'contact@globalmilk.co.uk',
-    phone: '+44-20-7946-0123',
-    logo: 'https://via.placeholder.com/150/90EE90/000000?text=Global+Milk',
-  },
-  {
-    id: '3',
-    name: 'Al-Nour Foodstuffs',
-    location: 'Dubai, UAE',
-    email: 'sales@alnour.ae',
-    phone: '+971-4-123-4567',
-    logo: 'https://via.placeholder.com/150/FFD700/000000?text=Al-Nour',
-  },
-  {
-    id: '4',
-    name: 'Euro Dairy Logistics',
-    location: 'Berlin, Germany',
-    email: 'support@eurodairy.de',
-    phone: '+49-30-9876-5432',
-    logo: 'https://via.placeholder.com/150/FFB6C1/000000?text=Euro+Dairy',
-  },
-  {
-    id: '5',
-    name: 'Asia Pacific Dairy',
-    location: 'Sydney, Australia',
-    email: 'sales@asiapacificdairy.com.au',
-    phone: '+61-2-8765-4321',
-    logo: 'https://via.placeholder.com/150/87CEEB/000000?text=Asia+Pacific',
-  },
-  {
-    id: '6',
-    name: 'Canadian Dairy Partners',
-    location: 'Toronto, Canada',
-    email: 'info@canadiandairy.ca',
-    phone: '+1-416-111-2222',
-    logo: 'https://via.placeholder.com/150/DDA0DD/000000?text=Canadian',
-  },
-];
 
 const DistributorsPage: React.FC = () => {
   const { t } = useTranslation();
+  const [distributors, setDistributors] = useState<Distributor[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredDistributors = DUMMY_DISTRIBUTORS.filter(distributor =>
+  useEffect(() => {
+    const fetchDistributors = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('distributors').select('*').order('name', { ascending: true });
+      if (error) {
+        toast.error('Failed to load distributors', { description: error.message });
+      } else {
+        setDistributors(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchDistributors();
+  }, []);
+
+  const filteredDistributors = distributors.filter(distributor =>
     distributor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     distributor.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -117,7 +86,11 @@ const DistributorsPage: React.FC = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-dairy-blue" />
         </motion.div>
 
-        {filteredDistributors.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
+          </div>
+        ) : filteredDistributors.length === 0 ? (
           <div className="text-center text-xl text-dairy-text">
             {t('no_distributors_found')}
           </div>

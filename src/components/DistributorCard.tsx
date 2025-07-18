@@ -11,7 +11,7 @@ interface DistributorCardProps {
     location: string;
     email: string;
     phone: string;
-    logo: string;
+    logo_url: string | null; // Changed from 'logo' to 'logo_url'
   };
 }
 
@@ -28,11 +28,17 @@ const DistributorCard: React.FC<DistributorCardProps> = ({ distributor }) => {
     >
       <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
         <CardHeader className="p-0 flex items-center justify-center h-32 bg-white">
-          <img
-            src={distributor.logo}
-            alt={`${distributor.name} Logo`}
-            className="max-h-24 max-w-[80%] object-contain"
-          />
+          {distributor.logo_url ? (
+            <img
+              src={distributor.logo_url}
+              alt={`${distributor.name} Logo`}
+              className="max-h-24 max-w-[80%] object-contain"
+            />
+          ) : (
+            <div className="max-h-24 max-w-[80%] flex items-center justify-center text-dairy-text/50">
+              No Logo
+            </div>
+          )}
         </CardHeader>
         <CardContent className="p-6 text-center flex-grow flex flex-col justify-between">
           <div>

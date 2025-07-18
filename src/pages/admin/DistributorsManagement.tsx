@@ -12,12 +12,12 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Added this import
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 interface Distributor {
   id: string;
   name: string;
-  region: string;
+  location: string; // Changed from 'region' to 'location'
   phone: string;
   email: string;
   address: string;
@@ -26,7 +26,7 @@ interface Distributor {
 
 const distributorSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  region: z.string().min(2, { message: 'Region must be at least 2 characters.' }),
+  location: z.string().min(2, { message: 'Location must be at least 2 characters.' }), // Changed from 'region' to 'location'
   phone: z.string().min(7, { message: 'Phone must be at least 7 characters.' }),
   email: z.string().email({ message: 'Invalid email address.' }),
   address: z.string().min(5, { message: 'Address must be at least 5 characters.' }),
@@ -47,7 +47,7 @@ const DistributorsManagement: React.FC = () => {
     resolver: zodResolver(distributorSchema),
     defaultValues: {
       name: '',
-      region: '',
+      location: '', // Changed from 'region' to 'location'
       phone: '',
       email: '',
       address: '',
@@ -81,7 +81,7 @@ const DistributorsManagement: React.FC = () => {
     }
   };
 
-  const onSubmit = async (values: z.infer<typeof distributorSchema>) => {
+  const handleAddEditDistributor = async (values: z.infer<typeof distributorSchema>) => { // Renamed function
     setIsSubmitting(true);
     let logoUrl = currentDistributor?.logo_url || null;
 
@@ -114,7 +114,7 @@ const DistributorsManagement: React.FC = () => {
 
       const distributorData = {
         name: values.name,
-        region: values.region,
+        location: values.location, // Changed from 'region' to 'location'
         phone: values.phone,
         email: values.email,
         address: values.address,
@@ -167,7 +167,7 @@ const DistributorsManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentDistributor(null);
-    form.reset({ name: '', region: '', phone: '', email: '', address: '', logo_url: null });
+    form.reset({ name: '', location: '', phone: '', email: '', address: '', logo_url: null }); // Changed from 'region' to 'location'
     setSelectedFile(null);
     setImagePreviewUrl(null);
     setIsDialogOpen(true);
@@ -183,7 +183,7 @@ const DistributorsManagement: React.FC = () => {
 
   const filteredDistributors = distributors.filter(distributor =>
     distributor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    distributor.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    distributor.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
     distributor.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -223,7 +223,7 @@ const DistributorsManagement: React.FC = () => {
               <TableRow className="bg-dairy-blue/10">
                 <TableHead className="w-[80px] text-dairy-darkBlue">Logo</TableHead>
                 <TableHead className="text-dairy-darkBlue">Name</TableHead>
-                <TableHead className="text-dairy-darkBlue">Region</TableHead>
+                <TableHead className="text-dairy-darkBlue">Location</TableHead> {/* Changed from 'Region' to 'Location' */}
                 <TableHead className="text-dairy-darkBlue">Contact</TableHead>
                 <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
               </TableRow>
@@ -244,7 +244,7 @@ const DistributorsManagement: React.FC = () => {
                       )}
                     </TableCell>
                     <TableCell className="font-medium text-dairy-darkBlue">{distributor.name}</TableCell>
-                    <TableCell className="text-dairy-text">{distributor.region}</TableCell>
+                    <TableCell className="text-dairy-text">{distributor.location}</TableCell> {/* Changed from 'region' to 'location' */}
                     <TableCell className="text-dairy-text">
                       <p>{distributor.email}</p>
                       <p>{distributor.phone}</p>
@@ -275,8 +275,8 @@ const DistributorsManagement: React.FC = () => {
               {currentDistributor ? 'Make changes to the distributor details here.' : 'Add a new distributor to your list.'}
             </DialogDescription>
           </DialogHeader>
-          <Form {...form}> {/* Added this wrapper */}
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleAddEditDistributor)} className="grid gap-4 py-4"> {/* Updated onSubmit handler */}
               <FormField
                 control={form.control}
                 name="name"
@@ -292,10 +292,10 @@ const DistributorsManagement: React.FC = () => {
               />
               <FormField
                 control={form.control}
-                name="region"
+                name="location" // Changed from 'region' to 'location'
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Region</FormLabel>
+                    <FormLabel className="text-right text-dairy-text">Location</FormLabel> {/* Changed from 'Region' to 'Location' */}
                     <FormControl className="col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
