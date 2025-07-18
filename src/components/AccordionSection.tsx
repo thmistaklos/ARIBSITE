@@ -1,15 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { supabase } from '@/lib/supabase';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+  order_index: number;
+}
 
 interface AccordionSectionProps {}
 
 const AccordionSection: React.FC<AccordionSectionProps> = () => {
   const { t } = useTranslation();
+  const [faqItems, setFaqItems] = useState<FaqItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFaqItems = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('faq_items').select('*').order('order_index', { ascending: true });
+      if (error) {
+        toast.error('Failed to load FAQs', { description: error.message });
+      } else {
+        setFaqItems(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchFaqItems();
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
+      </div>
+    );
+  }
 
   return (
-    <section className="relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px]">
+    <motion.section
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px]"
+    >
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
@@ -28,34 +76,20 @@ const AccordionSection: React.FC<AccordionSectionProps> = () => {
         </div>
 
         <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4 lg:w-1/2">
-            <AccordionItem
-              header={t('faq_question_1')}
-              text={t('faq_answer_1')}
-            />
-            <AccordionItem
-              header={t('faq_question_2')}
-              text={t('faq_answer_2')}
-            />
-            <AccordionItem
-              header={t('faq_question_3')}
-              text={t('faq_answer_3')}
-            />
-          </div>
-          <div className="w-full px-4 lg:w-1/2">
-            <AccordionItem
-              header={t('faq_question_4')}
-              text={t('faq_answer_4')}
-            />
-            <AccordionItem
-              header={t('faq_question_5')}
-              text={t('faq_answer_5')}
-            />
-            <AccordionItem
-              header={t('faq_question_6')}
-              text={t('faq_answer_6')}
-            />
-          </div>
+          {faqItems.length === 0 ? (
+            <div className="w-full text-center text-xl text-dairy-text">
+              {t('no_faqs_available')}
+            </div>
+          ) : (
+            faqItems.map((item, index) => (
+              <div key={item.id} className="w-full px-4 lg:w-1/2">
+                <AccordionItem
+                  header={item.question}
+                  text={item.answer}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -88,7 +122,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = () => {
           </defs>
         </svg>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

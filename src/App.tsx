@@ -17,6 +17,7 @@ import PublicLayout from "./components/PublicLayout";
 import DistributorsManagement from "./pages/admin/DistributorsManagement";
 import RecipesManagement from "./pages/admin/RecipesManagement";
 import BlogManagement from "./pages/admin/BlogManagement";
+import FaqManagement from "./pages/admin/FaqManagement"; // Import FaqManagement
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
                   <Route path="recipes" element={<RecipesManagement />} />
                   <Route path="blog" element={<BlogManagement />} />
                   <Route path="content" element={<ContentManagement />} />
+                  <Route path="faq" element={<FaqManagement />} /> {/* New FAQ Route */}
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>
               </Route>
