@@ -7,6 +7,7 @@ import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
 import FactsSection from '@/components/FactsSection';
 import ParticleBackground from '@/components/ParticleBackground';
+import ShapeDivider from '@/components/ShapeDivider'; // Import the new component
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -64,7 +65,24 @@ const HomePage: React.FC = () => {
       <RecipesSection />
 
       {/* Facts Section */}
-      <FactsSection />
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className="w-full pt-[156px] pb-20 px-4 bg-cover bg-center bg-no-repeat relative" // Adjusted padding-top
+        style={{
+          backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg')`
+        }}
+      >
+        <ShapeDivider fillColor="hsl(40, 100%, 95%)" /> {/* dairy-cream */}
+        <div className="absolute inset-0 bg-dairy-darkBlue/70"></div>
+        {/* Overlay for text readability */}
+        <div className="container mx-auto relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
+            {/* ... existing FactsSection content */}
+          </div>
+        </div>
+      </motion.section>
     </motion.div>
   );
 };
