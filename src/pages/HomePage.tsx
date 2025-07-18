@@ -10,13 +10,13 @@ import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
 import AnimatedButton from '@/components/AnimatedButton';
 
-// Define the hero texts
-const heroTexts = [
-  { title: "From Our Farms to Your Table", subtitle: "Pure, Fresh, and Healthy." },
-  { title: "Experience Dairy the Way Nature Intended", subtitle: "Fresh, Pure, Local." },
-  { title: "Quality You Can Taste", subtitle: "Fresh Dairy Products Every Day." },
-  { title: "Wholesome Goodness", subtitle: "In Every Sip and Bite." },
-  { title: "Bringing You the Freshest Dairy", subtitle: "Straight from ARIB." },
+// Define the hero texts using translation keys
+const heroTextKeys = [
+  { titleKey: "hero_title_1", subtitleKey: "hero_subtitle_1" },
+  { titleKey: "hero_title_2", subtitleKey: "hero_subtitle_2" },
+  { titleKey: "hero_title_3", subtitleKey: "hero_subtitle_3" },
+  { titleKey: "hero_title_4", subtitleKey: "hero_subtitle_4" },
+  { titleKey: "hero_title_5", subtitleKey: "hero_subtitle_5" },
 ];
 
 const HomePage: React.FC = () => {
@@ -25,13 +25,13 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % heroTexts.length);
+      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % heroTextKeys.length);
     }, 5000); // Change every 5 seconds
 
     return () => clearInterval(interval);
   }, []);
 
-  const currentHero = heroTexts[currentTextIndex];
+  const currentHeroKeys = heroTextKeys[currentTextIndex];
 
   const textVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -61,10 +61,10 @@ const HomePage: React.FC = () => {
               className="space-y-4 mb-8" // Added mb-8 for spacing between text and button
             >
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
-                {currentHero.title}
+                {t(currentHeroKeys.titleKey)}
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
-                {currentHero.subtitle}
+                {t(currentHeroKeys.subtitleKey)}
               </p>
             </motion.div>
           </AnimatePresence>
