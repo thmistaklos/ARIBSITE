@@ -17,7 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 interface Distributor {
   id: string;
   name: string;
-  location: string; // Changed from 'region' to 'location'
+  location: string;
   phone: string;
   email: string;
   address: string;
@@ -26,11 +26,11 @@ interface Distributor {
 
 const distributorSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  location: z.string().min(2, { message: 'Location must be at least 2 characters.' }), // Changed from 'region' to 'location'
+  location: z.string().min(2, { message: 'Location must be at least 2 characters.' }),
   phone: z.string().min(7, { message: 'Phone must be at least 7 characters.' }),
   email: z.string().email({ message: 'Invalid email address.' }),
   address: z.string().min(5, { message: 'Address must be at least 5 characters.' }),
-  logo_url: z.string().url().nullable().optional(),
+  logo_url: z.string().url({ message: 'Must be a valid URL or empty.' }).nullable().optional().or(z.literal('')), // Allow empty string for optional
 });
 
 const DistributorsManagement: React.FC = () => {
@@ -38,8 +38,6 @@ const DistributorsManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentDistributor, setCurrentDistributor] = useState<Distributor | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -47,11 +45,11 @@ const DistributorsManagement: React.FC = () => {
     resolver: zodResolver(distributorSchema),
     defaultValues: {
       name: '',
-      location: '', // Changed from 'region' to 'location'
+      location: '',
       phone: '',
       email: '',
       address: '',
-      logo_url: null,
+      logo_url: null, // Initialize as null
     },
   });
 
@@ -70,55 +68,18 @@ const DistributorsManagement: React.FC = () => {
     setLoading(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
-    } else {
-      setSelectedFile(null);
-      setImagePreviewUrl(currentDistributor?.logo_url || null);
-    }
-  };
-
-  const handleAddEditDistributor = async (values: z.infer<typeof distributorSchema>) => { // Renamed function
+  const handleAddEditDistributor = async (values: z.infer<typeof distributorSchema>) => {
     setIsSubmitting(true);
-    let logoUrl = currentDistributor?.logo_url || null;
+    let finalLogoUrl = values.logo_url === '' ? null : values.logo_url; // Treat empty string as null
 
     try {
-      if (selectedFile) {
-        const fileName = `${Date.now()}-${selectedFile.name}`;
-        const filePath = `distributor-logos/${fileName}`;
-
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('distributor-logos')
-          .upload(filePath, selectedFile, {
-            cacheControl: '3600',
-            upsert: false,
-          });
-
-        if (uploadError) {
-          throw uploadError;
-        }
-
-        const { data: publicUrlData } = supabase.storage
-          .from('distributor-logos')
-          .getPublicUrl(filePath);
-
-        logoUrl = publicUrlData.publicUrl;
-      } else if (!currentDistributor && !logoUrl) {
-        toast.error('Logo required', { description: 'Please upload a logo for the new distributor.' });
-        setIsSubmitting(false);
-        return;
-      }
-
       const distributorData = {
         name: values.name,
-        location: values.location, // Changed from 'region' to 'location'
+        location: values.location,
         phone: values.phone,
         email: values.email,
         address: values.address,
-        logo_url: logoUrl,
+        logo_url: finalLogoUrl,
       };
 
       if (currentDistributor) {
@@ -148,8 +109,6 @@ const DistributorsManagement: React.FC = () => {
       toast.error('Operation Failed', { description: error.message });
     } finally {
       setIsSubmitting(false);
-      setSelectedFile(null);
-      setImagePreviewUrl(null);
     }
   };
 
@@ -167,17 +126,16 @@ const DistributorsManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentDistributor(null);
-    form.reset({ name: '', location: '', phone: '', email: '', address: '', logo_url: null }); // Changed from 'region' to 'location'
-    setSelectedFile(null);
-    setImagePreviewUrl(null);
+    form.reset({ name: '', location: '', phone: '', email: '', address: '', logo_url: '' }); // Reset logo_url to empty string for input
     setIsDialogOpen(true);
   };
 
   const openEditDialog = (distributor: Distributor) => {
     setCurrentDistributor(distributor);
-    form.reset(distributor);
-    setSelectedFile(null);
-    setImagePreviewUrl(distributor.logo_url);
+    form.reset({
+      ...distributor,
+      logo_url: distributor.logo_url || '', // Ensure it's an empty string for the input if null
+    });
     setIsDialogOpen(true);
   };
 
@@ -221,9 +179,9 @@ const DistributorsManagement: React.FC = () => {
           <Table>
             <TableHeader>
               <TableRow className="bg-dairy-blue/10">
-                <TableHead className="w-[80px] text-dairy-darkBlue">Logo</TableHead>
+                <TableHead className="w-[80px] text-dairy-darkBlue">Logo/Map</TableHead>
                 <TableHead className="text-dairy-darkBlue">Name</TableHead>
-                <TableHead className="text-dairy-darkBlue">Location</TableHead> {/* Changed from 'Region' to 'Location' */}
+                <TableHead className="text-dairy-darkBlue">Location</TableHead>
                 <TableHead className="text-dairy-darkBlue">Contact</TableHead>
                 <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
               </TableRow>
@@ -239,12 +197,28 @@ const DistributorsManagement: React.FC = () => {
                 filteredDistributors.map((distributor) => (
                   <TableRow key={distributor.id}>
                     <TableCell>
-                      {distributor.logo_url && (
-                        <img src={distributor.logo_url} alt={distributor.name} className="w-12 h-12 object-contain rounded-md" />
+                      {distributor.logo_url ? (
+                        distributor.logo_url.startsWith('https://www.google.com/maps/embed?') ? (
+                          <iframe
+                            src={distributor.logo_url}
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen={true}
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title={`${distributor.name} Location`}
+                            className="w-12 h-12 object-cover rounded-md"
+                          ></iframe>
+                        ) : (
+                          <img src={distributor.logo_url} alt={distributor.name} className="w-12 h-12 object-contain rounded-md" />
+                        )
+                      ) : (
+                        <div className="w-12 h-12 flex items-center justify-center text-dairy-text/50 text-xs">N/A</div>
                       )}
                     </TableCell>
                     <TableCell className="font-medium text-dairy-darkBlue">{distributor.name}</TableCell>
-                    <TableCell className="text-dairy-text">{distributor.location}</TableCell> {/* Changed from 'region' to 'location' */}
+                    <TableCell className="text-dairy-text">{distributor.location}</TableCell>
                     <TableCell className="text-dairy-text">
                       <p>{distributor.email}</p>
                       <p>{distributor.phone}</p>
@@ -276,7 +250,7 @@ const DistributorsManagement: React.FC = () => {
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleAddEditDistributor)} className="grid gap-4 py-4"> {/* Updated onSubmit handler */}
+            <form onSubmit={form.handleSubmit(handleAddEditDistributor)} className="grid gap-4 py-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -292,10 +266,10 @@ const DistributorsManagement: React.FC = () => {
               />
               <FormField
                 control={form.control}
-                name="location" // Changed from 'region' to 'location'
+                name="location"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Location</FormLabel> {/* Changed from 'Region' to 'Location' */}
+                    <FormLabel className="text-right text-dairy-text">Location</FormLabel>
                     <FormControl className="col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
@@ -342,27 +316,45 @@ const DistributorsManagement: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="logo" className="text-right text-dairy-text">
-                  Logo
-                </Label>
-                <div className="col-span-3 flex flex-col gap-2">
-                  <Input
-                    id="logo"
-                    name="logo"
-                    type="file"
-                    onChange={handleFileChange}
-                    className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                    accept="image/*"
-                  />
-                  {imagePreviewUrl && (
-                    <img src={imagePreviewUrl} alt="Logo Preview" className="w-24 h-24 object-contain rounded-md mt-2" />
-                  )}
-                  {!selectedFile && currentDistributor?.logo_url && (
-                    <p className="text-xs text-muted-foreground mt-1">Current logo will be used if no new file is selected.</p>
-                  )}
+              <FormField
+                control={form.control}
+                name="logo_url"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Logo/Map URL</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input
+                        placeholder="Paste image URL or Google Maps embed URL"
+                        {...field}
+                        className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                      />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              {form.watch('logo_url') && (
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="text-right text-dairy-text">Preview</Label>
+                  <div className="col-span-3 flex flex-col gap-2">
+                    {form.watch('logo_url')?.startsWith('https://www.google.com/maps/embed?') ? (
+                      <iframe
+                        src={form.watch('logo_url') || ''}
+                        width="100%"
+                        height="150"
+                        style={{ border: 0 }}
+                        allowFullScreen={true}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Map Preview"
+                        className="rounded-md"
+                      ></iframe>
+                    ) : (
+                      <img src={form.watch('logo_url') || ''} alt="Preview" className="w-24 h-24 object-contain rounded-md" />
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
               <DialogFooter>
                 <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
                   {isSubmitting ? (

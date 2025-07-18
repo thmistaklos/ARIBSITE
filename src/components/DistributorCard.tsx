@@ -11,12 +11,14 @@ interface DistributorCardProps {
     location: string;
     email: string;
     phone: string;
-    logo_url: string | null; // Changed from 'logo' to 'logo_url'
+    logo_url: string | null; // This can now be an image URL or a Google Maps embed URL
   };
 }
 
 const DistributorCard: React.FC<DistributorCardProps> = ({ distributor }) => {
   const { t } = useTranslation();
+
+  const isGoogleMapsEmbed = distributor.logo_url?.startsWith('https://www.google.com/maps/embed?');
 
   return (
     <motion.div
@@ -29,11 +31,25 @@ const DistributorCard: React.FC<DistributorCardProps> = ({ distributor }) => {
       <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
         <CardHeader className="p-0 flex items-center justify-center h-32 bg-white">
           {distributor.logo_url ? (
-            <img
-              src={distributor.logo_url}
-              alt={`${distributor.name} Logo`}
-              className="max-h-24 max-w-[80%] object-contain"
-            />
+            isGoogleMapsEmbed ? (
+              <iframe
+                src={distributor.logo_url}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`${distributor.name} Location`}
+                className="object-cover"
+              ></iframe>
+            ) : (
+              <img
+                src={distributor.logo_url}
+                alt={`${distributor.name} Logo`}
+                className="max-h-24 max-w-[80%] object-contain"
+              />
+            )
           ) : (
             <div className="max-h-24 max-w-[80%] flex items-center justify-center text-dairy-text/50">
               No Logo
