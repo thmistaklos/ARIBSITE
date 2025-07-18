@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px] bg-gray-800 text-white">
+      <section className="relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px] bg-dairy-cream text-dairy-text">
         <AccordionSection />
       </section>
     </div>
