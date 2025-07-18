@@ -14,7 +14,7 @@ const heroTexts = [
   { title: "Experience Dairy the Way Nature Intended", subtitle: "Fresh, Pure, Local." },
   { title: "Quality You Can Taste", subtitle: "Fresh Dairy Products Every Day." },
   { title: "Wholesome Goodness", subtitle: "In Every Sip and Bite." },
-  { title: "Bringing You the Freshest Dairy", subtitle: "Straight from ARIB." },
+  { title: "Bringing You the Freshest Dairy, Straight from ARIB." },
 ];
 
 const HomePage: React.FC = () => {
@@ -75,7 +75,12 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Facts Section */}
-      <section className="w-full py-20 px-4 bg-dairy-darkBlue text-white">
+      <section
+        className="w-full py-20 px-4 bg-cover bg-center bg-no-repeat relative"
+        style={{ backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg')` }}
+      >
+        {/* Optional: Add an overlay for better text readability if needed */}
+        <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
         <FactsSection />
       </section>
 
