@@ -29,7 +29,7 @@ interface BlogPost {
 const blogPostSchema = z.object({
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
   content: z.string().min(10, { message: 'Content must be at least 10 characters.' }),
-  image_url: z.string().url().nullable().optional(),
+  image_url: z.string().url({ message: 'Must be a valid URL or empty.' }).nullable().optional().or(z.literal('')), // Changed to accept URL or empty string
   author: z.string().min(2, { message: 'Author must be at least 2 characters.' }),
   published: z.boolean().default(false),
 });
@@ -39,8 +39,6 @@ const BlogManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
@@ -49,7 +47,7 @@ const BlogManagement: React.FC = () => {
     defaultValues: {
       title: '',
       content: '',
-      image_url: null,
+      image_url: '', // Initialize as empty string for URL input
       author: '',
       published: false,
     },
@@ -70,52 +68,18 @@ const BlogManagement: React.FC = () => {
     setLoading(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
-    } else {
-      setSelectedFile(null);
-      setImagePreviewUrl(currentPost?.image_url || null);
-    }
-  };
+  // Removed handleFileChange as we are now using URL input
 
   const onSubmit = async (values: z.infer<typeof blogPostSchema>) => {
     setIsSubmitting(true);
-    let imageUrl = currentPost?.image_url || null;
+    // Directly use the image_url from form values, convert empty string to null if needed by DB schema
+    const imageUrl = values.image_url === '' ? null : values.image_url;
 
     try {
-      if (selectedFile) {
-        const fileName = `${Date.now()}-${selectedFile.name}`;
-        const filePath = `blog-images/${fileName}`;
-
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('blog-images')
-          .upload(filePath, selectedFile, {
-            cacheControl: '3600',
-            upsert: false,
-          });
-
-        if (uploadError) {
-          throw uploadError;
-        }
-
-        const { data: publicUrlData } = supabase.storage
-          .from('blog-images')
-          .getPublicUrl(filePath);
-
-        imageUrl = publicUrlData.publicUrl;
-      } else if (!currentPost && !imageUrl) {
-        toast.error('Image required', { description: 'Please upload an image for the new blog post.' });
-        setIsSubmitting(false);
-        return;
-      }
-
       const postData = {
         title: values.title,
         content: values.content,
-        image_url: imageUrl,
+        image_url: imageUrl, // Use the URL directly
         author: values.author,
         published: values.published,
       };
@@ -147,8 +111,7 @@ const BlogManagement: React.FC = () => {
       toast.error('Operation Failed', { description: error.message });
     } finally {
       setIsSubmitting(false);
-      setSelectedFile(null);
-      setImagePreviewUrl(null);
+      // No file to clear
     }
   };
 
@@ -181,17 +144,13 @@ const BlogManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentPost(null);
-    form.reset({ title: '', content: '', image_url: null, author: '', published: false });
-    setSelectedFile(null);
-    setImagePreviewUrl(null);
+    form.reset({ title: '', content: '', image_url: '', author: '', published: false }); // Reset image_url to empty string
     setIsDialogOpen(true);
   };
 
   const openEditDialog = (post: BlogPost) => {
     setCurrentPost(post);
-    form.reset(post);
-    setSelectedFile(null);
-    setImagePreviewUrl(post.image_url);
+    form.reset({ ...post, image_url: post.image_url || '' }); // Ensure image_url is string for input
     setIsDialogOpen(true);
   };
 
@@ -333,27 +292,36 @@ const BlogManagement: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="image" className="text-right text-dairy-text">
-                  Image
-                </Label>
-                <div className="col-span-3 flex flex-col gap-2">
-                  <Input
-                    id="image"
-                    name="image"
-                    type="file"
-                    onChange={handleFileChange}
-                    className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                    accept="image/*"
-                  />
-                  {imagePreviewUrl && (
-                    <img src={imagePreviewUrl} alt="Post Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
-                  )}
-                  {!selectedFile && currentPost?.image_url && (
-                    <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
-                  )}
+              <FormField
+                control={form.control}
+                name="image_url" // Changed to image_url
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-4">
+                    <FormLabel className="text-right text-dairy-text">Image URL</FormLabel> {/* Changed label */}
+                    <FormControl className="col-span-3">
+                      <Input
+                        type="text" // Changed type to text
+                        placeholder="e.g., https://example.com/image.jpg" // Added placeholder
+                        {...field}
+                        className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                      />
+                    </FormControl>
+                    <FormMessage className="col-span-4 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              {form.watch('image_url') && ( // Preview based on watched URL
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="text-right text-dairy-text">Preview</Label>
+                  <div className="col-span-3 flex flex-col gap-2">
+                    {/\.(jpeg|jpg|gif|png|svg|webp)$/i.test(form.watch('image_url') || '') ? (
+                      <img src={form.watch('image_url') || ''} alt="Post Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
+                    ) : (
+                      <p className="text-red-500 text-sm">Invalid image URL format.</p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
               <FormField
                 control={form.control}
                 name="content"
