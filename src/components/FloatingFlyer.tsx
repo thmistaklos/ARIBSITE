@@ -103,18 +103,37 @@ const FloatingFlyer: React.FC = () => {
             <X className="h-6 w-6" />
           </button>
 
-          <div className="relative flex flex-col md:flex-row items-center gap-4">
-            <div className="relative z-20 flex flex-col text-center md:text-left md:w-1/2 flex-grow">
+          <div className="relative flex flex-col-reverse items-center justify-between gap-4 md:flex-row">
+            {/* Right Image (comes first on small screens due to flex-col-reverse) */}
+            <div className="relative md:w-1/2 flex-shrink-0 flex items-center justify-center">
+              {activeDiscount.image_url && (
+                <img
+                  src={activeDiscount.image_url}
+                  alt={activeDiscount.title_en}
+                  className="max-w-[200px] md:max-w-full h-auto object-contain mx-auto"
+                />
+              )}
+            </div>
+
+            {/* Left Content */}
+            <div className="relative z-20 flex flex-col items-center md:items-start md:w-1/2 flex-grow text-center md:text-left">
               <span className="w-16 h-1 mb-4 bg-dairy-darkBlue mx-auto md:mx-0"></span>
+              
               <h1 className="flex flex-col text-4xl sm:text-5xl font-extrabold leading-none text-dairy-darkBlue uppercase font-exo">
                 {getLocalizedText(activeDiscount, 'title')}
                 <span className="text-3xl sm:text-4xl">
                   {getLocalizedText(activeDiscount, 'subtitle')}
                 </span>
               </h1>
-              <p className="text-sm text-dairy-text mt-2">
+              
+              <p className="text-lg text-dairy-text mt-2">
                 {getLocalizedText(activeDiscount, 'price_text')}
               </p>
+
+              <p className="mt-4 text-base font-semibold text-dairy-blue">
+                {t('visit_us_text')}
+              </p>
+
               <div className="flex flex-col sm:flex-row mt-6 gap-3 justify-center md:justify-start">
                 <a href={activeDiscount.link_url || '/products'} className="w-full sm:w-auto">
                   <AnimatedButton className="w-full bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3">
@@ -127,15 +146,6 @@ const FloatingFlyer: React.FC = () => {
                   </AnimatedButton>
                 </a>
               </div>
-            </div>
-            <div className="relative hidden md:block md:w-1/2 flex-shrink-0">
-              {activeDiscount.image_url && (
-                <img
-                  src={activeDiscount.image_url}
-                  alt={activeDiscount.title_en}
-                  className="max-w-[200px] md:max-w-full h-auto object-contain mx-auto"
-                />
-              )}
             </div>
           </div>
         </motion.div>
