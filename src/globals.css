@@ -12,34 +12,24 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
     --radius: 0.5rem;
-
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -53,28 +43,20 @@
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -103,7 +85,7 @@
   }
 }
 
-/* ------------------ Discount Flyer ------------------ */
+/* Card Styles */
 .card {
   width: 280px;
   height: 400px;
@@ -112,7 +94,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   overflow: hidden;
   border-radius: 20px;
   padding: 20px;
@@ -121,8 +103,7 @@
 }
 
 .card-content {
-  z-index: 2;
-  position: relative;
+  z-index: 1;
 }
 
 .card h2 {
@@ -137,7 +118,7 @@
 }
 
 .card .price {
-  font-size: 1.6em;
+  font-size: 1.3em;
   font-weight: bold;
   color: #FFD700;
   margin-bottom: 15px;
@@ -149,15 +130,13 @@
   justify-content: center;
   align-items: flex-end;
   width: 100%;
-  z-index: 2;
-  position: absolute;
-  bottom: 10px;
 }
 
 .card img {
-  max-width: 280px; /* reduced */
-  max-height: 180px; /* reduced */
+  max-width: 160px;   /* Adjusted size */
+  max-height: 120px;  /* Adjusted size */
   object-fit: contain;
+  margin-bottom: 10px; /* Space between image and price */
 }
 
 /* Glow Effect for Price */
