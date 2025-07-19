@@ -46,7 +46,7 @@ const FloatingFlyer: React.FC = () => {
           </button>
 
           <div className="relative flex flex-col md:flex-row items-center gap-4">
-            <div className="relative z-20 flex flex-col text-center md:text-left flex-grow">
+            <div className="relative z-20 flex flex-col text-center md:text-left md:w-1/2 flex-grow"> {/* Adjusted width */}
               <span className="w-16 h-1 mb-4 bg-dairy-darkBlue mx-auto md:mx-0"></span>
               <h1 className="flex flex-col text-4xl sm:text-5xl font-extrabold leading-none text-dairy-darkBlue uppercase font-exo">
                 {t('amir')}
@@ -55,8 +55,8 @@ const FloatingFlyer: React.FC = () => {
                 </span>
               </h1>
               <p className="text-sm text-dairy-text mt-2">
-                {t('best_real_cheese')}<br />
-                {t('discount_price')}
+                {t('bestRealCheese')}<br /> {/* Updated key */}
+                {t('discountPrice')} {/* Updated key */}
               </p>
               <div className="flex flex-col sm:flex-row mt-6 gap-3 justify-center md:justify-start">
                 <a href="/products" className="w-full sm:w-auto">
@@ -71,11 +71,11 @@ const FloatingFlyer: React.FC = () => {
                 </a>
               </div>
             </div>
-            <div className="relative hidden md:block md:w-1/3 lg:w-2/5 flex-shrink-0">
+            <div className="relative hidden md:block md:w-1/2 flex-shrink-0"> {/* Adjusted width */}
               <img
                 src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//WhatsApp_Image_2025-07-19_at_18.14.32_93c96c99-removebg-preview.png"
                 alt={t('amir_cheese')}
-                className="max-w-[150px] md:max-w-full h-auto object-contain mx-auto"
+                className="max-w-[200px] md:max-w-full h-auto object-contain mx-auto" // Increased max-width
               />
             </div>
           </div>
