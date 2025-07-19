@@ -18,7 +18,8 @@ import DistributorsManagement from "./pages/admin/DistributorsManagement";
 import RecipesManagement from "./pages/admin/RecipesManagement";
 import BlogManagement from "./pages/admin/BlogManagement";
 import FaqManagement from "./pages/admin/FaqManagement";
-import FactsManagement from "./pages/admin/FactsManagement"; // Import FactsManagement
+import FactsManagement from "./pages/admin/FactsManagement";
+import DiscountsManagement from "./pages/admin/DiscountsManagement"; // Import DiscountsManagement
 
 const queryClient = new QueryClient();
 
@@ -48,7 +49,8 @@ const App = () => (
                   <Route path="blog" element={<BlogManagement />} />
                   <Route path="content" element={<ContentManagement />} />
                   <Route path="faq" element={<FaqManagement />} />
-                  <Route path="facts" element={<FactsManagement />} /> {/* New Facts Route */}
+                  <Route path="facts" element={<FactsManagement />} />
+                  <Route path="discounts" element={<DiscountsManagement />} /> {/* New Discounts Route */}
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>
               </Route>
