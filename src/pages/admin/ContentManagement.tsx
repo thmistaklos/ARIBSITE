@@ -44,7 +44,7 @@ const ContentManagement: React.FC = () => {
     },
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchSiteContent();
   }, []);
 
@@ -129,12 +129,12 @@ const ContentManagement: React.FC = () => {
                   control={form.control}
                   name="homepage_hero_title"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-dairy-text">Hero Title</FormLabel>
-                      <FormControl>
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Hero Title</FormLabel>
+                      <FormControl className="md:col-span-3">
                         <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
                     </FormItem>
                   )}
                 />
@@ -142,12 +142,12 @@ const ContentManagement: React.FC = () => {
                   control={form.control}
                   name="homepage_hero_subtitle"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-dairy-text">Hero Subtitle</FormLabel>
-                      <FormControl>
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Hero Subtitle</FormLabel>
+                      <FormControl className="md:col-span-3">
                         <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
                     </FormItem>
                   )}
                 />

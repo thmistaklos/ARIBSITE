@@ -270,12 +270,12 @@ const BlogManagement: React.FC = () => {
                 control={form.control}
                 name="title"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Title</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Title</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -283,12 +283,12 @@ const BlogManagement: React.FC = () => {
                 control={form.control}
                 name="author"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Author</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Author</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -296,9 +296,9 @@ const BlogManagement: React.FC = () => {
                 control={form.control}
                 name="image_url" // Changed to image_url
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Image URL</FormLabel> {/* Changed label */}
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Image URL</FormLabel> {/* Changed label */}
+                    <FormControl className="md:col-span-3">
                       <Input
                         type="text" // Changed type to text
                         placeholder="e.g., https://example.com/image.jpg" // Added placeholder
@@ -306,14 +306,14 @@ const BlogManagement: React.FC = () => {
                         className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
                       />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
               {form.watch('image_url') && ( // Preview based on watched URL
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label className="text-right text-dairy-text">Preview</Label>
-                  <div className="col-span-3 flex flex-col gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                  <Label className="md:text-right text-dairy-text">Preview</Label>
+                  <div className="md:col-span-3 flex flex-col gap-2">
                     {/\.(jpeg|jpg|gif|png|svg|webp)$/i.test(form.watch('image_url') || '') ? (
                       <img src={form.watch('image_url') || ''} alt="Post Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
                     ) : (
@@ -326,9 +326,9 @@ const BlogManagement: React.FC = () => {
                 control={form.control}
                 name="content"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Content</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Content</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <ReactQuill
                         theme="snow"
                         value={field.value}
@@ -338,7 +338,7 @@ const BlogManagement: React.FC = () => {
                         className="bg-white rounded-md"
                       />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -346,9 +346,9 @@ const BlogManagement: React.FC = () => {
                 control={form.control}
                 name="published"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Publish</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Publish</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <input
                         type="checkbox"
                         checked={field.value}
@@ -356,7 +356,7 @@ const BlogManagement: React.FC = () => {
                         className="h-5 w-5 text-dairy-blue focus:ring-dairy-blue border-gray-300 rounded"
                       />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />

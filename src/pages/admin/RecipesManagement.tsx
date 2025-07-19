@@ -25,7 +25,7 @@ interface Recipe {
 
 const recipeSchema = z.object({
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
-  image_url: z.string().url().nullable().optional(),
+  image_url: z.string().url().nullable().optional().or(z.literal('')),
   ingredients: z.string().min(1, { message: 'Ingredients cannot be empty.' }), // Raw string input
   preparation_steps: z.string().min(1, { message: 'Preparation steps cannot be empty.' }), // Raw string input
 });
@@ -257,7 +257,7 @@ const RecipesManagement: React.FC = () => {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg">
+        <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-dairy-darkBlue">{currentRecipe ? 'Edit Recipe' : 'Add New Recipe'}</DialogTitle>
             <DialogDescription className="text-dairy-text">
@@ -270,20 +270,20 @@ const RecipesManagement: React.FC = () => {
                 control={form.control}
                 name="title"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Title</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Title</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="image" className="text-right text-dairy-text">
+              <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                <Label htmlFor="image" className="md:text-right text-dairy-text">
                   Image
                 </Label>
-                <div className="col-span-3 flex flex-col gap-2">
+                <div className="md:col-span-3 flex flex-col gap-2">
                   <Input
                     id="image"
                     name="image"
@@ -304,12 +304,12 @@ const RecipesManagement: React.FC = () => {
                 control={form.control}
                 name="ingredients"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Ingredients (one per line)</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Ingredients (one per line)</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Textarea {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -317,12 +317,12 @@ const RecipesManagement: React.FC = () => {
                 control={form.control}
                 name="preparation_steps"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Preparation Steps (one per line)</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Preparation Steps (one per line)</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Textarea {...field} rows={7} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -356,22 +356,7 @@ const RecipesManagement: React.FC = () => {
             {currentRecipe?.image_url && (
               <img src={currentRecipe.image_url} alt={currentRecipe.title} className="w-full h-64 object-cover rounded-md shadow-sm" />
             )}
-            <div>
-              <h3 className="text-xl font-semibold text-dairy-darkBlue mb-2">Ingredients:</h3>
-              <ul className="list-disc list-inside text-dairy-text">
-                {currentRecipe?.ingredients.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-dairy-darkBlue mb-2">Preparation:</h3>
-              <ol className="list-decimal list-inside text-dairy-text">
-                {currentRecipe?.preparation_steps.map((step, index) => (
-                  <li key={index}>{step}</li>
-                ))}
-              </ol>
-            </div>
+            <div className="prose max-w-none text-dairy-text" dangerouslySetInnerHTML={{ __html: currentRecipe?.content || '' }} />
           </div>
           <DialogFooter>
             <Button onClick={() => setIsPreviewOpen(false)} className="bg-dairy-blue text-white hover:bg-dairy-darkBlue">Close</Button>

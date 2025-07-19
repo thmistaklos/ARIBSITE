@@ -222,12 +222,12 @@ const FactsManagement: React.FC = () => {
                 control={form.control}
                 name="icon_name"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Icon Name (Lucide)</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Icon Name (Lucide)</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input placeholder="e.g., Droplet, Truck, FlaskConical" {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -235,12 +235,12 @@ const FactsManagement: React.FC = () => {
                 control={form.control}
                 name="text_content_en"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Text Content (English)</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Text Content (English)</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -248,12 +248,12 @@ const FactsManagement: React.FC = () => {
                 control={form.control}
                 name="text_content_ar"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Text Content (Arabic)</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Text Content (Arabic)</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -261,12 +261,12 @@ const FactsManagement: React.FC = () => {
                 control={form.control}
                 name="text_content_fr"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-start gap-4">
-                    <FormLabel className="text-right text-dairy-text">Text Content (French)</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Text Content (French)</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -274,9 +274,9 @@ const FactsManagement: React.FC = () => {
                 control={form.control}
                 name="order_index"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Order</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Order</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input
                         type="number"
                         {...field}
@@ -284,7 +284,7 @@ const FactsManagement: React.FC = () => {
                         className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
                       />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />

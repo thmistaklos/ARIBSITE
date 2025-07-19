@@ -257,12 +257,12 @@ const DistributorsManagement: React.FC = () => {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Name</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Name</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -270,12 +270,12 @@ const DistributorsManagement: React.FC = () => {
                 control={form.control}
                 name="location"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Location</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Location</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -283,12 +283,12 @@ const DistributorsManagement: React.FC = () => {
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Phone</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Phone</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -296,12 +296,12 @@ const DistributorsManagement: React.FC = () => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Email</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Email</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input type="email" {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -309,12 +309,12 @@ const DistributorsManagement: React.FC = () => {
                 control={form.control}
                 name="address"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Address</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Address</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
@@ -322,23 +322,23 @@ const DistributorsManagement: React.FC = () => {
                 control={form.control}
                 name="logo_url"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-dairy-text">Logo/Map URL</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                    <FormLabel className="md:text-right text-dairy-text">Logo/Map URL</FormLabel>
+                    <FormControl className="md:col-span-3">
                       <Input
                         placeholder="Paste image URL or Google Maps embed URL"
                         {...field}
                         className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
                       />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage className="md:col-span-4 md:col-start-2" />
                   </FormItem>
                 )}
               />
               {form.watch('logo_url') && (
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label className="text-right text-dairy-text">Preview</Label>
-                  <div className="col-span-3 flex flex-col gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                  <Label className="md:text-right text-dairy-text">Preview</Label>
+                  <div className="md:col-span-3 flex flex-col gap-2">
                     {form.watch('logo_url')?.startsWith('https://www.google.com/maps/embed?') ? (
                       <iframe
                         src={form.watch('logo_url') || ''}

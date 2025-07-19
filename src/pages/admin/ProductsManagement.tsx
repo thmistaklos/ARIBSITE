@@ -244,8 +244,8 @@ const ProductsManagement: React.FC = () => {
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleAddEditProduct} className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right text-dairy-text">
+            <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="md:text-right text-dairy-text">
                 Name
               </Label>
               <Input
@@ -253,12 +253,12 @@ const ProductsManagement: React.FC = () => {
                 name="name"
                 value={formState.name}
                 onChange={handleInputChange}
-                className="col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                className="md:col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
                 required
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right text-dairy-text">
+            <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="md:text-right text-dairy-text">
                 Description
               </Label>
               <Textarea
@@ -266,12 +266,12 @@ const ProductsManagement: React.FC = () => {
                 name="description"
                 value={formState.description}
                 onChange={handleInputChange}
-                className="col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                className="md:col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
                 required
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="price" className="text-right text-dairy-text">
+            <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+              <Label htmlFor="price" className="md:text-right text-dairy-text">
                 Price
               </Label>
               <Input
@@ -279,15 +279,15 @@ const ProductsManagement: React.FC = () => {
                 name="price"
                 value={formState.price}
                 onChange={handleInputChange}
-                className="col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
+                className="md:col-span-3 bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
                 required
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="image" className="text-right text-dairy-text">
+            <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+              <Label htmlFor="image" className="md:text-right text-dairy-text">
                 Image
               </Label>
-              <div className="col-span-3 flex flex-col gap-2">
+              <div className="md:col-span-3 flex flex-col gap-2">
                 <Input
                   id="image"
                   name="image"
@@ -299,7 +299,7 @@ const ProductsManagement: React.FC = () => {
                 {imagePreviewUrl && (
                   <img src={imagePreviewUrl} alt="Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
                 )}
-                {!selectedFile && currentProduct?.image_url && ( // Changed from 'image' to 'image_url'
+                {!selectedFile && currentProduct?.image_url && ( // Changed from 'product.image' to 'image_url'
                   <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
                 )}
               </div>
