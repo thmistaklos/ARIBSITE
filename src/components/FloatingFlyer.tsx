@@ -108,13 +108,15 @@ const FloatingFlyer: React.FC = () => {
               <p className="price">
                 <span className="glow">{getLocalizedText(activeDiscount, 'price_text')}</span>
               </p>
-              {activeDiscount.image_url && (
+            </div>
+            {activeDiscount.image_url && (
+              <div className="image-wrapper">
                 <img
                   src={activeDiscount.image_url}
                   alt={activeDiscount.title_en}
                 />
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </motion.div>
       )}
