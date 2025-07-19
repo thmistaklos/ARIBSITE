@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Milk, Heart, Weight, Droplet, Factory, Palette } from 'lucide-react'; // Importing relevant icons
+import { Milk, Cheese, Bone, Scale, Droplet, Factory, Palette } from 'lucide-react'; // Importing relevant icons
 import AnimatedButton from '@/components/AnimatedButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
@@ -64,9 +64,9 @@ const KidsZone: React.FC = () => {
 
   const funFacts = [
     { icon: Milk, text: t('fact_cow_milk') },
-    { icon: Milk, text: t('fact_cheese_age') },
-    { icon: Heart, text: t('fact_milk_calcium') },
-    { icon: Weight, text: t('fact_milk_to_cheese') },
+    { icon: Cheese, text: t('fact_cheese_age') },
+    { icon: Bone, text: t('fact_milk_calcium') },
+    { icon: Scale, text: t('fact_milk_to_cheese') },
   ];
 
   const cheeseMakingSteps = [
