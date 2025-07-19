@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } => 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent } from 'lucide-react'; // Added Percent for Discounts
 import { cn } from '@/lib/utils';
