@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap"); 
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap'); 
-@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700&display=swap'); 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -85,7 +85,7 @@
   }
 }
 
-/* === DISCOUNT FLYER STYLES === */
+/* Card Styles */
 .card {
   width: 280px;
   height: 400px;
@@ -100,12 +100,10 @@
   padding: 20px;
   text-align: center;
   color: white;
-  z-index: 1;
 }
 
 .card-content {
-  z-index: 2;
-  position: relative;
+  z-index: 1;
 }
 
 .card h2 {
@@ -126,22 +124,22 @@
   margin-bottom: 15px;
 }
 
+/* Image Adjustment */
 .image-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-end;
   width: 100%;
-  position: relative;
-  z-index: 2;
 }
 
 .card img {
-  max-width: 140px; /* Smaller to avoid covering price */
-  max-height: 100px;
+  max-width: 180px;  /* Increased to reach red line */
+  max-height: 150px; /* Slightly bigger height */
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
+/* Glow Effect for Price */
 .price .glow {
   color: #FFD700;
   text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFDF00, 0 0 40px #FFBF00;
@@ -157,6 +155,7 @@
   }
 }
 
+/* Animated Border */
 .card::before {
   content: '';
   position: absolute;
@@ -165,16 +164,6 @@
   height: 130%;
   animation: rotBGimg 3s linear infinite;
   transition: all 0.2s linear;
-  z-index: 0;
-}
-
-.card::after {
-  content: '';
-  position: absolute;
-  background: #07182E;
-  inset: 5px;
-  border-radius: 15px;
-  z-index: 1;
 }
 
 @keyframes rotBGimg {
@@ -184,4 +173,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  background: #07182E;
+  inset: 5px;
+  border-radius: 15px;
 }
