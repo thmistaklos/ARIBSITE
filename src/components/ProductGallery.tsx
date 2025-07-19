@@ -9,7 +9,7 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image_url: string; // Changed from 'image' to 'image_url'
+  image_url: string;
 }
 
 const ProductGallery: React.FC = () => {
@@ -20,12 +20,36 @@ const ProductGallery: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from('products').select('*').order('name', { ascending: true });
+      // Fetch from the new gallery_products table, join with products to get details
+      const { data, error } = await supabase
+        .from('gallery_products')
+        .select(`
+          product_id,
+          order_index,
+          products (
+            id,
+            name,
+            description,
+            price,
+            image_url
+          )
+        `)
+        .order('order_index', { ascending: true });
+
       if (error) {
         toast.error('Failed to load products for gallery', { description: error.message });
       } else {
-        // Limit to 5 products as per the original HTML example
-        setProducts(data?.slice(0, 5) || []);
+        // Map the joined data to the Product interface
+        const mappedProducts: Product[] = data
+          .filter(item => item.products !== null) // Ensure product data exists
+          .map(item => ({
+            id: item.products!.id,
+            name: item.products!.name,
+            description: item.products!.description,
+            price: item.products!.price,
+            image_url: item.products!.image_url,
+          }));
+        setProducts(mappedProducts);
       }
       setLoading(false);
     };
@@ -44,7 +68,7 @@ const ProductGallery: React.FC = () => {
   if (products.length === 0) {
     return (
       <div className="text-center text-xl text-dairy-text mt-8">
-        No products available for the gallery.
+        No products available for the gallery. Please add some in the admin panel via the 'gallery_products' table in Supabase.
       </div>
     );
   }
@@ -71,7 +95,7 @@ const ProductGallery: React.FC = () => {
         {products.map((product) => (
           <motion.img
             key={product.id}
-            src={product.image_url} // Changed from 'product.image' to 'product.image_url'
+            src={product.image_url}
             alt={product.name}
             className="h-full object-cover overflow-hidden"
             style={{
