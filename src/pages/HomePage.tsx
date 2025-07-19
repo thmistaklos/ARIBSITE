@@ -9,6 +9,7 @@ import FactsSection from '@/components/FactsSection';
 import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
 import AnimatedButton from '@/components/AnimatedButton';
+import FloatingFlyer from '@/components/FloatingFlyer'; // Import the new component
 
 // Define the hero texts using translation keys
 const heroTextKeys = [
@@ -110,6 +111,9 @@ const HomePage: React.FC = () => {
       <section className="relative z-20 overflow-hidden pb-8 pt-10 lg:pb-[90px] lg:pt-[120px] bg-dairy-cream text-dairy-text">
         <AccordionSection />
       </section>
+
+      {/* Floating Flyer */}
+      <FloatingFlyer />
     </div>
   );
 };
