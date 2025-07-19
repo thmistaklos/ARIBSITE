@@ -9,7 +9,8 @@ import FactsSection from '@/components/FactsSection';
 import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
 import AnimatedButton from '@/components/AnimatedButton';
-import FloatingFlyer from '@/components/FloatingFlyer'; // Import the new component
+import FloatingFlyer from '@/components/FloatingFlyer';
+import DiscountPopup from '@/components/DiscountPopup'; // Import the new component
 
 // Define the hero texts using translation keys
 const heroTextKeys = [
@@ -114,6 +115,9 @@ const HomePage: React.FC = () => {
 
       {/* Floating Flyer */}
       <FloatingFlyer />
+
+      {/* Discount Popup */}
+      <DiscountPopup />
     </div>
   );
 };
