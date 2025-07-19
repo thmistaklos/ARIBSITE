@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const navItems = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
@@ -26,6 +27,7 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
   const { signOut } = useAuth();
+  const { t } = useTranslation(); // Initialize useTranslation
 
   const handleLogout = async () => {
     await signOut();
@@ -70,7 +72,7 @@ const Sidebar: React.FC = () => {
       <div className="flex h-16 items-center justify-center border-b border-dairy-blue/20 px-4">
         <Link to="/admin" className="flex items-center space-x-2">
           <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
-          <span className="text-xl font-bold text-dairy-darkBlue">ARIB ADMIN</span>
+          <span className="text-xl font-bold text-dairy-darkBlue">{t('arib_admin')}</span>
         </Link>
       </div>
       <div className="flex-1 overflow-auto py-4">
@@ -86,7 +88,7 @@ const Sidebar: React.FC = () => {
               <div className="flex h-16 items-center justify-center border-b border-dairy-blue/20">
                 <Link to="/admin" className="flex items-center space-x-2">
                   <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
-                  <span className="text-xl font-bold text-dairy-darkBlue">ARIB ADMIN</span>
+                  <span className="text-xl font-bold text-dairy-darkBlue">{t('arib_admin')}</span>
                 </Link>
               </div>
               {renderNavLinks()}
