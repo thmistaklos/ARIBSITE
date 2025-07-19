@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap"); /* Added Inter font */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap'); /* Ensure Exo 2 is imported if used elsewhere */
-@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700&display=swap'); /* Changed to Playpen Sans */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -41,19 +41,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -105,32 +98,13 @@
     @apply bg-background text-foreground font-sans;
   }
 
-  /* Apply Playpen Sans font specifically for Arabic language */
+  /* Apply Playpen Sans font for Arabic */
   html[lang="ar"] body {
     font-family: 'Playpen Sans', sans-serif !important;
   }
 }
 
-/* Keyframes for Particle Animation */
-@keyframes particle-float {
-  0% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(5deg);
-  }
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
-@keyframes fade-in-out {
-  0%, 100% { opacity: 0; }
-  25%, 75% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* Card Styles */
+/* ------------------ Discount Flyer ------------------ */
 .card {
   width: 280px;
   height: 400px;
@@ -139,7 +113,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   overflow: hidden;
   border-radius: 20px;
   padding: 20px;
@@ -148,7 +122,8 @@
 }
 
 .card-content {
-  z-index: 1;
+  z-index: 2;
+  position: relative;
 }
 
 .card h2 {
@@ -163,23 +138,26 @@
 }
 
 .card .price {
-  font-size: 1.3em;
+  font-size: 1.6em;
   font-weight: bold;
   color: #FFD700;
   margin-bottom: 15px;
 }
 
-/* Bottom Center Image (Fixed, No Bounce) */
+/* Bottom Center Image */
 .image-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-end;
   width: 100%;
+  z-index: 2;
+  position: absolute;
+  bottom: 10px;
 }
 
 .card img {
-  max-width: 200px;
-  max-height: 140px;
+  max-width: 400px;
+  max-height: 280px;
   object-fit: contain;
 }
 
