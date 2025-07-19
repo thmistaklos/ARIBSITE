@@ -169,7 +169,7 @@
   margin-bottom: 15px;
 }
 
-/* Bottom Center Image */
+/* Bottom Center Image (Fixed, No Bounce) */
 .image-wrapper {
   display: flex;
   justify-content: center;
@@ -181,17 +181,6 @@
   max-width: 200px;
   max-height: 140px;
   object-fit: contain;
-  animation: bounce 3s ease-in-out infinite;
-}
-
-/* Bounce Animation */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 /* Glow Effect for Price */
