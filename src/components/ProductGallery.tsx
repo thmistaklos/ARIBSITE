@@ -10,6 +10,7 @@ interface Product {
   description: string;
   price: string;
   image_url: string;
+  show_in_gallery: boolean; // Include the new field
 }
 
 const ProductGallery: React.FC = () => {
@@ -20,36 +21,17 @@ const ProductGallery: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      // Fetch from the new gallery_products table, join with products to get details
+      // Fetch directly from the products table, filtering by show_in_gallery
       const { data, error } = await supabase
-        .from('gallery_products')
-        .select(`
-          product_id,
-          order_index,
-          products (
-            id,
-            name,
-            description,
-            price,
-            image_url
-          )
-        `)
-        .order('order_index', { ascending: true });
+        .from('products')
+        .select('*') // Select all fields including show_in_gallery
+        .eq('show_in_gallery', true) // Filter to only show products marked for gallery
+        .order('name', { ascending: true }); // You can change this order if needed
 
       if (error) {
         toast.error('Failed to load products for gallery', { description: error.message });
       } else {
-        // Map the joined data to the Product interface
-        const mappedProducts: Product[] = data
-          .filter(item => item.products !== null) // Ensure product data exists
-          .map(item => ({
-            id: item.products!.id,
-            name: item.products!.name,
-            description: item.products!.description,
-            price: item.products!.price,
-            image_url: item.products!.image_url,
-          }));
-        setProducts(mappedProducts);
+        setProducts(data || []);
       }
       setLoading(false);
     };
@@ -68,7 +50,7 @@ const ProductGallery: React.FC = () => {
   if (products.length === 0) {
     return (
       <div className="text-center text-xl text-dairy-text mt-8">
-        No products available for the gallery. Please add some in the admin panel via the 'gallery_products' table in Supabase.
+        No products are currently selected to be shown in the gallery. Please enable "Show in Gallery" for some products in the admin panel.
       </div>
     );
   }

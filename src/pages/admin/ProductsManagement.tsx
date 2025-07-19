@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch'; // Import Switch component
 import { toast } from 'sonner';
 import { PlusCircle, Edit, Trash2, Loader2 } from 'lucide-react';
 import AnimatedButton from '@/components/AnimatedButton';
@@ -16,7 +17,8 @@ interface Product {
   name: string;
   description: string;
   price: string;
-  image_url: string; // Changed from 'image' to 'image_url'
+  image_url: string;
+  show_in_gallery: boolean; // Added new field
 }
 
 const ProductsManagement: React.FC = () => {
@@ -28,6 +30,7 @@ const ProductsManagement: React.FC = () => {
     name: '',
     description: '',
     price: '',
+    show_in_gallery: false, // Initialize new field
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -53,6 +56,21 @@ const ProductsManagement: React.FC = () => {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleToggleGalleryStatus = async (product: Product) => {
+    const newStatus = !product.show_in_gallery;
+    const { error } = await supabase
+      .from('products')
+      .update({ show_in_gallery: newStatus })
+      .eq('id', product.id);
+
+    if (error) {
+      toast.error('Failed to update gallery status', { description: error.message });
+    } else {
+      toast.success(`Product ${newStatus ? 'added to' : 'removed from'} gallery!`);
+      fetchProducts(); // Re-fetch to update the UI
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -60,7 +78,7 @@ const ProductsManagement: React.FC = () => {
       setImagePreviewUrl(URL.createObjectURL(file));
     } else {
       setSelectedFile(null);
-      setImagePreviewUrl(currentProduct?.image_url || null); // Changed from 'image' to 'image_url'
+      setImagePreviewUrl(currentProduct?.image_url || null);
     }
   };
 
@@ -68,11 +86,10 @@ const ProductsManagement: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    let imageUrl = currentProduct?.image_url || ''; // Changed from 'image' to 'image_url'
+    let imageUrl = currentProduct?.image_url || '';
 
     try {
       if (selectedFile) {
-        const fileExtension = selectedFile.name.split('.').pop();
         const fileName = `${Date.now()}-${selectedFile.name}`;
         const filePath = `product-images/${fileName}`;
 
@@ -102,7 +119,8 @@ const ProductsManagement: React.FC = () => {
         name: formState.name,
         description: formState.description,
         price: formState.price,
-        image_url: imageUrl, // Changed from 'image' to 'image_url'
+        image_url: imageUrl,
+        show_in_gallery: formState.show_in_gallery, // Include new field
       };
 
       if (currentProduct) {
@@ -151,7 +169,7 @@ const ProductsManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentProduct(null);
-    setFormState({ name: '', description: '', price: '' });
+    setFormState({ name: '', description: '', price: '', show_in_gallery: false });
     setSelectedFile(null);
     setImagePreviewUrl(null);
     setIsDialogOpen(true);
@@ -163,9 +181,10 @@ const ProductsManagement: React.FC = () => {
       name: product.name,
       description: product.description,
       price: product.price,
+      show_in_gallery: product.show_in_gallery,
     });
     setSelectedFile(null);
-    setImagePreviewUrl(product.image_url); // Changed from 'product.image' to 'product.image_url'
+    setImagePreviewUrl(product.image_url);
     setIsDialogOpen(true);
   };
 
@@ -189,7 +208,7 @@ const ProductsManagement: React.FC = () => {
         </div>
       ) : (
         <div className="rounded-md border border-dairy-blue/20 bg-white shadow-md overflow-hidden">
-          <div className="overflow-x-auto"> {/* Added for horizontal scrolling */}
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-dairy-blue/10">
@@ -197,13 +216,14 @@ const ProductsManagement: React.FC = () => {
                   <TableHead className="text-dairy-darkBlue">Name</TableHead>
                   <TableHead className="text-dairy-darkBlue">Description</TableHead>
                   <TableHead className="text-dairy-darkBlue">Price</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Show in Gallery</TableHead> {/* New Table Head */}
                   <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {products.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center text-dairy-text">
+                    <TableCell colSpan={6} className="h-24 text-center text-dairy-text"> {/* Updated colspan */}
                       No products found.
                     </TableCell>
                   </TableRow>
@@ -211,11 +231,18 @@ const ProductsManagement: React.FC = () => {
                   products.map((product) => (
                     <TableRow key={product.id}>
                       <TableCell>
-                        <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-md" /> {/* Changed from 'product.image' to 'product.image_url' */}
+                        <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
                       </TableCell>
                       <TableCell className="font-medium text-dairy-darkBlue">{product.name}</TableCell>
                       <TableCell className="text-dairy-text">{product.description}</TableCell>
                       <TableCell className="text-dairy-blue font-semibold">{product.price} DA</TableCell>
+                      <TableCell> {/* New Table Cell for toggle */}
+                        <Switch
+                          checked={product.show_in_gallery}
+                          onCheckedChange={() => handleToggleGalleryStatus(product)}
+                          className="data-[state=checked]:bg-dairy-blue data-[state=unchecked]:bg-gray-300"
+                        />
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
                           <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(product)} soundOnClick="/sounds/click.mp3">
@@ -299,9 +326,22 @@ const ProductsManagement: React.FC = () => {
                 {imagePreviewUrl && (
                   <img src={imagePreviewUrl} alt="Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
                 )}
-                {!selectedFile && currentProduct?.image_url && ( // Changed from 'product.image' to 'image_url'
+                {!selectedFile && currentProduct?.image_url && (
                   <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
                 )}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+              <Label htmlFor="show_in_gallery" className="md:text-right text-dairy-text">
+                Show in Gallery
+              </Label>
+              <div className="md:col-span-3">
+                <Switch
+                  id="show_in_gallery"
+                  checked={formState.show_in_gallery}
+                  onCheckedChange={(checked) => setFormState((prev) => ({ ...prev, show_in_gallery: checked }))}
+                  className="data-[state=checked]:bg-dairy-blue data-[state=unchecked]:bg-gray-300"
+                />
               </div>
             </div>
             <DialogFooter>
