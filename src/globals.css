@@ -107,7 +107,7 @@
 
   /* Apply Playpen Sans font specifically for Arabic language */
   html[lang="ar"] body {
-    font-family: 'Playpen Sans', sans-serif;
+    font-family: 'Playpen Sans', sans-serif !important;
   }
 }
 
