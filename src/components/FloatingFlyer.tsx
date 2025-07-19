@@ -106,7 +106,7 @@ const FloatingFlyer: React.FC = () => {
               <h2>{getLocalizedText(activeDiscount, 'title')}</h2>
               <p className="subtitle">{getLocalizedText(activeDiscount, 'subtitle')}</p>
               <p className="price">
-                {getLocalizedText(activeDiscount, 'price_text')}
+                <span className="glow">{getLocalizedText(activeDiscount, 'price_text')}</span>
               </p>
               {activeDiscount.image_url && (
                 <img

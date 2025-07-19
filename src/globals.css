@@ -130,10 +130,10 @@
   50% { opacity: 1; }
 }
 
-/* New styles for the Floating Flyer card */
+/* Card Styles */
 .card {
-  width: 240px;
-  height: 320px;
+  width: 260px;
+  height: 360px;
   background: #07182E;
   position: relative;
   display: flex;
@@ -151,29 +151,45 @@
 }
 
 .card h2 {
-  font-size: 1.8em;
+  font-size: 2em;
   margin-bottom: 10px;
 }
 
 .card .subtitle {
-  font-size: 1em;
+  font-size: 1.1em;
   color: #ccc;
   margin-bottom: 12px;
 }
 
 .card .price {
-  font-size: 1.2em;
+  font-size: 1.3em;
   font-weight: bold;
-  color: #FFD700; /* Gold color for price */
+  color: #FFD700;
   margin-bottom: 15px;
 }
 
 .card img {
-  max-width: 100px;
-  margin-top: 10px;
+  max-width: 160px;
+  margin-top: 12px;
 }
 
-/* Animated Gradient Border */
+/* Glow Effect for Price */
+.price .glow {
+  color: #FFD700;
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFDF00, 0 0 40px #FFBF00;
+  animation: glowing 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowing {
+  from {
+    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFDF00, 0 0 40px #FFBF00;
+  }
+  to {
+    text-shadow: 0 0 10px #FFE44D, 0 0 20px #FFD700, 0 0 40px #FFDF00, 0 0 60px #FFBF00;
+  }
+}
+
+/* Animated Border */
 .card::before {
   content: '';
   position: absolute;
