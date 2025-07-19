@@ -20,7 +20,6 @@ import BlogManagement from "./pages/admin/BlogManagement";
 import FaqManagement from "./pages/admin/FaqManagement";
 import FactsManagement from "./pages/admin/FactsManagement";
 import DiscountsManagement from "./pages/admin/DiscountsManagement";
-import KidsZone from "./pages/KidsZone"; // Import the new KidsZone component
 
 const queryClient = new QueryClient();
 
@@ -35,9 +34,6 @@ const App = () => (
             <Routes>
               {/* Public Routes with common Header/Footer and animations */}
               <Route path="/*" element={<PublicLayout />} />
-
-              {/* New Kids Zone Route */}
-              <Route path="/kids-zone" element={<KidsZone />} />
 
               {/* Admin Login Route */}
               <Route path="/admin/login" element={<LoginPage />} />

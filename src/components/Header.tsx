@@ -18,7 +18,6 @@ const Header: React.FC = () => {
     { name: t('our_distributors'), path: '/distributors' },
     { name: t('recipes'), path: '/recipes' },
     { name: t('our_blog'), path: '/blog' },
-    { name: t('kids_zone'), path: '/kids-zone' }, // New Kids Zone link
     { name: t('about'), path: '/about' },
     { name: t('contact'), path: '/contact' },
   ];

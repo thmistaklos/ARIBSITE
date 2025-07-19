@@ -13,7 +13,6 @@ import ProductsPage from "../pages/ProductsPage";
 import ProductDetailPage from "../pages/ProductDetailPage";
 import Footer from "./Footer";
 import RecipeDetailPage from "../pages/RecipeDetailPage";
-import KidsZone from "../pages/KidsZone"; // Import KidsZone
 
 const PublicLayout: React.FC = () => {
   const location = useLocation();
@@ -34,7 +33,6 @@ const PublicLayout: React.FC = () => {
             <Route path="/blog/:id" element={<BlogPostDetail />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
-            <Route path="/kids-zone" element={<KidsZone />} /> {/* New Kids Zone Route */}
           </Routes>
         </AnimatePresence>
       </main>
