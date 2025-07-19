@@ -130,4 +130,73 @@
   50% { opacity: 1; }
 }
 
-/* Removed old hero-specific custom styles */
+/* New styles for the Floating Flyer card */
+.card {
+  width: 240px;
+  height: 320px;
+  background: #07182E;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+.card-content {
+  z-index: 1;
+}
+
+.card h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+.card .subtitle {
+  font-size: 1em;
+  color: #ccc;
+  margin-bottom: 12px;
+}
+
+.card .price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #FFD700; /* Gold color for price */
+  margin-bottom: 15px;
+}
+
+.card img {
+  max-width: 100px;
+  margin-top: 10px;
+}
+
+/* Animated Gradient Border */
+.card::before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+  height: 130%;
+  animation: rotBGimg 3s linear infinite;
+  transition: all 0.2s linear;
+}
+
+@keyframes rotBGimg {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  background: #07182E;
+  inset: 5px;
+  border-radius: 15px;
+}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2 } from 'lucide-react';
-import AnimatedButton from '@/components/AnimatedButton';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
@@ -93,59 +92,28 @@ const FloatingFlyer: React.FC = () => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="fixed bottom-4 right-4 z-50 w-full max-w-sm md:max-w-md lg:max-w-lg bg-white rounded-xl shadow-xl border-2 border-dairy-blue/20 overflow-hidden p-4 md:p-6"
+          className="fixed bottom-4 right-4 z-50"
         >
-          <button
-            onClick={handleClose}
-            className="absolute top-3 right-3 text-dairy-darkBlue hover:text-dairy-blue transition-colors z-10"
-            aria-label="Close flyer"
-          >
-            <X className="h-6 w-6" />
-          </button>
-
-          <div className="relative flex flex-col-reverse items-center justify-between gap-4 md:flex-row">
-            {/* Right Image (comes first on small screens due to flex-col-reverse) */}
-            <div className="relative md:w-1/2 flex-shrink-0 flex items-center justify-center">
+          <div className="card">
+            <button
+              onClick={handleClose}
+              className="absolute top-3 right-3 text-white hover:text-gray-300 transition-colors z-10"
+              aria-label="Close flyer"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <div className="card-content">
+              <h2>{getLocalizedText(activeDiscount, 'title')}</h2>
+              <p className="subtitle">{getLocalizedText(activeDiscount, 'subtitle')}</p>
+              <p className="price">
+                {getLocalizedText(activeDiscount, 'price_text')}
+              </p>
               {activeDiscount.image_url && (
                 <img
                   src={activeDiscount.image_url}
                   alt={activeDiscount.title_en}
-                  className="max-w-[200px] md:max-w-full h-auto object-contain mx-auto"
                 />
               )}
-            </div>
-
-            {/* Left Content */}
-            <div className="relative z-20 flex flex-col items-center md:items-start md:w-1/2 flex-grow text-center md:text-left">
-              <span className="w-16 h-1 mb-4 bg-dairy-darkBlue mx-auto md:mx-0"></span>
-              
-              <h1 className="flex flex-col text-4xl sm:text-5xl font-extrabold leading-none text-dairy-darkBlue uppercase font-exo">
-                {getLocalizedText(activeDiscount, 'title')}
-                <span className="text-3xl sm:text-4xl">
-                  {getLocalizedText(activeDiscount, 'subtitle')}
-                </span>
-              </h1>
-              
-              <p className="text-lg text-dairy-text mt-2">
-                {getLocalizedText(activeDiscount, 'price_text')}
-              </p>
-
-              <p className="mt-4 text-base font-semibold text-dairy-blue">
-                {t('visit_us_text')}
-              </p>
-
-              <div className="flex flex-col sm:flex-row mt-6 gap-3 justify-center md:justify-start">
-                <a href={activeDiscount.link_url || '/products'} className="w-full sm:w-auto">
-                  <AnimatedButton className="w-full bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3">
-                    {t('buy_now')}
-                  </AnimatedButton>
-                </a>
-                <a href={activeDiscount.link_url || '/products'} className="w-full sm:w-auto">
-                  <AnimatedButton variant="outline" className="w-full text-dairy-blue border-dairy-blue hover:bg-dairy-blue hover:text-white" soundOnClick="/sounds/click.mp3">
-                    {t('read_more')}
-                  </AnimatedButton>
-                </a>
-              </div>
             </div>
           </div>
         </motion.div>
