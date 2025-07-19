@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap"); /* Added Inter font */
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap'); /* Ensure Exo 2 is imported if used elsewhere */
-@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@400;600;700&display=swap'); /* Added Playpen Sans Arabic */
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700&display=swap'); /* Changed to Playpen Sans */
 
 @tailwind base;
 @tailwind components;
@@ -105,9 +105,9 @@
     @apply bg-background text-foreground font-sans;
   }
 
-  /* Apply Playpen Sans Arabic font specifically for Arabic language */
+  /* Apply Playpen Sans font specifically for Arabic language */
   html[lang="ar"] body {
-    font-family: 'Playpen Sans Arabic', sans-serif;
+    font-family: 'Playpen Sans', sans-serif;
   }
 }
 
