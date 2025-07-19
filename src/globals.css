@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap"); /* Added Inter font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700&display=swap');
 
@@ -98,7 +98,6 @@
     @apply bg-background text-foreground font-sans;
   }
 
-  /* Apply Playpen Sans font for Arabic */
   html[lang="ar"] body {
     font-family: 'Playpen Sans', sans-serif !important;
   }
@@ -156,8 +155,8 @@
 }
 
 .card img {
-  max-width: 400px;
-  max-height: 280px;
+  max-width: 280px; /* reduced */
+  max-height: 180px; /* reduced */
   object-fit: contain;
 }
 
