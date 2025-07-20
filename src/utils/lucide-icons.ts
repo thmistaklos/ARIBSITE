@@ -4,6 +4,10 @@ import {
   FlaskConical,
   Store,
   Leaf,
+  Award, // New icon
+  Heart, // New icon
+  Apple, // New icon
+  Grass, // New icon
   LucideIcon,
 } from 'lucide-react';
 
@@ -14,5 +18,8 @@ export const LucideIcons: { [key: string]: LucideIcon } = {
   FlaskConical,
   Store,
   Leaf,
-  // Removed Sprout, Wheat, Award as they were specific to FarmInfoSection
+  Award,
+  Heart,
+  Apple,
+  Grass,
 };
