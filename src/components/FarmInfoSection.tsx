@@ -3,6 +3,16 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { LucideIcons } from '@/utils/lucide-icons';
 
+interface FactItemData {
+  iconName: string;
+  title_en: string;
+  description_en: string;
+  title_ar: string;
+  description_ar: string;
+  title_fr: string;
+  description_fr: string;
+}
+
 interface FactItemProps {
   iconName: string;
   title: string;
@@ -12,8 +22,24 @@ interface FactItemProps {
 const FactItem: React.FC<FactItemProps> = ({ iconName, title, description }) => {
   const IconComponent = LucideIcons[iconName];
   if (!IconComponent) {
-    console.warn(`Icon "${iconName}" not found in LucideIcons map.`);
-    return null;
+    console.warn(`Icon "${iconName}" not found in LucideIcons map. Using a placeholder.`);
+    return (
+      <motion.div
+        className="flex items-start space-x-4"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <div className="flex-shrink-0 p-3 rounded-full bg-dairy-blue/10 text-dairy-blue">
+          <span className="h-6 w-6 flex items-center justify-center text-red-500">?</span>
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-dairy-darkBlue mb-1">{title}</h3>
+          <p className="text-dairy-text text-sm">{description}</p>
+        </div>
+      </motion.div>
+    );
   }
 
   return (
@@ -35,8 +61,33 @@ const FactItem: React.FC<FactItemProps> = ({ iconName, title, description }) => 
   );
 };
 
-const FarmInfoSection: React.FC = () => {
-  const { t } = useTranslation();
+interface FarmInfoSectionProps {
+  title_en: string;
+  title_ar: string;
+  title_fr: string;
+  subtitle_en: string;
+  subtitle_ar: string;
+  subtitle_fr: string;
+  facts: FactItemData[];
+}
+
+const FarmInfoSection: React.FC<FarmInfoSectionProps> = ({
+  title_en,
+  title_ar,
+  title_fr,
+  subtitle_en,
+  subtitle_ar,
+  subtitle_fr,
+  facts,
+}) => {
+  const { i18n } = useTranslation();
+
+  const getLocalizedText = (en: string, ar: string, fr: string) => {
+    const lang = i18n.language;
+    if (lang === 'ar') return ar || en;
+    if (lang === 'fr') return fr || en;
+    return en;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -79,34 +130,21 @@ const FarmInfoSection: React.FC = () => {
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-dairy-darkBlue leading-tight">
-            {t('farm_section_title')}
+            {getLocalizedText(title_en, title_ar, title_fr)}
           </h2>
           <p className="text-lg text-dairy-text max-w-xl lg:mx-0 mx-auto">
-            {t('farm_section_subtitle')}
+            {getLocalizedText(subtitle_en, subtitle_ar, subtitle_fr)}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <FactItem
-              iconName="Leaf"
-              title={t('fact_organic_title')}
-              description={t('fact_organic_description')}
-            />
-            <FactItem
-              iconName="Award"
-              title={t('fact_dairy_products_title')}
-              description={t('fact_dairy_products_description')}
-            />
-            <FactItem
-              iconName="Heart"
-              title={t('fact_healthy_nutritious_title')}
-              description={t('fact_healthy_nutritious_description')}
-            />
-            {/* Changed from Grass to Leaf */}
-            <FactItem
-              iconName="Leaf"
-              title={t('fact_pasture_acres_title')}
-              description={t('fact_pasture_acres_description')}
-            />
+            {facts.map((fact, index) => (
+              <FactItem
+                key={index}
+                iconName={fact.iconName}
+                title={getLocalizedText(fact.title_en, fact.title_ar, fact.title_fr)}
+                description={getLocalizedText(fact.description_en, fact.description_ar, fact.description_fr)}
+              />
+            ))}
           </div>
         </motion.div>
       </div>
