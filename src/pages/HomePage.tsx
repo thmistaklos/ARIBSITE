@@ -9,7 +9,8 @@ import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
 import FloatingFlyer from '@/components/FloatingFlyer';
 import DiscountPopup from '@/components/DiscountPopup';
-import HeroCarousel from '@/components/HeroCarousel'; // Import the new component
+import HeroCarousel from '@/components/HeroCarousel';
+import ImageSliderSection from '@/components/ImageSliderSection'; // Import the new component
 
 const HomePage: React.FC = () => {
   // useTranslation is still needed for other sections, so keep it
@@ -32,6 +33,9 @@ const HomePage: React.FC = () => {
       <section className="w-full py-12 px-4 bg-dairy-cream">
         <RecipesSection />
       </section>
+
+      {/* Image Slider Section (New) */}
+      <ImageSliderSection />
 
       {/* Facts Section */}
       <section
