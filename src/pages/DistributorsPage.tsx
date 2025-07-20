@@ -58,7 +58,7 @@ const DistributorsPage: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-[calc(100vh-160px)] bg-dairy-cream text-dairy-text py-12 px-4"
+      className="min-h-[calc(100vh-232px)] bg-dairy-cream text-dairy-text py-12 px-4"
     >
       <div className="container mx-auto">
         <motion.h1

@@ -33,7 +33,7 @@ const HeroCarousel: React.FC = () => {
 
   return (
     <section
-      className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-64px)] bg-cover bg-center bg-no-repeat text-white overflow-hidden px-4 py-20"
+      className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] bg-cover bg-center bg-no-repeat text-white overflow-hidden px-4 py-20"
       style={{
         backgroundImage:
           "url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg')",

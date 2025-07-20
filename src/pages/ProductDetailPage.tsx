@@ -48,7 +48,7 @@ const ProductDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
+      <div className="min-h-[calc(100vh-232px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
         <Loader2 className="h-10 w-10 animate-spin text-dairy-blue" />
       </div>
     );
@@ -56,7 +56,7 @@ const ProductDetailPage: React.FC = () => {
 
   if (!product) {
     return (
-      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
+      <div className="min-h-[calc(100vh-232px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4 text-dairy-darkBlue">{t('product_not_found')}</h1>
           <p className="text-xl text-dairy-text mb-6">{t('product_not_found_desc')}</p>
@@ -75,7 +75,7 @@ const ProductDetailPage: React.FC = () => {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="min-h-[calc(100vh-160px)] bg-dairy-cream text-dairy-text py-12 px-4"
+      className="min-h-[calc(100vh-232px)] bg-dairy-cream text-dairy-text py-12 px-4"
     >
       <div className="container mx-auto max-w-5xl bg-white rounded-xl shadow-lg border-2 border-dairy-blue/20 p-6 md:p-10 flex flex-col md:flex-row gap-8 relative">
         <Link to="/products" className="absolute top-6 left-6 flex items-center text-dairy-blue hover:text-dairy-darkBlue transition-colors">

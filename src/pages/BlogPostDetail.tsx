@@ -50,7 +50,7 @@ const BlogPostDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
+      <div className="min-h-[calc(100vh-232px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
         <Loader2 className="h-10 w-10 animate-spin text-dairy-blue" />
       </div>
     );
@@ -58,7 +58,7 @@ const BlogPostDetail: React.FC = () => {
 
   if (!post) {
     return (
-      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
+      <div className="min-h-[calc(100vh-232px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4 text-dairy-darkBlue">{t('post_not_found')}</h1>
           <p className="text-xl text-dairy-text mb-6">{t('post_not_found_desc')}</p>
@@ -77,7 +77,7 @@ const BlogPostDetail: React.FC = () => {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="min-h-[calc(100vh-160px)] bg-dairy-cream text-dairy-text py-12 px-4"
+      className="min-h-[calc(100vh-232px)] bg-dairy-cream text-dairy-text py-12 px-4"
     >
       <div className="container mx-auto max-w-4xl bg-white rounded-xl shadow-lg border-2 border-dairy-blue/20 p-6 md:p-10">
         <Link to="/blog" className="flex items-center text-dairy-blue hover:text-dairy-darkBlue transition-colors mb-6">

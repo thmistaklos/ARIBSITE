@@ -11,7 +11,7 @@ const NotFound: React.FC = () => {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="relative z-10 bg-dairy-blue py-[120px] min-h-[calc(100vh-160px)] flex items-center justify-center"
+      className="relative z-10 bg-dairy-blue py-[120px] min-h-[calc(100vh-232px)] flex items-center justify-center"
     >
       <div className="container mx-auto">
         <div className="-mx-4 flex">

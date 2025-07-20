@@ -48,7 +48,7 @@ const ContactPage: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-      className="min-h-[calc(100vh-160px)] bg-dairy-cream text-dairy-text py-12 px-4"
+      className="min-h-[calc(100vh-232px)] bg-dairy-cream text-dairy-text py-12 px-4"
     >
       <div className="container mx-auto max-w-4xl">
         <motion.h1
@@ -63,7 +63,7 @@ const ContactPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <motion.div variants={itemVariants} className="bg-white p-8 rounded-xl shadow-md border border-dairy-blue/20">
             <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-6">{t('send_us_a_message')}</h2>
-            <Form {...form}>
+            <Form {...form}> {/* Wrapped the form with Form component */}
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
