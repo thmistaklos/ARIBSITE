@@ -34,7 +34,7 @@ const DiscountBanner: React.FC = () => {
       variants={bannerVariants}
       className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] bg-cover bg-center bg-no-repeat flex items-center justify-end pr-4 md:pr-12 lg:pr-24 overflow-hidden"
       style={{
-        backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//2025-07-20_172357.png')`,
+        backgroundImage: `url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//back.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
