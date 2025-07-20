@@ -10,8 +10,7 @@ import ParticleBackground from '@/components/ParticleBackground';
 import FloatingFlyer from '@/components/FloatingFlyer';
 import DiscountPopup from '@/components/DiscountPopup';
 import HeroCarousel from '@/components/HeroCarousel';
-import ImageSliderSection from '@/components/ImageSliderSection';
-import DiscountBanner from '@/components/DiscountBanner'; // Import the new component
+import ImageSliderSection from '@/components/ImageSliderSection'; // Import the new component
 
 const HomePage: React.FC = () => {
   // useTranslation is still needed for other sections, so keep it
@@ -28,11 +27,6 @@ const HomePage: React.FC = () => {
       {/* Product Gallery Section */}
       <section className="w-full py-12 px-4 bg-dairy-cream">
         <ProductGallery />
-      </section>
-
-      {/* Discount Banner Section (New) */}
-      <section className="w-full py-12 px-0 bg-dairy-cream"> {/* py-0 to let banner control its own vertical padding */}
-        <DiscountBanner />
       </section>
 
       {/* Recipes Section */}
