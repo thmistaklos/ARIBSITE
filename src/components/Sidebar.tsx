@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent } from 'lucide-react'; // Added Percent for Discounts
+import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent, Sprout } from 'lucide-react'; // Added Sprout for Farm Info
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,8 @@ const navItems = [
   { name: 'Content', path: '/admin/content', icon: FileText },
   { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
   { name: 'Facts', path: '/admin/facts', icon: Lightbulb },
-  { name: 'Discounts', path: '/admin/discounts', icon: Percent }, // New Discounts item
+  { name: 'Discounts', path: '/admin/discounts', icon: Percent },
+  { name: 'Farm Info', path: '/admin/farm-info', icon: Sprout }, // New Farm Info item
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ];
 
