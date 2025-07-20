@@ -40,6 +40,7 @@ const Header: React.FC = () => {
         <Link to="/" className="flex items-center space-x-2">
           <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//ChatGPT_Image_Jul_17__2025__10_17_07_PM-removebg-preview.png" alt="ARIB DAIRY Logo" className="h-8 w-8 object-contain" />
           <span className="text-xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
+          <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Second Logo" className="h-8 w-8 object-contain" />
         </Link>
 
         {isMobile ? (
