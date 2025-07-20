@@ -15,14 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
-interface SiteContent {
-  id: string;
-  section_name: string;
-  content_data: {
-    [key: string]: string; // Flexible for different content types
-  };
-}
-
+// Define the schema for the content stored in the 'value' jsonb column
 const contentSchema = z.object({
   homepage_hero_title: z.string().min(1, { message: 'Title cannot be empty.' }),
   homepage_hero_subtitle: z.string().min(1, { message: 'Subtitle cannot be empty.' }),
@@ -34,8 +27,15 @@ const contentSchema = z.object({
   farm_info_section_subtitle_fr: z.string().min(1, { message: 'Farm Info Subtitle (French) cannot be empty.' }),
 });
 
+// Define the interface for the Supabase row
+interface SiteContentRow {
+  id: string;
+  key: string;
+  value: z.infer<typeof contentSchema>; // The content_data will be stored in the 'value' column
+}
+
 const ContentManagement: React.FC = () => {
-  const [siteContent, setSiteContent] = useState<SiteContent | null>(null);
+  const [siteContentRow, setSiteContentRow] = useState<SiteContentRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -63,19 +63,20 @@ const ContentManagement: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('site_content')
-      .select('*')
-      .eq('section_name', 'homepage_hero') // Fetch specific section
+      .select('id, key, value') // Select all columns as per new schema
+      .eq('key', 'homepage_content') // Query by the specific key for homepage content
       .single();
 
     if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
       toast.error('Failed to fetch site content', { description: error.message });
+      setSiteContentRow(null);
     } else if (data) {
-      setSiteContent(data);
-      // Merge fetched content data with default values to ensure all fields are present
-      form.reset({
-        ...form.getValues(), // Keep existing form values if any
-        ...data.content_data,
-      });
+      setSiteContentRow(data); // Store the full row data
+      form.reset(data.value); // Reset form with the 'value' (jsonb) content
+    } else {
+      // If no row found, initialize with default values
+      setSiteContentRow(null);
+      form.reset(form.defaultValues); // Reset to default form values
     }
     setLoading(false);
   };
@@ -83,28 +84,28 @@ const ContentManagement: React.FC = () => {
   const onSubmit = async (values: z.infer<typeof contentSchema>) => {
     setIsSubmitting(true);
     try {
-      const contentData = {
-        section_name: 'homepage_hero', // Still using homepage_hero to store all homepage content
-        content_data: values, // All form values are saved here
+      const contentToSave = {
+        key: 'homepage_content', // The fixed key for homepage content
+        value: values, // The entire form values object goes into the 'value' jsonb column
       };
 
-      if (siteContent) {
+      if (siteContentRow) { // If an existing row was fetched
         const { error } = await supabase
           .from('site_content')
-          .update(contentData)
-          .eq('id', siteContent.id);
+          .update(contentToSave)
+          .eq('id', siteContentRow.id); // Update by ID
 
         if (error) throw error;
         toast.success('Homepage content updated successfully!');
-      } else {
+      } else { // If no existing row, insert a new one
         const { error } = await supabase
           .from('site_content')
-          .insert([contentData]);
+          .insert([contentToSave]);
 
         if (error) throw error;
         toast.success('Homepage content added successfully!');
       }
-      fetchSiteContent(); // Re-fetch to update state
+      fetchSiteContent(); // Re-fetch to update state and form
     } catch (error: any) {
       toast.error('Failed to save content', { description: error.message });
     } finally {
@@ -283,7 +284,7 @@ const ContentManagement: React.FC = () => {
             <DialogDescription className="text-dairy-text">
               This is how the sections will look on your homepage.
             </DialogDescription>
-          </DialogDescription>
+          </DialogHeader>
           <div className="py-4 text-center space-y-4">
             <h3 className="text-2xl font-bold text-dairy-darkBlue">Homepage Hero Preview:</h3>
             <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.homepage_hero_title}</h2>
