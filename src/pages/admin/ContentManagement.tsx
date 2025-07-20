@@ -26,8 +26,12 @@ interface SiteContent {
 const contentSchema = z.object({
   homepage_hero_title: z.string().min(1, { message: 'Title cannot be empty.' }),
   homepage_hero_subtitle: z.string().min(1, { message: 'Subtitle cannot be empty.' }),
-  farm_info_section_title: z.string().min(1, { message: 'Farm Info Title cannot be empty.' }),
-  farm_info_section_subtitle: z.string().min(1, { message: 'Farm Info Subtitle cannot be empty.' }),
+  farm_info_section_title: z.string().min(1, { message: 'Farm Info Title (English) cannot be empty.' }),
+  farm_info_section_subtitle: z.string().min(1, { message: 'Farm Info Subtitle (English) cannot be empty.' }),
+  farm_info_section_title_ar: z.string().min(1, { message: 'Farm Info Title (Arabic) cannot be empty.' }),
+  farm_info_section_subtitle_ar: z.string().min(1, { message: 'Farm Info Subtitle (Arabic) cannot be empty.' }),
+  farm_info_section_title_fr: z.string().min(1, { message: 'Farm Info Title (French) cannot be empty.' }),
+  farm_info_section_subtitle_fr: z.string().min(1, { message: 'Farm Info Subtitle (French) cannot be empty.' }),
 });
 
 const ContentManagement: React.FC = () => {
@@ -44,6 +48,10 @@ const ContentManagement: React.FC = () => {
       homepage_hero_subtitle: '',
       farm_info_section_title: '',
       farm_info_section_subtitle: '',
+      farm_info_section_title_ar: '',
+      farm_info_section_subtitle_ar: '',
+      farm_info_section_title_fr: '',
+      farm_info_section_subtitle_fr: '',
     },
   });
 
@@ -165,7 +173,33 @@ const ContentManagement: React.FC = () => {
                   name="farm_info_section_title"
                   render={({ field }) => (
                     <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                      <FormLabel className="md:text-right text-dairy-text">Farm Info Title</FormLabel>
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Title (English)</FormLabel>
+                      <FormControl className="md:col-span-3">
+                        <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                      </FormControl>
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="farm_info_section_title_ar"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Title (Arabic)</FormLabel>
+                      <FormControl className="md:col-span-3">
+                        <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                      </FormControl>
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="farm_info_section_title_fr"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Title (French)</FormLabel>
                       <FormControl className="md:col-span-3">
                         <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
@@ -178,7 +212,33 @@ const ContentManagement: React.FC = () => {
                   name="farm_info_section_subtitle"
                   render={({ field }) => (
                     <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
-                      <FormLabel className="md:text-right text-dairy-text">Farm Info Subtitle</FormLabel>
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Subtitle (English)</FormLabel>
+                      <FormControl className="md:col-span-3">
+                        <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                      </FormControl>
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="farm_info_section_subtitle_ar"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Subtitle (Arabic)</FormLabel>
+                      <FormControl className="md:col-span-3">
+                        <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                      </FormControl>
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="farm_info_section_subtitle_fr"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Subtitle (French)</FormLabel>
                       <FormControl className="md:col-span-3">
                         <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
                       </FormControl>
@@ -223,7 +283,7 @@ const ContentManagement: React.FC = () => {
             <DialogDescription className="text-dairy-text">
               This is how the sections will look on your homepage.
             </DialogDescription>
-          </DialogHeader>
+          </DialogDescription>
           <div className="py-4 text-center space-y-4">
             <h3 className="text-2xl font-bold text-dairy-darkBlue">Homepage Hero Preview:</h3>
             <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.homepage_hero_title}</h2>

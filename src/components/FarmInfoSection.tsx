@@ -23,6 +23,10 @@ interface SiteContentData {
   homepage_hero_subtitle: string;
   farm_info_section_title: string;
   farm_info_section_subtitle: string;
+  farm_info_section_title_ar: string;
+  farm_info_section_subtitle_ar: string;
+  farm_info_section_title_fr: string;
+  farm_info_section_subtitle_fr: string;
 }
 
 const FarmInfoSection: React.FC = () => {
@@ -75,6 +79,15 @@ const FarmInfoSection: React.FC = () => {
     return (item as any)[`${keyPrefix}_en`];
   };
 
+  const getLocalizedSectionText = (keyPrefix: 'farm_info_section_title' | 'farm_info_section_subtitle') => {
+    if (!sectionContent) return t(keyPrefix); // Fallback to i18n if content not loaded
+
+    const lang = i18n.language;
+    if (lang === 'ar') return (sectionContent as any)[`${keyPrefix}_ar`] || sectionContent[keyPrefix];
+    if (lang === 'fr') return (sectionContent as any)[`${keyPrefix}_fr`] || sectionContent[keyPrefix];
+    return sectionContent[keyPrefix];
+  };
+
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -123,7 +136,7 @@ const FarmInfoSection: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-4"
           >
-            {sectionContent?.farm_info_section_title || t('natural taste title')}
+            {getLocalizedSectionText('farm_info_section_title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -131,7 +144,7 @@ const FarmInfoSection: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="text-lg text-dairy-text mb-8 max-w-xl"
           >
-            {sectionContent?.farm_info_section_subtitle || t('natural taste subtitle')}
+            {getLocalizedSectionText('farm_info_section_subtitle')}
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
