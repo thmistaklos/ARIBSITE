@@ -5,7 +5,6 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabase'; // Import supabase
 import { toast } from 'sonner'; // Import toast for notifications
-import { Loader2 } from 'lucide-react'; // Import Loader2
 
 interface Discount {
   id: string;
