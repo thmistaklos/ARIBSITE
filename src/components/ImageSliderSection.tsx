@@ -4,11 +4,10 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useTranslation } from 'react-i18next';
 
 const images = [
-  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff/quality-guaranteed-products.png',
-  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff/100-organic-eco-premium-quality.png',
-  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff/n1-premium-quality.png',
-  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff/100-organic-premium-quality.png',
-  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff/organic-quality.png',
+  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//pngwing.com%20(3).png',
+  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//pngwing.com.png',
+  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//pngwing.com%20(2).png',
+  'https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//pngwing.com%20(1).png',
 ];
 
 const ImageSliderSection: React.FC = () => {
