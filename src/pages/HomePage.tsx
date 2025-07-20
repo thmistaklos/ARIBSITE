@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion'; // Keep motion for other sections
-import { useTranslation } from 'react-i18next'; // Keep useTranslation for other sections
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
@@ -10,7 +10,8 @@ import ParticleBackground from '@/components/ParticleBackground';
 import FloatingFlyer from '@/components/FloatingFlyer';
 import DiscountPopup from '@/components/DiscountPopup';
 import HeroCarousel from '@/components/HeroCarousel';
-import ImageSliderSection from '@/components/ImageSliderSection'; // Import the new component
+import ImageSliderSection from '@/components/ImageSliderSection';
+import FarmInfoSection from '@/components/FarmInfoSection'; // Import the new component
 
 const HomePage: React.FC = () => {
   // useTranslation is still needed for other sections, so keep it
@@ -29,12 +30,15 @@ const HomePage: React.FC = () => {
         <ProductGallery />
       </section>
 
+      {/* Farm Info Section (New) */}
+      <FarmInfoSection />
+
       {/* Recipes Section */}
       <section className="w-full py-12 px-4 bg-dairy-cream">
         <RecipesSection />
       </section>
 
-      {/* Image Slider Section (New) */}
+      {/* Image Slider Section */}
       <ImageSliderSection />
 
       {/* Facts Section */}
