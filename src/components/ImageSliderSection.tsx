@@ -33,7 +33,7 @@ const ImageSliderSection: React.FC = () => {
           transition={{ type: 'spring', stiffness: 100, damping: 10 }}
           className="text-4xl md:text-5xl font-bold text-center text-dairy-darkBlue mb-12"
         >
-          {t('OUR_CERTIFICATIONS')}
+          {t('OURCERTIFICATIONS')}
         </motion.h2>
 
         <div className="embla overflow-hidden" ref={emblaRef}>
