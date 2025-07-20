@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Header from "./Header";
-import TopHeader from "./TopHeader"; // Import the new TopHeader
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
@@ -20,7 +19,6 @@ const PublicLayout: React.FC = () => {
 
   return (
     <>
-      <TopHeader /> {/* Render TopHeader first */}
       <Header />
       <main className="flex-grow">
         <AnimatePresence mode="wait">

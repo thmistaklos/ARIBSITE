@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from 'react-i18next';
-// import LanguageSwitcher from './LanguageSwitcher'; // Removed LanguageSwitcher import
+import LanguageSwitcher from './LanguageSwitcher'; // Re-import LanguageSwitcher
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -33,9 +33,15 @@ const Header: React.FC = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 120, damping: 14 }}
-      className="sticky top-16 z-40 w-full bg-dairy-cream/90 backdrop-blur-sm border-b border-dairy-blue/20 shadow-sm"
+      className="sticky top-0 z-40 w-full bg-dairy-cream/90 backdrop-blur-sm border-b border-dairy-blue/20 shadow-sm"
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        {/* Logo/Brand Name */}
+        <Link to="/" className="flex items-center space-x-2">
+          <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-8 w-8 object-contain" />
+          <span className="text-xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
+        </Link>
+
         {isMobile ? (
           <Sheet>
             <SheetTrigger asChild>
@@ -46,17 +52,19 @@ const Header: React.FC = () => {
             </SheetTrigger>
             <SheetContent side="right" className="bg-dairy-cream p-6">
               <nav className="flex flex-col space-y-4 mt-8">
-                {navItems.map((item, index) => (
+                {navItems.map((item) => (
                   <Link key={item.name} to={item.path} className="text-lg font-medium text-dairy-darkBlue hover:text-dairy-blue transition-colors">
                     {item.name}
                   </Link>
                 ))}
               </nav>
-              {/* Removed LanguageSwitcher from here */}
+              <div className="mt-8">
+                <LanguageSwitcher />
+              </div>
             </SheetContent>
           </Sheet>
         ) : (
-          <nav className="hidden md:flex space-x-6">
+          <nav className="hidden md:flex items-center space-x-6">
             {navItems.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -74,9 +82,9 @@ const Header: React.FC = () => {
                 </Link>
               </motion.div>
             ))}
+            <LanguageSwitcher /> {/* Placed LanguageSwitcher here */}
           </nav>
         )}
-        {/* Removed LanguageSwitcher from here */}
       </div>
     </motion.header>
   );
