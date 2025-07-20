@@ -192,7 +192,7 @@ const ContentManagement: React.FC = () => {
             <DialogDescription className="text-dairy-text">
               This is how the sections will look on your homepage.
             </DialogDescription>
-          </DialogDescription>
+          </DialogHeader>
           <div className="py-4 text-center space-y-4">
             <h3 className="text-2xl font-bold text-dairy-darkBlue">Homepage Hero Preview:</h3>
             <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.homepage_hero_title}</h2>
