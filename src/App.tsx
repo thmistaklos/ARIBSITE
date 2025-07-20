@@ -20,7 +20,6 @@ import BlogManagement from "./pages/admin/BlogManagement";
 import FaqManagement from "./pages/admin/FaqManagement";
 import FactsManagement from "./pages/admin/FactsManagement";
 import DiscountsManagement from "./pages/admin/DiscountsManagement";
-import FarmInfoManagement from "./pages/admin/FarmInfoManagement"; // Import the new management page
 
 const queryClient = new QueryClient();
 
@@ -52,7 +51,6 @@ const App = () => (
                   <Route path="faq" element={<FaqManagement />} />
                   <Route path="facts" element={<FactsManagement />} />
                   <Route path="discounts" element={<DiscountsManagement />} />
-                  <Route path="farm-info" element={<FarmInfoManagement />} /> {/* New route for Farm Info */}
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>
               </Route>
