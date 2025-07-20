@@ -104,7 +104,7 @@ const FarmInfoSection: React.FC = () => {
               description={t('fact_healthy_nutritious_description')}
             />
             <FactItem
-              iconName="Grass"
+              iconName="Leaf" {/* Changed from Grass to Leaf */}
               title={t('fact_pasture_acres_title')}
               description={t('fact_pasture_acres_description')}
             />

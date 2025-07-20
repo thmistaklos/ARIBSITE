@@ -4,10 +4,9 @@ import {
   FlaskConical,
   Store,
   Leaf,
-  Award, // New icon
-  Heart, // New icon
-  Apple, // New icon
-  Grass, // New icon
+  Award,
+  Heart,
+  Apple,
   LucideIcon,
 } from 'lucide-react';
 
@@ -21,5 +20,4 @@ export const LucideIcons: { [key: string]: LucideIcon } = {
   Award,
   Heart,
   Apple,
-  Grass,
 };
