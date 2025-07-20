@@ -52,7 +52,7 @@ const Header: React.FC = () => {
                   </Link>
                 ))}
               </nav>
-              <div className="mt-8">
+              <div className="mt-8 text-right"> {/* Added text-right here */}
                 <LanguageSwitcher />
               </div>
             </SheetContent>
