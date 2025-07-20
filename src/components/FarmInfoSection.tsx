@@ -93,7 +93,7 @@ const FarmInfoSection: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-4"
           >
-            {t('natural_taste_title')}
+            {t('natural taste title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -101,7 +101,7 @@ const FarmInfoSection: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="text-lg text-dairy-text mb-8 max-w-xl"
           >
-            {t('natural_taste_subtitle')}
+            {t('natural taste subtitle')}
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
