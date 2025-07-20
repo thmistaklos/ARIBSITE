@@ -37,7 +37,7 @@ const ImageSliderSection: React.FC = () => {
         </motion.h2>
 
         <div className="embla overflow-hidden" ref={emblaRef}>
-          <div className="embla__container flex">
+          <div className="embla__container flex justify-center">
             {images.map((src, index) => (
               <div className="embla__slide flex-none min-w-0 flex justify-center items-center px-4" key={index}>
                 <img
