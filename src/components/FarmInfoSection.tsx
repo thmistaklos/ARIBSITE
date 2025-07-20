@@ -18,10 +18,20 @@ interface FarmInfoItem {
   order_index: number;
 }
 
+interface SiteContentData {
+  homepage_hero_title: string;
+  homepage_hero_subtitle: string;
+  farm_info_section_title: string;
+  farm_info_section_subtitle: string;
+}
+
 const FarmInfoSection: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [farmInfoItems, setFarmInfoItems] = useState<FarmInfoItem[]>([]);
+  const [sectionContent, setSectionContent] = useState<SiteContentData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [contentLoading, setContentLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchFarmInfoItems = async () => {
@@ -35,7 +45,27 @@ const FarmInfoSection: React.FC = () => {
       setLoading(false);
     };
 
+    const fetchSectionContent = async () => {
+      setContentLoading(true);
+      const { data, error } = await supabase
+        .from('site_content')
+        .select('content_data')
+        .eq('section_name', 'homepage_hero') // Fetch the homepage_hero section which now contains farm info titles
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        toast.error('Failed to load section content', { description: error.message });
+        setSectionContent(null);
+      } else if (data) {
+        setSectionContent(data.content_data as SiteContentData);
+      } else {
+        setSectionContent(null);
+      }
+      setContentLoading(false);
+    };
+
     fetchFarmInfoItems();
+    fetchSectionContent();
   }, []);
 
   const getLocalizedText = (item: FarmInfoItem, keyPrefix: 'title' | 'description') => {
@@ -55,7 +85,7 @@ const FarmInfoSection: React.FC = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
   };
 
-  if (loading) {
+  if (loading || contentLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
@@ -93,7 +123,7 @@ const FarmInfoSection: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-4"
           >
-            {t('natural taste title')}
+            {sectionContent?.farm_info_section_title || t('natural taste title')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -101,7 +131,7 @@ const FarmInfoSection: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="text-lg text-dairy-text mb-8 max-w-xl"
           >
-            {t('natural taste subtitle')}
+            {sectionContent?.farm_info_section_subtitle || t('natural taste subtitle')}
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">

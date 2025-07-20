@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Ensure this import is present
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 interface SiteContent {
   id: string;
@@ -26,7 +26,8 @@ interface SiteContent {
 const contentSchema = z.object({
   homepage_hero_title: z.string().min(1, { message: 'Title cannot be empty.' }),
   homepage_hero_subtitle: z.string().min(1, { message: 'Subtitle cannot be empty.' }),
-  // Add more fields as needed for other sections
+  farm_info_section_title: z.string().min(1, { message: 'Farm Info Title cannot be empty.' }),
+  farm_info_section_subtitle: z.string().min(1, { message: 'Farm Info Subtitle cannot be empty.' }),
 });
 
 const ContentManagement: React.FC = () => {
@@ -41,6 +42,8 @@ const ContentManagement: React.FC = () => {
     defaultValues: {
       homepage_hero_title: '',
       homepage_hero_subtitle: '',
+      farm_info_section_title: '',
+      farm_info_section_subtitle: '',
     },
   });
 
@@ -60,7 +63,11 @@ const ContentManagement: React.FC = () => {
       toast.error('Failed to fetch site content', { description: error.message });
     } else if (data) {
       setSiteContent(data);
-      form.reset(data.content_data); // Set form defaults from fetched data
+      // Merge fetched content data with default values to ensure all fields are present
+      form.reset({
+        ...form.getValues(), // Keep existing form values if any
+        ...data.content_data,
+      });
     }
     setLoading(false);
   };
@@ -69,8 +76,8 @@ const ContentManagement: React.FC = () => {
     setIsSubmitting(true);
     try {
       const contentData = {
-        section_name: 'homepage_hero',
-        content_data: values,
+        section_name: 'homepage_hero', // Still using homepage_hero to store all homepage content
+        content_data: values, // All form values are saved here
       };
 
       if (siteContent) {
@@ -123,7 +130,7 @@ const ContentManagement: React.FC = () => {
             <CardTitle className="text-dairy-darkBlue">Homepage Hero Section</CardTitle>
           </CardHeader>
           <CardContent>
-            <Form {...form}> {/* Wrapped the form with Form component */}
+            <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
@@ -151,6 +158,35 @@ const ContentManagement: React.FC = () => {
                     </FormItem>
                   )}
                 />
+
+                <CardTitle className="text-dairy-darkBlue mt-8">Farm Info Section</CardTitle>
+                <FormField
+                  control={form.control}
+                  name="farm_info_section_title"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Title</FormLabel>
+                      <FormControl className="md:col-span-3">
+                        <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                      </FormControl>
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="farm_info_section_subtitle"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
+                      <FormLabel className="md:text-right text-dairy-text">Farm Info Subtitle</FormLabel>
+                      <FormControl className="md:col-span-3">
+                        <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                      </FormControl>
+                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="flex justify-end space-x-2">
                   <AnimatedButton
                     type="button"
@@ -183,14 +219,19 @@ const ContentManagement: React.FC = () => {
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg">
           <DialogHeader>
-            <DialogTitle className="text-dairy-darkBlue">Homepage Hero Preview</DialogTitle>
+            <DialogTitle className="text-dairy-darkBlue">Content Preview</DialogTitle>
             <DialogDescription className="text-dairy-text">
-              This is how the hero section will look on your homepage.
+              This is how the sections will look on your homepage.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 text-center space-y-4">
+            <h3 className="text-2xl font-bold text-dairy-darkBlue">Homepage Hero Preview:</h3>
             <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.homepage_hero_title}</h2>
             <p className="text-xl text-dairy-text">{previewContent?.homepage_hero_subtitle}</p>
+            <hr className="my-6 border-dairy-blue/20" />
+            <h3 className="text-2xl font-bold text-dairy-darkBlue">Farm Info Section Preview:</h3>
+            <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.farm_info_section_title}</h2>
+            <p className="text-xl text-dairy-text">{previewContent?.farm_info_section_subtitle}</p>
           </div>
           <DialogFooter>
             <Button onClick={() => setIsPreviewOpen(false)} className="bg-dairy-blue text-white hover:bg-dairy-darkBlue">Close</Button>
