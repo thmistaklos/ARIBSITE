@@ -38,6 +38,14 @@ const Header: React.FC = () => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo/Brand Name */}
         <Link to="/" className="flex items-center space-x-2">
+          <motion.div
+            initial={{ rotate: 0 }}
+            animate={{ rotate: [0, -10, 10, -10, 0] }}
+            transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+            className="flex justify-center"
+          >
+            <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB DAIRY Logo" className="h-8 w-8 object-contain" />
+          </motion.div>
           <span className="text-xl font-bold text-dairy-darkBlue">{t('arib_dairy')}</span>
           <motion.div
             initial={{ rotate: 0 }}
