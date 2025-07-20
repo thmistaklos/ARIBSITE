@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Leaf, Award, Heart, Droplet, LucideIcon } from 'lucide-react'; // Import specific icons
+import { Leaf, Award, Heart, Droplet, LucideIcon } from 'lucide-react';
 
 // A map of icon names to their corresponding Lucide React components
 const FarmInfoIcons: { [key: string]: LucideIcon } = {
@@ -121,7 +121,7 @@ const FarmInfoSection: React.FC = () => {
         <motion.div
           className="lg:w-1/2 text-center lg:text-left space-y-8"
           initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
         >
