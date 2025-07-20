@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher'; // Import LanguageSwitcher
 
 const TopHeader: React.FC = () => {
   const { t } = useTranslation();
@@ -11,7 +12,7 @@ const TopHeader: React.FC = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 120, damping: 14 }}
-      className="sticky top-0 z-50 w-full bg-dairy-cream/90 backdrop-blur-sm border-b border-dairy-blue/20 shadow-sm h-16 flex items-center justify-center px-4 md:px-6"
+      className="sticky top-0 z-50 w-full bg-dairy-cream/90 backdrop-blur-sm border-b border-dairy-blue/20 shadow-sm h-16 flex items-center justify-between px-4 md:px-6" {/* Added justify-between */}
     >
       <Link to="/" className="flex items-center space-x-2">
         <motion.div
@@ -34,6 +35,7 @@ const TopHeader: React.FC = () => {
           />
         </motion.div>
       </Link>
+      <LanguageSwitcher /> {/* Moved LanguageSwitcher here */}
     </motion.div>
   );
 };

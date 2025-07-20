@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher';
+// import LanguageSwitcher from './LanguageSwitcher'; // Removed LanguageSwitcher import
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -52,9 +52,7 @@ const Header: React.FC = () => {
                   </Link>
                 ))}
               </nav>
-              <div className="mt-8 text-right"> {/* Added text-right here */}
-                <LanguageSwitcher />
-              </div>
+              {/* Removed LanguageSwitcher from here */}
             </SheetContent>
           </Sheet>
         ) : (
@@ -78,7 +76,7 @@ const Header: React.FC = () => {
             ))}
           </nav>
         )}
-        <LanguageSwitcher />
+        {/* Removed LanguageSwitcher from here */}
       </div>
     </motion.header>
   );
