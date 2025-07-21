@@ -330,7 +330,7 @@ const BannerManagement: React.FC = () => {
                       <FormLabel className="md:text-right text-dairy-text">Main Paragraph (French)</FormLabel>
                       <FormControl className="md:col-span-3">
                         <Textarea {...field} rows={4} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                      </FormControl>
+                          </FormControl>
                       <FormMessage className="md:col-span-4 md:col-start-2" />
                     </FormItem>
                   )}
