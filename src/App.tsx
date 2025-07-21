@@ -20,6 +20,7 @@ import BlogManagement from "./pages/admin/BlogManagement";
 import FaqManagement from "./pages/admin/FaqManagement";
 import FactsManagement from "./pages/admin/FactsManagement";
 import DiscountsManagement from "./pages/admin/DiscountsManagement";
+import BannerManagement from "./pages/admin/BannerManagement"; // Import the new component
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
                   <Route path="faq" element={<FaqManagement />} />
                   <Route path="facts" element={<FactsManagement />} />
                   <Route path="discounts" element={<DiscountsManagement />} />
+                  <Route path="banner" element={<BannerManagement />} /> {/* New Banner Management Route */}
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>
               </Route>

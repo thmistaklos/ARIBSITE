@@ -13,7 +13,7 @@ import FloatingFlyer from '@/components/FloatingFlyer';
 import DiscountPopup from '@/components/DiscountPopup';
 import HeroCarousel from '@/components/HeroCarousel';
 import ImageSliderSection from '@/components/ImageSliderSection';
-import FarmInfoSection from '@/components/FarmInfoSection'; // Import the new component
+import BannerSection from '@/components/BannerSection'; // Import the new BannerSection
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -30,8 +30,8 @@ const HomePage: React.FC = () => {
         <ProductGallery />
       </section>
 
-      {/* Farm Info Section - New section added here */}
-      <FarmInfoSection />
+      {/* Banner Section - New section added here, replacing FarmInfoSection */}
+      <BannerSection />
 
       {/* Recipes Section */}
       <section className="w-full py-12 px-4 bg-dairy-cream">
