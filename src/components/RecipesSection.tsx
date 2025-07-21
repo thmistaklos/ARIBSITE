@@ -87,7 +87,7 @@ const RecipesSection: React.FC<RecipesSectionProps> = () => {
               id: recipe.id,
               title: recipe.title,
               image: recipe.image_url,
-              shortDescription: recipe.preparation_steps[0] || '',
+              shortDescription: (recipe.preparation_steps?.[0]) || '', // Fixed: Safely access the first element
               ingredients: recipe.ingredients,
               preparation: recipe.preparation_steps,
             }} />
