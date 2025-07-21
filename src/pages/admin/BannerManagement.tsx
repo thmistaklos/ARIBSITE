@@ -6,16 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Loader2, Save, Upload, PlusCircle, Trash2, Image as ImageIcon, Text, AlignLeft, List } from 'lucide-react';
+import { Loader2, Save, Upload, PlusCircle, Trash2 } from 'lucide-react';
 import AnimatedButton from '@/components/AnimatedButton';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { LucideIcons } from '@/utils/lucide-icons'; // Import the icon map
+import { LucideIcons } from '@/utils/lucide-icons';
 
-// Define schema for a single feature item
 const featureItemSchema = z.object({
   icon_name: z.string().min(1, { message: 'Icon name cannot be empty.' }),
   title_en: z.string().min(1, { message: 'English title cannot be empty.' }),
@@ -26,7 +25,6 @@ const featureItemSchema = z.object({
   description_fr: z.string().min(1, { message: 'French description cannot be empty.' }),
 });
 
-// Define the main schema for the banner content
 const bannerContentSchema = z.object({
   banner_image_url: z.string().url({ message: 'Must be a valid URL or empty.' }).nullable().optional().or(z.literal('')),
   main_title_en: z.string().min(1, { message: 'English title cannot be empty.' }),
@@ -95,14 +93,14 @@ const BannerManagement: React.FC = () => {
       .select('*')
       .single();
 
-    if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
+    if (error && error.code !== 'PGRST116') {
       toast.error('Failed to fetch banner content', { description: error.message });
       setBannerData(null);
     } else if (data) {
       setBannerData(data);
       form.reset({
         ...data,
-        banner_image_url: data.banner_image_url || '', // Ensure empty string for input
+        banner_image_url: data.banner_image_url || '',
       });
       setImagePreviewUrl(data.banner_image_url);
     } else {
@@ -133,8 +131,8 @@ const BannerManagement: React.FC = () => {
         const fileName = `${Date.now()}-${selectedFile.name}`;
         const filePath = `banner-images/${fileName}`;
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('site-assets') // Using a generic bucket for site assets
+        const { error: uploadError } = await supabase.storage
+          .from('site-assets')
           .upload(filePath, selectedFile, {
             cacheControl: '3600',
             upsert: true,
@@ -150,9 +148,9 @@ const BannerManagement: React.FC = () => {
 
         imageUrl = publicUrlData.publicUrl;
       } else if (values.banner_image_url === '') {
-        imageUrl = null; // If user clears the URL input
+        imageUrl = null;
       } else {
-        imageUrl = values.banner_image_url; // Use the URL from the input if no new file
+        imageUrl = values.banner_image_url;
       }
 
       const contentToSave = {
@@ -212,6 +210,7 @@ const BannerManagement: React.FC = () => {
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Main Banner Card */}
             <Card className="bg-white border-dairy-blue/20 shadow-md">
               <CardHeader>
                 <CardTitle className="text-dairy-darkBlue">Main Banner Content</CardTitle>
@@ -248,7 +247,7 @@ const BannerManagement: React.FC = () => {
                       )}
                     />
                     {imagePreviewUrl && (
-                      <img src={imagePreviewUrl} alt="Banner Image Preview" className="w-48 h-auto object-contain rounded-md mt-2" />
+                      <img src={imagePreviewUrl} alt="Banner Preview" className="w-48 h-auto object-contain rounded-md mt-2" />
                     )}
                     {!selectedFile && bannerData?.banner_image_url && (
                       <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file or URL is provided.</p>
@@ -256,6 +255,7 @@ const BannerManagement: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Title and Paragraph Fields */}
                 <FormField
                   control={form.control}
                   name="main_title_en"
@@ -338,17 +338,20 @@ const BannerManagement: React.FC = () => {
               </CardContent>
             </Card>
 
+            {/* Feature Items */}
             <Card className="bg-white border-dairy-blue/20 shadow-md">
               <CardHeader className="flex flex-row justify-between items-center">
                 <CardTitle className="text-dairy-darkBlue">Feature Items (Max 4)</CardTitle>
                 {fields.length < 4 && (
                   <AnimatedButton
                     type="button"
-                    onClick={() => append({
-                      icon_name: '',
-                      title_en: '', title_ar: '', title_fr: '',
-                      description_en: '', description_ar: '', description_fr: '',
-                    })}
+                    onClick={() =>
+                      append({
+                        icon_name: '',
+                        title_en: '', title_ar: '', title_fr: '',
+                        description_en: '', description_ar: '', description_fr: '',
+                      })
+                    }
                     className="bg-dairy-blue text-white hover:bg-dairy-darkBlue"
                     soundOnClick="/sounds/click.mp3"
                   >
@@ -392,6 +395,8 @@ const BannerManagement: React.FC = () => {
                         </FormItem>
                       )}
                     />
+
+                    {/* Feature Title Fields */}
                     <FormField
                       control={form.control}
                       name={`feature_items.${index}.title_en`}
@@ -431,6 +436,8 @@ const BannerManagement: React.FC = () => {
                         </FormItem>
                       )}
                     />
+
+                    {/* Feature Description Fields */}
                     <FormField
                       control={form.control}
                       name={`feature_items.${index}.description_en`}
@@ -475,17 +482,16 @@ const BannerManagement: React.FC = () => {
               </CardContent>
             </Card>
 
+            {/* Submit Button */}
             <div className="flex justify-end">
-              <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" /> Save Banner Content
-                  </>
-                )}
+              <AnimatedButton
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-dairy-blue text-white hover:bg-dairy-darkBlue"
+                soundOnClick="/sounds/click.mp3"
+              >
+                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Save className="mr-2 h-4 w-4" /> Save Changes
               </AnimatedButton>
             </div>
           </form>
