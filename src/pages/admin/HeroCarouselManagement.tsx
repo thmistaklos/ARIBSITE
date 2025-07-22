@@ -155,31 +155,22 @@ const HeroCarouselManagement: React.FC = () => {
                 </AccordionTrigger>
                 <AccordionContent className="p-6 bg-white rounded-b-lg border border-t-0 border-dairy-blue/20">
                   <div className="space-y-6">
-                    <FormField
-                      control={form.control}
-                      name={`heroItems.${index}.image_url`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Image URL</FormLabel>
-                          <FormControl>
-                            <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                     <FormItem>
-                      <FormLabel>Or Upload New Image</FormLabel>
-                      <div className="flex items-center gap-2">
+                      <FormLabel>Slide Image</FormLabel>
+                      <FormControl>
                         <Input
                           type="file"
                           accept="image/*"
                           onChange={(e) => e.target.files && handleFileUpload(e.target.files[0], index)}
                           className="bg-dairy-cream/50 border-dairy-blue/30"
                         />
-                      </div>
+                      </FormControl>
+                      <FormMessage />
                       {form.watch(`heroItems.${index}.image_url`) && (
-                        <img src={form.watch(`heroItems.${index}.image_url`)} alt={`Slide ${index + 1} preview`} className="w-48 h-auto mt-2 rounded-md object-cover" />
+                        <div className="mt-4">
+                          <p className="text-sm font-medium text-dairy-text mb-2">Current Image:</p>
+                          <img src={form.watch(`heroItems.${index}.image_url`)} alt={`Slide ${index + 1} preview`} className="w-48 h-auto rounded-md object-cover border border-dairy-blue/20" />
+                        </div>
                       )}
                     </FormItem>
 
