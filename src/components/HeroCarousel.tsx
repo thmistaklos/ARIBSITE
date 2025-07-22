@@ -4,12 +4,32 @@ import { Link } from 'react-router-dom';
 import AnimatedButton from '@/components/AnimatedButton';
 import { useTranslation } from 'react-i18next';
 
-const heroTextKeys = [
-  { titleKey: "hero_title_1", subtitleKey: "hero_subtitle_1" },
-  { titleKey: "hero_title_2", subtitleKey: "hero_subtitle_2" },
-  { titleKey: "hero_title_3", subtitleKey: "hero_subtitle_3" },
-  { titleKey: "hero_title_4", subtitleKey: "hero_subtitle_4" },
-  { titleKey: "hero_title_5", subtitleKey: "hero_subtitle_5" },
+const heroItems = [
+  { 
+    titleKey: "hero_title_1", 
+    subtitleKey: "hero_subtitle_1",
+    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg"
+  },
+  { 
+    titleKey: "hero_title_2", 
+    subtitleKey: "hero_subtitle_2",
+    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg"
+  },
+  { 
+    titleKey: "hero_title_3", 
+    subtitleKey: "hero_subtitle_3",
+    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(6).jpg"
+  },
+  { 
+    titleKey: "hero_title_4", 
+    subtitleKey: "hero_subtitle_4",
+    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(5).jpg"
+  },
+  { 
+    titleKey: "hero_title_5", 
+    subtitleKey: "hero_subtitle_5",
+    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg"
+  },
 ];
 
 const HeroCarousel: React.FC = () => {
@@ -18,8 +38,8 @@ const HeroCarousel: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % heroTextKeys.length);
-    }, 4000); // Change every 4 seconds
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % heroItems.length);
+    }, 5000); // Change every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -29,18 +49,25 @@ const HeroCarousel: React.FC = () => {
     exit: { opacity: 0, y: -50, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
-  const currentHeroKeys = heroTextKeys[currentIndex];
+  const currentHeroItem = heroItems[currentIndex];
 
   return (
-    <section
-      className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] bg-cover bg-center bg-no-repeat text-white overflow-hidden px-4 py-20"
-      style={{
-        backgroundImage:
-          "url('https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg')",
-      }}
-    >
+    <section className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] text-white overflow-hidden px-4 py-20">
+      <AnimatePresence>
+        <motion.div
+          key={currentIndex}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${currentHeroItem.imageUrl})` }}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ duration: 1.5, ease: 'easeInOut' }}
+        />
+      </AnimatePresence>
+      
       {/* Overlay */}
       <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
+      
       <div className="container mx-auto text-center relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
@@ -52,10 +79,10 @@ const HeroCarousel: React.FC = () => {
             className="space-y-4 mb-8"
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
-              {t(currentHeroKeys.titleKey)}
+              {t(currentHeroItem.titleKey)}
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
-              {t(currentHeroKeys.subtitleKey)}
+              {t(currentHeroItem.subtitleKey)}
             </p>
           </motion.div>
         </AnimatePresence>
@@ -75,7 +102,7 @@ const HeroCarousel: React.FC = () => {
 
         {/* Navigation Dots */}
         <div className="flex justify-center mt-6 space-x-2">
-          {heroTextKeys.map((_, index) => (
+          {heroItems.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
