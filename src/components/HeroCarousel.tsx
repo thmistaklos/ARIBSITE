@@ -44,24 +44,22 @@ const HeroCarousel: React.FC = () => {
   }, []);
 
   const textVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.5, ease: 'easeIn' } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
-  const currentHeroItem = heroItems[currentIndex];
-
   return (
-    <section className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] text-white overflow-hidden px-4 py-20">
-      <AnimatePresence>
+    <section className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] text-white px-4 py-20">
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentIndex}
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${currentHeroItem.imageUrl})` }}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.1 }}
-          transition={{ duration: 1.5, ease: 'easeInOut' }}
+          style={{ backgroundImage: `url(${heroItems[currentIndex].imageUrl})` }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 2, ease: 'easeInOut' }}
         />
       </AnimatePresence>
       
@@ -79,10 +77,10 @@ const HeroCarousel: React.FC = () => {
             className="space-y-4 mb-8"
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
-              {t(currentHeroItem.titleKey)}
+              {t(heroItems[currentIndex].titleKey)}
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
-              {t(currentHeroItem.subtitleKey)}
+              {t(heroItems[currentIndex].subtitleKey)}
             </p>
           </motion.div>
         </AnimatePresence>
