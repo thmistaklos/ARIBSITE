@@ -1,8 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import AnimatedButton from '@/components/AnimatedButton';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 interface ProductCardProps {
@@ -16,40 +12,25 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { t } = useTranslation();
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.03, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)' }}
-      transition={{ duration: 0.3 }}
-      className="w-full max-w-sm"
-    >
-      <Card className="rounded-xl overflow-hidden border-2 border-dairy-blue/20 bg-dairy-cream shadow-lg h-full flex flex-col">
-        <CardHeader className="p-0">
-          <img
-            src={product.image_url}
-            alt={product.name}
-            className="w-full h-48 object-cover"
-          />
-        </CardHeader>
-        <CardContent className="p-6 text-center flex-grow flex flex-col justify-between">
-          <div>
-            <CardTitle className="text-2xl font-semibold text-dairy-darkBlue mb-2">{product.name}</CardTitle>
-            <CardDescription className="text-dairy-text mb-4">{product.description}</CardDescription>
-            <p className="text-3xl font-bold text-dairy-blue mb-6">{product.price} DA</p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Link to={`/products/${product.id}`}>
-              <AnimatedButton className="w-full bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3">
-                {t('view_details')}
-              </AnimatedButton>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
+    <Link to={`/products/${product.id}`} className="group">
+      <div
+        className="box-border w-[190px] h-[254px] bg-[#D9D9D9]/[0.58] border border-white shadow-[12px_17px_51px_rgba(0,0,0,0.22)] backdrop-blur-[6px] rounded-[17px] text-center cursor-pointer transition-all duration-500 flex flex-col items-center justify-between p-3 select-none font-bolder text-black group-hover:border-black group-hover:scale-105 group-active:scale-95 group-active:rotate-[1.7deg]"
+      >
+        <div className="w-full h-32 flex items-center justify-center">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="max-w-full max-h-full object-contain"
+            />
+        </div>
+        <div className="flex flex-col items-center">
+            <h3 className="text-md font-extrabold leading-tight">{product.name}</h3>
+            <p className="text-xs font-normal line-clamp-2 my-1">{product.description}</p>
+            <p className="text-md font-extrabold">{product.price} DA</p>
+        </div>
+      </div>
+    </Link>
   );
 };
 
