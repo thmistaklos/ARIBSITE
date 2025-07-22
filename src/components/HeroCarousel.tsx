@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import AnimatedButton from '@/components/AnimatedButton';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
@@ -19,7 +16,7 @@ interface HeroItem {
 }
 
 const HeroCarousel: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [heroItems, setHeroItems] = useState<HeroItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -33,16 +30,12 @@ const HeroCarousel: React.FC = () => {
   };
 
   const goToPrevious = useCallback(() => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? heroItems.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-  }, [currentIndex, heroItems.length]);
+    setCurrentIndex((prev) => (prev - 1 + heroItems.length) % heroItems.length);
+  }, [heroItems.length]);
 
   const goToNext = useCallback(() => {
-    const isLastSlide = currentIndex === heroItems.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-  }, [currentIndex, heroItems.length]);
+    setCurrentIndex((prev) => (prev + 1) % heroItems.length);
+  }, [heroItems.length]);
 
   useEffect(() => {
     const fetchHeroItems = async () => {
@@ -64,15 +57,9 @@ const HeroCarousel: React.FC = () => {
 
   useEffect(() => {
     if (heroItems.length === 0 || loading) return;
-    const timer = setTimeout(goToNext, 5000); // Auto-advance every 5 seconds
+    const timer = setTimeout(goToNext, 5000);
     return () => clearTimeout(timer);
   }, [currentIndex, heroItems.length, loading, goToNext]);
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.5, ease: 'easeIn' } },
-  };
 
   if (loading) {
     return (
@@ -91,83 +78,43 @@ const HeroCarousel: React.FC = () => {
   }
 
   return (
-    <section className="relative w-full h-screen text-white overflow-hidden">
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={currentIndex}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroItems[currentIndex].image_url})` }}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 1.5, ease: 'easeInOut' }}
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Carousel Images */}
+      {heroItems.map((item, index) => (
+        <img
+          key={item.id}
+          src={item.image_url}
+          alt={`Slide ${index + 1}`}
+          className={`absolute w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+            index === currentIndex ? "opacity-100" : "opacity-0"
+          }`}
         />
-      </AnimatePresence>
-      
-      <div className="absolute inset-0 bg-black opacity-40 z-10"></div>
-      
-      <div className="relative z-20 flex flex-col items-center justify-center h-full container mx-auto text-center px-4">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={textVariants}
-            className="space-y-4 mb-8"
-          >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
-              {getLocalizedText(heroItems[currentIndex], 'title')}
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
-              {getLocalizedText(heroItems[currentIndex], 'subtitle')}
-            </p>
-          </motion.div>
-        </AnimatePresence>
+      ))}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          <Link to="/products">
-            <AnimatedButton className="bg-dairy-blue text-white hover:bg-dairy-darkBlue px-8 py-3 text-lg">
-              {t('explore_products')}
-            </AnimatedButton>
-          </Link>
-        </motion.div>
+      {/* Hero Text Overlay */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-black/40 text-white px-4">
+        <h1 className="font-bold text-4xl md:text-6xl">
+          {getLocalizedText(heroItems[currentIndex], 'title')}
+        </h1>
+        <p className="mt-4 text-lg md:text-2xl">
+          {getLocalizedText(heroItems[currentIndex], 'subtitle')}
+        </p>
       </div>
 
-      {/* Navigation Controls */}
+      {/* Navigation Buttons */}
       <button
         onClick={goToPrevious}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 z-30 p-2 rounded-full bg-black/30 hover:bg-black/50 transition-colors"
-        aria-label="Previous slide"
+        className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors"
       >
-        <ChevronLeft className="h-6 w-6 text-white" />
+        <ChevronLeft className="h-6 w-6" />
       </button>
       <button
         onClick={goToNext}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 z-30 p-2 rounded-full bg-black/30 hover:bg-black/50 transition-colors"
-        aria-label="Next slide"
+        className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors"
       >
-        <ChevronRight className="h-6 w-6 text-white" />
+        <ChevronRight className="h-6 w-6" />
       </button>
-
-      {/* Dot Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
-        {heroItems.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-              index === currentIndex ? 'bg-dairy-blue' : 'bg-white/50 hover:bg-white/70'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          ></button>
-        ))}
-      </div>
-    </section>
+    </div>
   );
 };
 
