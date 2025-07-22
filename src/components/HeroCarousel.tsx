@@ -105,7 +105,7 @@ const HeroCarousel: React.FC = () => {
         <Link to="/products">
           <button className="mt-6 flex items-center gap-2 bg-white text-black font-semibold px-5 py-3 rounded-full hover:bg-gray-200 transition">
             <Milk className="w-5 h-5" />
-            {t('explore_our_products')}
+            DISCOVER OUR PRODUCTS
           </button>
         </Link>
       </div>
