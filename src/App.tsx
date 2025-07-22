@@ -21,6 +21,7 @@ import BlogManagement from "./pages/admin/BlogManagement";
 import FaqManagement from "./pages/admin/FaqManagement";
 import FactsManagement from "./pages/admin/FactsManagement";
 import DiscountsManagement from "./pages/admin/DiscountsManagement";
+import HeroCarouselManagement from "./pages/admin/HeroCarouselManagement"; // Import the new component
 // import BannerManagement from "./pages/admin/BannerManagement"; // Removed the import for BannerManagement
 
 const queryClient = new QueryClient();
@@ -81,6 +82,7 @@ const App = () => (
                 <Route path="/admin" element={<ProtectedRoute />}>
                   <Route element={<DashboardLayout />}>
                     <Route index element={<DashboardOverview />} />
+                    <Route path="herocarousel" element={<HeroCarouselManagement />} />
                     <Route path="products" element={<ProductsManagement />} />
                     <Route path="users" element={<UsersManagement />} />
                     <Route path="distributors" element={<DistributorsManagement />} />

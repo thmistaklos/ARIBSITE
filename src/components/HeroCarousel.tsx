@@ -3,45 +3,59 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedButton from '@/components/AnimatedButton';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
-const heroItems = [
-  { 
-    titleKey: "hero_title_1", 
-    subtitleKey: "hero_subtitle_1",
-    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg"
-  },
-  { 
-    titleKey: "hero_title_2", 
-    subtitleKey: "hero_subtitle_2",
-    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(9).jpg"
-  },
-  { 
-    titleKey: "hero_title_3", 
-    subtitleKey: "hero_subtitle_3",
-    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(6).jpg"
-  },
-  { 
-    titleKey: "hero_title_4", 
-    subtitleKey: "hero_subtitle_4",
-    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper%20(5).jpg"
-  },
-  { 
-    titleKey: "hero_title_5", 
-    subtitleKey: "hero_subtitle_5",
-    imageUrl: "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//wallpaperflare.com_wallpaper.jpg"
-  },
-];
+interface HeroItem {
+  id: string;
+  title_en: string;
+  title_ar: string;
+  title_fr: string;
+  subtitle_en: string;
+  subtitle_ar: string;
+  subtitle_fr: string;
+  image_url: string;
+}
 
 const HeroCarousel: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [heroItems, setHeroItems] = useState<HeroItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    const fetchHeroItems = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('hero_carousel_items')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) {
+        toast.error('Failed to load hero content', { description: error.message });
+      } else {
+        setHeroItems(data || []);
+      }
+      setLoading(false);
+    };
+    fetchHeroItems();
+  }, []);
+
+  useEffect(() => {
+    if (heroItems.length === 0) return;
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % heroItems.length);
     }, 5000); // Change every 5 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [heroItems.length]);
+
+  const getLocalizedText = (item: HeroItem, field: 'title' | 'subtitle') => {
+    const lang = i18n.language;
+    if (lang === 'ar') return item[`${field}_ar`] || item[`${field}_en`];
+    if (lang === 'fr') return item[`${field}_fr`] || item[`${field}_en`];
+    return item[`${field}_en`];
+  };
 
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -49,13 +63,29 @@ const HeroCarousel: React.FC = () => {
     exit: { opacity: 0, y: -20, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
+  if (loading) {
+    return (
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] bg-dairy-blue/10">
+        <Loader2 className="h-12 w-12 animate-spin text-dairy-blue" />
+      </section>
+    );
+  }
+
+  if (heroItems.length === 0) {
+    return (
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] bg-gray-200 text-gray-600">
+        <p>No hero content available. Please add slides in the admin panel.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-128px)] text-white px-4 py-20">
       <AnimatePresence initial={false}>
         <motion.div
           key={currentIndex}
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroItems[currentIndex].imageUrl})` }}
+          style={{ backgroundImage: `url(${heroItems[currentIndex].image_url})` }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -63,7 +93,6 @@ const HeroCarousel: React.FC = () => {
         />
       </AnimatePresence>
       
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
       
       <div className="container mx-auto text-center relative z-10">
@@ -77,15 +106,14 @@ const HeroCarousel: React.FC = () => {
             className="space-y-4 mb-8"
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white font-exo uppercase tracking-wide">
-              {t(heroItems[currentIndex].titleKey)}
+              {getLocalizedText(heroItems[currentIndex], 'title')}
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto">
-              {t(heroItems[currentIndex].subtitleKey)}
+              {getLocalizedText(heroItems[currentIndex], 'subtitle')}
             </p>
           </motion.div>
         </AnimatePresence>
 
-        {/* CTA Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -98,7 +126,6 @@ const HeroCarousel: React.FC = () => {
           </Link>
         </motion.div>
 
-        {/* Navigation Dots */}
         <div className="flex justify-center mt-6 space-x-2">
           {heroItems.map((_, index) => (
             <button

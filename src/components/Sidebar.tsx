@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent } from 'lucide-react'; // Removed Image icon
+import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent, GalleryHorizontal } from 'lucide-react'; // Removed Image icon and added GalleryHorizontal
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 
 const navItems = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+  { name: 'Hero Carousel', path: '/admin/herocarousel', icon: GalleryHorizontal },
   { name: 'Products', path: '/admin/products', icon: Package },
   { name: 'Users', path: '/admin/users', icon: Users },
   { name: 'Distributors', path: '/admin/distributors', icon: Truck },
