@@ -1,54 +1,55 @@
-.card {
-  position: relative;
-  width: 230px;
-  min-height: 330px;
-  background-color: #000; /* Black background always on top */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 16px;
-  gap: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  z-index: 2; /* Keep content above animations */
-  overflow: hidden;
+/* Flip Card Styles (from Uiverse.io by JustCode14) */
+.flip-card {
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
 }
 
-.card::before,
-.card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
-  z-index: -1; /* Keep animations behind card content */
+  text-align: center;
+  transition: transform 0.6s;
+  transition-timing-function: cubic-bezier(0.61, 0.98, 0.48, 1.01);
+  transform-style: preserve-3d;
 }
 
-.card::before {
-  background: linear-gradient(-45deg, red 0%, yellow 100%);
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
 }
 
-.card::after {
-  background: linear-gradient(-45deg, red 0%, yellow 100%);
-  transform: scale(0.95);
-  filter: blur(20px);
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
 }
 
-.card:hover::after {
-  filter: blur(30px);
+.flip-card-front {
+  background: #fff;
+  color: #000;
 }
 
-.card:hover::before {
-  transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
-}
-
-.heading {
-  font-size: 20px;
-  text-transform: capitalize;
-  font-weight: 700;
-  color: white;
+.flip-card-back {
+  background: #000;
+  color: #fff;
+  transform: rotateY(180deg);
 }
