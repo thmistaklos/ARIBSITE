@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
-import { Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Loader2, ChevronLeft, ChevronRight, Milk } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface HeroItem {
   id: string;
@@ -16,7 +17,7 @@ interface HeroItem {
 }
 
 const HeroCarousel: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [heroItems, setHeroItems] = useState<HeroItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -99,6 +100,14 @@ const HeroCarousel: React.FC = () => {
         <p className="mt-4 text-lg md:text-2xl">
           {getLocalizedText(heroItems[currentIndex], 'subtitle')}
         </p>
+
+        {/* Explore Button */}
+        <Link to="/products">
+          <button className="mt-6 flex items-center gap-2 bg-white text-black font-semibold px-5 py-3 rounded-full hover:bg-gray-200 transition">
+            <Milk className="w-5 h-5" />
+            {t('explore_our_products')}
+          </button>
+        </Link>
       </div>
 
       {/* Navigation Buttons */}
