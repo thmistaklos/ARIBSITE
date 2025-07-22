@@ -1,62 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { useEffect, useState } from "react";
+import "./DiscountPopup.css"; // Include the CSS below
 
-const DiscountPopup: React.FC = () => {
+const DiscountPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Show the popup when the component mounts
-    setIsOpen(true);
+    setIsOpen(true); // Show popup on page load
   }, []);
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[999]"
-          onClick={handleClose} // Close on overlay click
+    <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+      <div className="card relative" id="card">
+        {/* Close button */}
+        <button
+          onClick={() => setIsOpen(false)}
+          className="absolute top-2 right-2 text-white text-2xl font-bold z-10"
         >
-          <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.7, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="relative w-64 h-80 bg-sky-600 rounded-2xl text-gray-50 flex flex-col justify-end items-center gap-2 p-4"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the popup
-          >
-            <button
-              onClick={handleClose}
-              className="absolute top-2 right-2 text-gray-50/70 hover:text-gray-50 transition-colors"
-              aria-label="Close popup"
-            >
-              <X className="h-6 w-6" />
-            </button>
+          ×
+        </button>
 
-            <img
-              src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//WhatsApp_Image_2025-07-19_at_17.59.08_bb1a699c-removebg-preview.png"
-              alt="Amir Cheese"
-              className="w-32 h-32 object-contain absolute -top-8"
-            />
+        {/* Content */}
+        <div className="content flex flex-col items-center justify-center text-center gap-2">
+          {/* Image */}
+          <img
+            src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//WhatsApp_Image_2025-07-19_at_17.59.08_bb1a699c-removebg-preview.png"
+            alt="Amir Cheese"
+            className="w-28 h-28 object-contain"
+          />
 
-            <h2 className="font-bold text-2xl">AMIR CHEESE</h2>
-            <p className="text-xs uppercase">THE BEST CHEESE IN THE MARKET</p>
-            <p className="font-extrabold text-5xl text-yellow-300">50 DA</p>
+          {/* Title & Subtitle */}
+          <span className="text-lg font-bold">AMIR CHEESE</span>
+          <span className="text-xs">THE BEST CHEESE IN THE MARKET</span>
 
-            <button className="w-full py-2 mt-2 rounded bg-gray-50 text-sky-600 font-semibold hover:bg-sky-500 hover:text-gray-50 transition-colors">
-              Shop Now
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          {/* Price */}
+          <span className="text-yellow-300 font-extrabold text-xl mt-2">
+            50 DA
+          </span>
+        </div>
+      </div>
+    </div>
   );
 };
 
