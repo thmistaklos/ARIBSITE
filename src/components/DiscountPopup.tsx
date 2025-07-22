@@ -1,132 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { supabase } from '@/lib/supabase';
-import { toast } from 'sonner';
-
-interface Discount {
-  id: string;
-  title_en: string;
-  title_ar: string;
-  title_fr: string;
-  subtitle_en: string;
-  subtitle_ar: string;
-  subtitle_fr: string;
-  price_text_en: string;
-  price_text_ar: string;
-  price_text_fr: string;
-  image_url: string | null;
-  link_url: string | null;
-  is_active: boolean;
-}
 
 const DiscountPopup: React.FC = () => {
-  const { t, i18n } = useTranslation();
-  const [isVisible, setIsVisible] = useState(false);
-  const [activeDiscount, setActiveDiscount] = useState<Discount | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const fetchActiveDiscount = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('discounts')
-        .select('*')
-        .eq('is_active', true)
-        .single();
-
-      if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
-        toast.error('Failed to load discount flyer for popup', { description: error.message });
-        setActiveDiscount(null);
-      } else if (data) {
-        setActiveDiscount(data);
-        setIsVisible(true); // Show popup immediately if active discount found
-      } else {
-        setActiveDiscount(null);
-        setIsVisible(false);
-      }
-      setLoading(false);
-    };
-
-    fetchActiveDiscount();
-  }, []); // Run once on mount
+    // Show the popup when the component mounts
+    setIsOpen(true);
+  }, []);
 
   const handleClose = () => {
-    setIsVisible(false);
+    setIsOpen(false);
   };
-
-  const getLocalizedText = (discount: Discount, keyPrefix: string) => {
-    const lang = i18n.language;
-    if (lang === 'ar') return (discount as any)[`${keyPrefix}_ar`] || (discount as any)[`${keyPrefix}_en`];
-    if (lang === 'fr') return (discount as any)[`${keyPrefix}_fr`] || (discount as any)[`${keyPrefix}_en`];
-    return (discount as any)[`${keyPrefix}_en`];
-  };
-
-  const overlayVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.3 } },
-    exit: { opacity: 0, transition: { duration: 0.3 } },
-  };
-
-  const popupVariants = {
-    hidden: { opacity: 0, scale: 0.7, y: -50 },
-    visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.1 } },
-    exit: { opacity: 0, scale: 0.7, y: 50, transition: { duration: 0.2, ease: 'easeOut' } },
-  };
-
-  if (loading) {
-    return null; // Don't render anything while loading
-  }
 
   return (
     <AnimatePresence>
-      {isVisible && activeDiscount && (
-        <>
-          {/* Overlay */}
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[999]"
+          onClick={handleClose} // Close on overlay click
+        >
           <motion.div
-            className="fixed inset-0 bg-black/70 z-[9998]" // High z-index
-            variants={overlayVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={handleClose} // Close when clicking outside
-          />
-
-          {/* Popup */}
-          <motion.div
-            className="fixed inset-0 flex items-center justify-center z-[9999] p-4" // Even higher z-index
-            variants={popupVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.7, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="relative w-64 h-80 bg-sky-600 rounded-2xl text-gray-50 flex flex-col justify-end items-center gap-2 p-4"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the popup
           >
-            <div className="card relative" onClick={(e) => e.stopPropagation()}> {/* Prevent closing when clicking inside card */}
-              <button
-                onClick={handleClose}
-                className="absolute top-3 right-3 text-white hover:text-gray-300 transition-colors z-10"
-                aria-label="Close discount popup"
-              >
-                <X className="h-6 w-6" />
-              </button>
-              <div className="card-content">
-                <h2>{getLocalizedText(activeDiscount, 'title')}</h2>
-                <p className="subtitle">{getLocalizedText(activeDiscount, 'subtitle')}</p>
-                <p className="price">
-                  <span className="glow">{getLocalizedText(activeDiscount, 'price_text')}</span>
-                </p>
-              </div>
-              {activeDiscount.image_url && (
-                <div className="image-wrapper">
-                  <img
-                    src={activeDiscount.image_url}
-                    alt={activeDiscount.title_en}
-                  />
-                </div>
-              )}
-            </div>
+            <button
+              onClick={handleClose}
+              className="absolute top-2 right-2 text-gray-50/70 hover:text-gray-50 transition-colors"
+              aria-label="Close popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <img
+              src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//WhatsApp_Image_2025-07-19_at_17.59.08_bb1a699c-removebg-preview.png"
+              alt="Amir Cheese"
+              className="w-32 h-32 object-contain absolute -top-8"
+            />
+
+            <h2 className="font-bold text-2xl">AMIR CHEESE</h2>
+            <p className="text-xs uppercase">THE BEST CHEESE IN THE MARKET</p>
+            <p className="font-extrabold text-5xl text-yellow-300">50 DA</p>
+
+            <button className="w-full py-2 mt-2 rounded bg-gray-50 text-sky-600 font-semibold hover:bg-sky-500 hover:text-gray-50 transition-colors">
+              Shop Now
+            </button>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );
