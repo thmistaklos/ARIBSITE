@@ -103,9 +103,14 @@ const HeroCarousel: React.FC = () => {
 
         {/* Explore Button */}
         <Link to="/products" className="mt-6">
-          <button className="button">
+          <button className="c-button c-button--gooey flex items-center gap-2">
             <Milk className="w-5 h-5" />
             DISCOVER OUR PRODUCTS
+            <div className="c-button__blobs">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </button>
         </Link>
       </div>
@@ -123,6 +128,22 @@ const HeroCarousel: React.FC = () => {
       >
         <ChevronRight className="h-6 w-6" />
       </button>
+
+      {/* Gooey Filter SVG */}
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'block', height: 0, width: 0 }}>
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
+      </svg>
     </div>
   );
 };
