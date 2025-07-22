@@ -11,13 +11,14 @@ import AccordionSection from '@/components/AccordionSection';
 import ParticleBackground from '@/components/ParticleBackground';
 import HeroCarousel from '@/components/HeroCarousel';
 import ImageSliderSection from '@/components/ImageSliderSection';
-// Removed import for BannerSection
+import DiscountPopup from '@/components/DiscountPopup';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <div className="relative min-h-screen bg-dairy-cream text-dairy-text overflow-hidden">
+      <DiscountPopup />
       <ParticleBackground />
 
       {/* Hero Section - Now using HeroCarousel */}
@@ -27,9 +28,6 @@ const HomePage: React.FC = () => {
       <section className="w-full py-12 px-4 bg-dairy-cream">
         <ProductGallery />
       </section>
-
-      {/* Banner Section - Removed */}
-      {/* <BannerSection /> */}
 
       {/* Recipes Section */}
       <section className="w-full py-12 px-4 bg-dairy-cream">
