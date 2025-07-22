@@ -9,15 +9,21 @@ import { supabase } from '@/lib/supabase';
 
 interface Recipe {
   id: string;
-  title: string;
   image_url: string;
-  ingredients: string[];
-  preparation_steps: string[];
+  title_en: string;
+  title_ar: string | null;
+  title_fr: string | null;
+  ingredients_en: string[];
+  ingredients_ar: string[] | null;
+  ingredients_fr: string[] | null;
+  preparation_steps_en: string[];
+  preparation_steps_ar: string[] | null;
+  preparation_steps_fr: string[] | null;
 }
 
 const RecipeDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +52,12 @@ const RecipeDetailPage: React.FC = () => {
     fetchRecipe();
   }, [id]);
 
+  const getLocalizedText = (item: any, fieldPrefix: string) => {
+    if (!item) return fieldPrefix === 'title' ? '' : [];
+    const lang = i18n.language;
+    return item[`${fieldPrefix}_${lang}`] || item[`${fieldPrefix}_en`];
+  };
+
   if (loading) {
     return (
       <div className="min-h-[calc(100vh-232px)] flex items-center justify-center bg-dairy-cream text-dairy-text py-12 px-4">
@@ -70,6 +82,10 @@ const RecipeDetailPage: React.FC = () => {
     );
   }
 
+  const title = getLocalizedText(recipe, 'title');
+  const ingredients = getLocalizedText(recipe, 'ingredients');
+  const preparationSteps = getLocalizedText(recipe, 'preparation_steps');
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -84,7 +100,7 @@ const RecipeDetailPage: React.FC = () => {
 
         <motion.img
           src={recipe.image_url}
-          alt={recipe.title}
+          alt={title}
           className="w-full h-64 md:h-96 object-cover rounded-lg mb-8 shadow-md"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -97,7 +113,7 @@ const RecipeDetailPage: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-6"
         >
-          {recipe.title}
+          {title}
         </motion.h1>
 
         <motion.div
@@ -109,7 +125,7 @@ const RecipeDetailPage: React.FC = () => {
           <div>
             <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-4">{t('ingredients')}</h2>
             <ul className="list-disc list-inside text-lg text-dairy-text space-y-2">
-              {recipe.ingredients.map((item, index) => (
+              {ingredients.map((item: string, index: number) => (
                 <li key={index}>{item}</li>
               ))}
             </ul>
@@ -118,7 +134,7 @@ const RecipeDetailPage: React.FC = () => {
           <div>
             <h2 className="text-2xl font-semibold text-dairy-darkBlue mb-4">{t('preparation')}</h2>
             <ol className="list-decimal list-inside text-lg text-dairy-text space-y-2">
-              {recipe.preparation_steps.map((step, index) => (
+              {preparationSteps.map((step: string, index: number) => (
                 <li key={index}>{step}</li>
               ))}
             </ol>

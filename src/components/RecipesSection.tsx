@@ -10,23 +10,29 @@ import AnimatedButton from '@/components/AnimatedButton';
 
 interface Recipe {
   id: string;
-  title: string;
   image_url: string;
-  ingredients: string[];
-  preparation_steps: string[];
+  title_en: string;
+  title_ar: string | null;
+  title_fr: string | null;
+  preparation_steps_en: string[];
+  preparation_steps_ar: string[] | null;
+  preparation_steps_fr: string[] | null;
+  ingredients_en: string[];
+  ingredients_ar: string[] | null;
+  ingredients_fr: string[] | null;
 }
 
 interface RecipesSectionProps {}
 
 const RecipesSection: React.FC<RecipesSectionProps> = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from('recipes').select('*').order('title', { ascending: true }).limit(4); // Limit to 4 for a nice grid
+      const { data, error } = await supabase.from('recipes').select('*').order('title_en', { ascending: true }).limit(4);
       if (error) {
         toast.error('Failed to load recipes for homepage', { description: error.message });
       } else {
@@ -37,6 +43,11 @@ const RecipesSection: React.FC<RecipesSectionProps> = () => {
 
     fetchRecipes();
   }, []);
+
+  const getLocalizedText = (item: any, fieldPrefix: string) => {
+    const lang = i18n.language;
+    return item[`${fieldPrefix}_${lang}`] || item[`${fieldPrefix}_en`];
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -85,11 +96,11 @@ const RecipesSection: React.FC<RecipesSectionProps> = () => {
           {recipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={{
               id: recipe.id,
-              title: recipe.title,
+              title: getLocalizedText(recipe, 'title'),
               image: recipe.image_url,
-              shortDescription: (recipe.preparation_steps?.[0]) || '', // Fixed: Safely access the first element
-              ingredients: recipe.ingredients,
-              preparation: recipe.preparation_steps,
+              shortDescription: (getLocalizedText(recipe, 'preparation_steps')?.[0]) || '',
+              ingredients: getLocalizedText(recipe, 'ingredients'),
+              preparation: getLocalizedText(recipe, 'preparation_steps'),
             }} />
           ))}
         </div>

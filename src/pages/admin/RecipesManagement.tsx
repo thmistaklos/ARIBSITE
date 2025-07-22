@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
@@ -13,21 +12,35 @@ import AnimatedButton from '@/components/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Import Form components
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 
 interface Recipe {
   id: string;
-  title: string;
   image_url: string | null;
-  ingredients: string[];
-  preparation_steps: string[];
+  title_en: string;
+  title_ar: string | null;
+  title_fr: string | null;
+  ingredients_en: string[];
+  ingredients_ar: string[] | null;
+  ingredients_fr: string[] | null;
+  preparation_steps_en: string[];
+  preparation_steps_ar: string[] | null;
+  preparation_steps_fr: string[] | null;
 }
 
 const recipeSchema = z.object({
-  title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
   image_url: z.string().url().nullable().optional().or(z.literal('')),
-  ingredients: z.string().min(1, { message: 'Ingredients cannot be empty.' }), // Raw string input
-  preparation_steps: z.string().min(1, { message: 'Preparation steps cannot be empty.' }), // Raw string input
+  title_en: z.string().min(2, { message: 'English title is required.' }),
+  title_ar: z.string().min(2, { message: 'Arabic title is required.' }),
+  title_fr: z.string().min(2, { message: 'French title is required.' }),
+  ingredients_en: z.string().min(1, { message: 'English ingredients are required.' }),
+  ingredients_ar: z.string().min(1, { message: 'Arabic ingredients are required.' }),
+  ingredients_fr: z.string().min(1, { message: 'French ingredients are required.' }),
+  preparation_steps_en: z.string().min(1, { message: 'English preparation steps are required.' }),
+  preparation_steps_ar: z.string().min(1, { message: 'Arabic preparation steps are required.' }),
+  preparation_steps_fr: z.string().min(1, { message: 'French preparation steps are required.' }),
 });
 
 const RecipesManagement: React.FC = () => {
@@ -43,10 +56,10 @@ const RecipesManagement: React.FC = () => {
   const form = useForm<z.infer<typeof recipeSchema>>({
     resolver: zodResolver(recipeSchema),
     defaultValues: {
-      title: '',
+      title_en: '', title_ar: '', title_fr: '',
       image_url: null,
-      ingredients: '',
-      preparation_steps: '',
+      ingredients_en: '', ingredients_ar: '', ingredients_fr: '',
+      preparation_steps_en: '', preparation_steps_ar: '', preparation_steps_fr: '',
     },
   });
 
@@ -56,7 +69,7 @@ const RecipesManagement: React.FC = () => {
 
   const fetchRecipes = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('recipes').select('*').order('title', { ascending: true });
+    const { data, error } = await supabase.from('recipes').select('*').order('title_en', { ascending: true });
     if (error) {
       toast.error('Failed to fetch recipes', { description: error.message });
     } else {
@@ -87,19 +100,11 @@ const RecipesManagement: React.FC = () => {
 
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('recipe-images')
-          .upload(filePath, selectedFile, {
-            cacheControl: '3600',
-            upsert: false,
-          });
+          .upload(filePath, selectedFile, { cacheControl: '3600', upsert: false });
 
-        if (uploadError) {
-          throw uploadError;
-        }
+        if (uploadError) throw uploadError;
 
-        const { data: publicUrlData } = supabase.storage
-          .from('recipe-images')
-          .getPublicUrl(filePath);
-
+        const { data: publicUrlData } = supabase.storage.from('recipe-images').getPublicUrl(filePath);
         imageUrl = publicUrlData.publicUrl;
       } else if (!currentRecipe && !imageUrl) {
         toast.error('Image required', { description: 'Please upload an image for the new recipe.' });
@@ -107,35 +112,28 @@ const RecipesManagement: React.FC = () => {
         return;
       }
 
-      // Parse ingredients and steps from string to JSON array
-      const parsedIngredients = values.ingredients.split('\n').map(item => item.trim()).filter(item => item.length > 0);
-      const parsedSteps = values.preparation_steps.split('\n').map(step => step.trim()).filter(step => step.length > 0);
+      const parseStringToArray = (str: string) => str.split('\n').map(item => item.trim()).filter(item => item.length > 0);
 
       const recipeData = {
-        title: values.title,
         image_url: imageUrl,
-        ingredients: parsedIngredients,
-        preparation_steps: parsedSteps,
+        title_en: values.title_en,
+        title_ar: values.title_ar,
+        title_fr: values.title_fr,
+        ingredients_en: parseStringToArray(values.ingredients_en),
+        ingredients_ar: parseStringToArray(values.ingredients_ar),
+        ingredients_fr: parseStringToArray(values.ingredients_fr),
+        preparation_steps_en: parseStringToArray(values.preparation_steps_en),
+        preparation_steps_ar: parseStringToArray(values.preparation_steps_ar),
+        preparation_steps_fr: parseStringToArray(values.preparation_steps_fr),
       };
 
       if (currentRecipe) {
-        const { error } = await supabase
-          .from('recipes')
-          .update(recipeData)
-          .eq('id', currentRecipe.id);
-
-        if (error) {
-          throw error;
-        }
+        const { error } = await supabase.from('recipes').update(recipeData).eq('id', currentRecipe.id);
+        if (error) throw error;
         toast.success('Recipe updated successfully!');
       } else {
-        const { error } = await supabase
-          .from('recipes')
-          .insert([recipeData]);
-
-        if (error) {
-          throw error;
-        }
+        const { error } = await supabase.from('recipes').insert([recipeData]);
+        if (error) throw error;
         toast.success('Recipe added successfully!');
       }
 
@@ -164,7 +162,12 @@ const RecipesManagement: React.FC = () => {
 
   const openAddDialog = () => {
     setCurrentRecipe(null);
-    form.reset({ title: '', image_url: null, ingredients: '', preparation_steps: '' });
+    form.reset({
+      title_en: '', title_ar: '', title_fr: '',
+      image_url: null,
+      ingredients_en: '', ingredients_ar: '', ingredients_fr: '',
+      preparation_steps_en: '', preparation_steps_ar: '', preparation_steps_fr: '',
+    });
     setSelectedFile(null);
     setImagePreviewUrl(null);
     setIsDialogOpen(true);
@@ -173,9 +176,16 @@ const RecipesManagement: React.FC = () => {
   const openEditDialog = (recipe: Recipe) => {
     setCurrentRecipe(recipe);
     form.reset({
-      ...recipe,
-      ingredients: recipe.ingredients.join('\n'), // Convert array back to string for textarea
-      preparation_steps: recipe.preparation_steps.join('\n'), // Convert array back to string for textarea
+      image_url: recipe.image_url,
+      title_en: recipe.title_en,
+      title_ar: recipe.title_ar || '',
+      title_fr: recipe.title_fr || '',
+      ingredients_en: (recipe.ingredients_en || []).join('\n'),
+      ingredients_ar: (recipe.ingredients_ar || []).join('\n'),
+      ingredients_fr: (recipe.ingredients_fr || []).join('\n'),
+      preparation_steps_en: (recipe.preparation_steps_en || []).join('\n'),
+      preparation_steps_ar: (recipe.preparation_steps_ar || []).join('\n'),
+      preparation_steps_fr: (recipe.preparation_steps_fr || []).join('\n'),
     });
     setSelectedFile(null);
     setImagePreviewUrl(recipe.image_url);
@@ -207,49 +217,33 @@ const RecipesManagement: React.FC = () => {
         </div>
       ) : (
         <div className="rounded-md border border-dairy-blue/20 bg-white shadow-md overflow-hidden">
-          <div className="overflow-x-auto"> {/* Added for horizontal scrolling */}
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-dairy-blue/10">
                   <TableHead className="w-[80px] text-dairy-darkBlue">Image</TableHead>
-                  <TableHead className="text-dairy-darkBlue">Title</TableHead>
-                  <TableHead className="text-dairy-darkBlue">Ingredients</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Title (EN)</TableHead>
+                  <TableHead className="text-dairy-darkBlue">Ingredients (EN)</TableHead>
                   <TableHead className="text-right text-dairy-darkBlue">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {recipes.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={4} className="h-24 text-center text-dairy-text">
-                      No recipes found.
+                {recipes.map((recipe) => (
+                  <TableRow key={recipe.id}>
+                    <TableCell>
+                      {recipe.image_url && <img src={recipe.image_url} alt={recipe.title_en} className="w-12 h-12 object-cover rounded-md" />}
+                    </TableCell>
+                    <TableCell className="font-medium text-dairy-darkBlue">{recipe.title_en}</TableCell>
+                    <TableCell className="text-dairy-text line-clamp-2">{recipe.ingredients_en.join(', ')}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end space-x-2">
+                        <AnimatedButton variant="outline" size="sm" onClick={() => openPreviewDialog(recipe)} soundOnClick="/sounds/click.mp3"><Eye className="h-4 w-4" /></AnimatedButton>
+                        <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(recipe)} soundOnClick="/sounds/click.mp3"><Edit className="h-4 w-4" /></AnimatedButton>
+                        <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteRecipe(recipe.id)} soundOnClick="/sounds/click.mp3"><Trash2 className="h-4 w-4" /></AnimatedButton>
+                      </div>
                     </TableCell>
                   </TableRow>
-                ) : (
-                  recipes.map((recipe) => (
-                    <TableRow key={recipe.id}>
-                      <TableCell>
-                        {recipe.image_url && (
-                          <img src={recipe.image_url} alt={recipe.title} className="w-12 h-12 object-cover rounded-md" />
-                        )}
-                      </TableCell>
-                      <TableCell className="font-medium text-dairy-darkBlue">{recipe.title}</TableCell>
-                      <TableCell className="text-dairy-text line-clamp-2">{recipe.ingredients.join(', ')}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <AnimatedButton variant="outline" size="sm" onClick={() => openPreviewDialog(recipe)} soundOnClick="/sounds/click.mp3">
-                            <Eye className="h-4 w-4" />
-                          </AnimatedButton>
-                          <AnimatedButton variant="outline" size="sm" onClick={() => openEditDialog(recipe)} soundOnClick="/sounds/click.mp3">
-                            <Edit className="h-4 w-4" />
-                          </AnimatedButton>
-                          <AnimatedButton variant="destructive" size="sm" onClick={() => handleDeleteRecipe(recipe.id)} soundOnClick="/sounds/click.mp3">
-                            <Trash2 className="h-4 w-4" />
-                          </AnimatedButton>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                ))}
               </TableBody>
             </Table>
           </div>
@@ -257,110 +251,67 @@ const RecipesManagement: React.FC = () => {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px] bg-dairy-cream border-dairy-blue/20 shadow-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-dairy-darkBlue">{currentRecipe ? 'Edit Recipe' : 'Add New Recipe'}</DialogTitle>
-            <DialogDescription className="text-dairy-text">
-              {currentRecipe ? 'Make changes to the recipe details here.' : 'Add a new delicious recipe.'}
-            </DialogDescription>
+            <DialogDescription className="text-dairy-text">{currentRecipe ? 'Make changes to the recipe details here.' : 'Add a new delicious recipe.'}</DialogDescription>
           </DialogHeader>
-          <Form {...form}> {/* Wrapped the form with Form component */}
+          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                    <FormLabel className="md:text-right text-dairy-text">Title</FormLabel>
-                    <FormControl className="md:col-span-3">
-                      <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                    </FormControl>
-                    <FormMessage className="md:col-span-4 md:col-start-2" />
-                  </FormItem>
-                )}
-              />
               <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                <Label htmlFor="image" className="md:text-right text-dairy-text">
-                  Image
-                </Label>
+                <Label htmlFor="image" className="md:text-right text-dairy-text">Image</Label>
                 <div className="md:col-span-3 flex flex-col gap-2">
-                  <Input
-                    id="image"
-                    name="image"
-                    type="file"
-                    onChange={handleFileChange}
-                    className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue"
-                    accept="image/*"
-                  />
-                  {imagePreviewUrl && (
-                    <img src={imagePreviewUrl} alt="Recipe Image Preview" className="w-24 h-24 object-cover rounded-md mt-2" />
-                  )}
-                  {!selectedFile && currentRecipe?.image_url && (
-                    <p className="text-xs text-muted-foreground mt-1">Current image will be used if no new file is selected.</p>
-                  )}
+                  <Input id="image" name="image" type="file" onChange={handleFileChange} className="bg-dairy-cream/50 border-dairy-blue/30" accept="image/*" />
+                  {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className="w-24 h-24 object-cover rounded-md mt-2" />}
                 </div>
               </div>
-              <FormField
-                control={form.control}
-                name="ingredients"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
-                    <FormLabel className="md:text-right text-dairy-text">Ingredients (one per line)</FormLabel>
-                    <FormControl className="md:col-span-3">
-                      <Textarea {...field} rows={5} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                    </FormControl>
-                    <FormMessage className="md:col-span-4 md:col-start-2" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="preparation_steps"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
-                    <FormLabel className="md:text-right text-dairy-text">Preparation Steps (one per line)</FormLabel>
-                    <FormControl className="md:col-span-3">
-                      <Textarea {...field} rows={7} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                    </FormControl>
-                    <FormMessage className="md:col-span-4 md:col-start-2" />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter>
+              <Tabs defaultValue="en" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="en">English</TabsTrigger>
+                  <TabsTrigger value="ar">Arabic</TabsTrigger>
+                  <TabsTrigger value="fr">French</TabsTrigger>
+                </TabsList>
+                <TabsContent value="en" className="space-y-4 pt-4">
+                  <FormField control={form.control} name="title_en" render={({ field }) => (<FormItem><FormLabel>Title (EN)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="ingredients_en" render={({ field }) => (<FormItem><FormLabel>Ingredients (one per line)</FormLabel><FormControl><Textarea {...field} rows={5} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="preparation_steps_en" render={({ field }) => (<FormItem><FormLabel>Preparation (one per line)</FormLabel><FormControl><Textarea {...field} rows={7} /></FormControl><FormMessage /></FormItem>)} />
+                </TabsContent>
+                <TabsContent value="ar" className="space-y-4 pt-4">
+                  <FormField control={form.control} name="title_ar" render={({ field }) => (<FormItem><FormLabel>Title (AR)</FormLabel><FormControl><Input {...field} dir="rtl" /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="ingredients_ar" render={({ field }) => (<FormItem><FormLabel>Ingredients (AR)</FormLabel><FormControl><Textarea {...field} rows={5} dir="rtl" /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="preparation_steps_ar" render={({ field }) => (<FormItem><FormLabel>Preparation (AR)</FormLabel><FormControl><Textarea {...field} rows={7} dir="rtl" /></FormControl><FormMessage /></FormItem>)} />
+                </TabsContent>
+                <TabsContent value="fr" className="space-y-4 pt-4">
+                  <FormField control={form.control} name="title_fr" render={({ field }) => (<FormItem><FormLabel>Title (FR)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="ingredients_fr" render={({ field }) => (<FormItem><FormLabel>Ingredients (FR)</FormLabel><FormControl><Textarea {...field} rows={5} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="preparation_steps_fr" render={({ field }) => (<FormItem><FormLabel>Preparation (FR)</FormLabel><FormControl><Textarea {...field} rows={7} /></FormControl><FormMessage /></FormItem>)} />
+                </TabsContent>
+              </Tabs>
+              <div className="flex justify-end">
                 <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {currentRecipe ? 'Saving...' : 'Adding...'}
-                    </>
-                  ) : (
-                    currentRecipe ? 'Save Changes' : 'Add Recipe'
-                  )}
+                  {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : (currentRecipe ? 'Save Changes' : 'Add Recipe')}
                 </AnimatedButton>
-              </DialogFooter>
+              </div>
             </form>
           </Form>
         </DialogContent>
       </Dialog>
 
-      {/* Recipe Preview Dialog */}
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="sm:max-w-[800px] bg-dairy-cream border-dairy-blue/20 shadow-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-dairy-darkBlue">{currentRecipe?.title || 'Recipe Preview'}</DialogTitle>
-            <DialogDescription className="text-dairy-text">
-              This is how your recipe will appear on the public site.
-            </DialogDescription>
+            <DialogTitle className="text-dairy-darkBlue">{currentRecipe?.title_en || 'Recipe Preview'}</DialogTitle>
           </DialogHeader>
           <div className="py-4 space-y-6">
-            {currentRecipe?.image_url && (
-              <img src={currentRecipe.image_url} alt={currentRecipe.title} className="w-full h-64 object-cover rounded-md shadow-sm" />
-            )}
-            <div className="prose max-w-none text-dairy-text" dangerouslySetInnerHTML={{ __html: currentRecipe?.content || '' }} />
+            {currentRecipe?.image_url && <img src={currentRecipe.image_url} alt={currentRecipe.title_en} className="w-full h-64 object-cover rounded-md shadow-sm" />}
+            <h3 className="font-bold">Ingredients</h3>
+            <ul className="list-disc pl-5">{(currentRecipe?.ingredients_en || []).map((ing, i) => <li key={i}>{ing}</li>)}</ul>
+            <h3 className="font-bold">Preparation</h3>
+            <ol className="list-decimal pl-5">{(currentRecipe?.preparation_steps_en || []).map((step, i) => <li key={i}>{step}</li>)}</ol>
           </div>
-          <DialogFooter>
+          <div className="flex justify-end">
             <Button onClick={() => setIsPreviewOpen(false)} className="bg-dairy-blue text-white hover:bg-dairy-darkBlue">Close</Button>
-          </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </motion.div>

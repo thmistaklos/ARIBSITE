@@ -8,21 +8,27 @@ import { toast } from 'sonner';
 
 interface Recipe {
   id: string;
-  title: string;
   image_url: string;
-  ingredients: string[];
-  preparation_steps: string[];
+  title_en: string;
+  title_ar: string | null;
+  title_fr: string | null;
+  preparation_steps_en: string[];
+  preparation_steps_ar: string[] | null;
+  preparation_steps_fr: string[] | null;
+  ingredients_en: string[];
+  ingredients_ar: string[] | null;
+  ingredients_fr: string[] | null;
 }
 
 const RecipesPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from('recipes').select('*').order('title', { ascending: true });
+      const { data, error } = await supabase.from('recipes').select('*').order('title_en', { ascending: true });
       if (error) {
         toast.error('Failed to load recipes', { description: error.message });
       } else {
@@ -33,6 +39,11 @@ const RecipesPage: React.FC = () => {
 
     fetchRecipes();
   }, []);
+
+  const getLocalizedText = (item: any, fieldPrefix: string) => {
+    const lang = i18n.language;
+    return item[`${fieldPrefix}_${lang}`] || item[`${fieldPrefix}_en`];
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -74,11 +85,11 @@ const RecipesPage: React.FC = () => {
             {recipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={{
                 id: recipe.id,
-                title: recipe.title,
-                image: recipe.image_url, // Use image_url from Supabase
-                shortDescription: recipe.preparation_steps[0] || '', // Use first step as short description
-                ingredients: recipe.ingredients,
-                preparation: recipe.preparation_steps,
+                title: getLocalizedText(recipe, 'title'),
+                image: recipe.image_url,
+                shortDescription: (getLocalizedText(recipe, 'preparation_steps')?.[0]) || '',
+                ingredients: getLocalizedText(recipe, 'ingredients'),
+                preparation: getLocalizedText(recipe, 'preparation_steps'),
               }} />
             ))}
           </div>
