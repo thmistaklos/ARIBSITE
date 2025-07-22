@@ -29,7 +29,7 @@ const DiscountPopup = () => {
               <img
                 src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//WhatsApp_Image_2025-07-19_at_17.59.08_bb1a699c-removebg-preview.png"
                 alt="Amir Cheese"
-                className="w-24 h-24 object-contain mx-auto mb-3"
+                className="w-48 h-48 object-contain mx-auto mb-3"
               />
               <p className="title">AMIR CHEESE</p>
               <p className="text-sm">THE BEST CHEESE IN THE MARKET</p>
