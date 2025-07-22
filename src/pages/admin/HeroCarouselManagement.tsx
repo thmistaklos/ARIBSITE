@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Loader2, Save, Upload } from 'lucide-react';
+import { Loader2, Save } from 'lucide-react';
 import AnimatedButton from '@/components/AnimatedButton';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,18 +12,6 @@ import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-
-interface HeroItem {
-  id: string;
-  order_index: number;
-  title_en: string;
-  title_ar: string;
-  title_fr: string;
-  subtitle_en: string;
-  subtitle_ar: string;
-  subtitle_fr: string;
-  image_url: string;
-}
 
 const heroItemSchema = z.object({
   id: z.string(),
@@ -76,28 +62,6 @@ const HeroCarouselManagement: React.FC = () => {
       replace(data);
     }
     setLoading(false);
-  };
-
-  const handleFileUpload = async (file: File, index: number) => {
-    if (!file) return;
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = `hero-images/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('hero-images')
-      .upload(filePath, file);
-
-    if (uploadError) {
-      toast.error('Image upload failed', { description: uploadError.message });
-      return;
-    }
-
-    const { data: publicUrlData } = supabase.storage
-      .from('hero-images')
-      .getPublicUrl(filePath);
-    
-    form.setValue(`heroItems.${index}.image_url`, publicUrlData.publicUrl, { shouldValidate: true });
-    toast.success('Image uploaded successfully!');
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -155,24 +119,41 @@ const HeroCarouselManagement: React.FC = () => {
                 </AccordionTrigger>
                 <AccordionContent className="p-6 bg-white rounded-b-lg border border-t-0 border-dairy-blue/20">
                   <div className="space-y-6">
-                    <FormItem>
-                      <FormLabel>Slide Image</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => e.target.files && handleFileUpload(e.target.files[0], index)}
-                          className="bg-dairy-cream/50 border-dairy-blue/30"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                      {form.watch(`heroItems.${index}.image_url`) && (
-                        <div className="mt-4">
-                          <p className="text-sm font-medium text-dairy-text mb-2">Current Image:</p>
-                          <img src={form.watch(`heroItems.${index}.image_url`)} alt={`Slide ${index + 1} preview`} className="w-48 h-auto rounded-md object-cover border border-dairy-blue/20" />
-                        </div>
+                    <FormField
+                      control={form.control}
+                      name={`heroItems.${index}.image_url`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Image URL</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://example.com/image.png"
+                              {...field}
+                              className="bg-dairy-cream/50 border-dairy-blue/30"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </FormItem>
+                    />
+                    {form.watch(`heroItems.${index}.image_url`) && (
+                      <div className="mt-4">
+                        <p className="text-sm font-medium text-dairy-text mb-2">Image Preview:</p>
+                        <img
+                          src={form.watch(`heroItems.${index}.image_url`)}
+                          alt={`Slide ${index + 1} preview`}
+                          className="w-48 h-auto rounded-md object-cover border border-dairy-blue/20"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                          }}
+                          onLoad={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'block';
+                          }}
+                        />
+                      </div>
+                    )}
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <FormField control={form.control} name={`heroItems.${index}.title_en`} render={({ field }) => (<FormItem><FormLabel>Title (EN)</FormLabel><FormControl><Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30" /></FormControl><FormMessage /></FormItem>)} />
