@@ -1,20 +1,9 @@
 {
-  "short_name": "ARIB Dairy",
-  "name": "ARIB Dairy Official App",
-  "icons": [
-    {
-      "src": "/icons/icon-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/icons/icon-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": "/",
+  "name": "ARIB Dairy",
+  "short_name": "ARIB",
+  "start_url": ".",
   "display": "standalone",
-  "theme_color": "#FDF8F0",
-  "background_color": "#FDF8F0"
+  "background_color": "#ffffff",
+  "theme_color": "#205a8d",
+  "description": "ARIB Dairy Official Website."
 }
