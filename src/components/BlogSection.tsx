@@ -74,7 +74,7 @@ const BlogSection: React.FC = () => {
           transition={{ type: 'spring', stiffness: 100, damping: 10 }}
           className="text-4xl md:text-5xl font-bold text-center text-dairy-darkBlue mb-12"
         >
-          {t('from_our_blog')}
+          {t('from_our_blog', 'From Our Blog')}
         </motion.h2>
 
         <div className="home-blog-page-content">
