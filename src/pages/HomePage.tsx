@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/lib/supabase';
-import { toast } from 'sonner';
 
 import ProductGallery from '@/components/ProductGallery';
 import RecipesSection from '@/components/RecipesSection';
@@ -12,7 +9,8 @@ import ParticleBackground from '@/components/ParticleBackground';
 import HeroCarousel from '@/components/HeroCarousel';
 import ImageSliderSection from '@/components/ImageSliderSection';
 import DiscountPopup from '@/components/DiscountPopup';
-import FarmInfoSection from '@/components/FarmInfoSection'; // Import the new section
+import FarmInfoSection from '@/components/FarmInfoSection';
+import BlogSection from '@/components/BlogSection'; // Import the new section
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -37,6 +35,9 @@ const HomePage: React.FC = () => {
       <section className="w-full py-12 px-4 bg-dairy-cream">
         <RecipesSection />
       </section>
+
+      {/* Blog Section */}
+      <BlogSection />
 
       {/* Image Slider Section */}
       <ImageSliderSection />
