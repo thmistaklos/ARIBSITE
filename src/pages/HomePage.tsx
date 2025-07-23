@@ -12,6 +12,7 @@ import ParticleBackground from '@/components/ParticleBackground';
 import HeroCarousel from '@/components/HeroCarousel';
 import ImageSliderSection from '@/components/ImageSliderSection';
 import DiscountPopup from '@/components/DiscountPopup';
+import FarmInfoSection from '@/components/FarmInfoSection'; // Import the new section
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -28,6 +29,9 @@ const HomePage: React.FC = () => {
       <section className="w-full py-12 px-4 bg-dairy-cream">
         <ProductGallery />
       </section>
+
+      {/* Farm Info Section */}
+      <FarmInfoSection />
 
       {/* Recipes Section */}
       <section className="w-full py-12 px-4 bg-dairy-cream">

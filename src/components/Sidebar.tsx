@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent, GalleryHorizontal } from 'lucide-react'; // Removed Image icon and added GalleryHorizontal
+import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent, GalleryHorizontal, Leaf } from 'lucide-react'; // Added Leaf icon
 import { cn } from '@/lib/utils';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -20,8 +20,8 @@ const navItems = [
   { name: 'Content', path: '/admin/content', icon: FileText },
   { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
   { name: 'Facts', path: '/admin/facts', icon: Lightbulb },
+  { name: 'Farm Info', path: '/admin/farminfo', icon: Leaf }, // Added new nav item
   { name: 'Discounts', path: '/admin/discounts', icon: Percent },
-  // Removed the Banner Management link
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ];
 

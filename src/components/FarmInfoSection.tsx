@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Leaf, Award, Heart, Droplet, LucideIcon } from 'lucide-react';
+import { LucideIcon, Loader2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
+import { LucideIcons } from '@/utils/lucide-icons';
 
-// A map of icon names to their corresponding Lucide React components
-const FarmInfoIcons: { [key: string]: LucideIcon } = {
-  Leaf,
-  Award,
-  Heart,
-  Droplet,
-};
+interface FarmInfoItemData {
+  id: string;
+  icon_name: string;
+  title_en: string;
+  title_ar: string;
+  title_fr: string;
+  description_en: string;
+  description_ar: string;
+  description_fr: string;
+}
 
 interface FactItemProps {
   iconName: string;
@@ -18,28 +24,7 @@ interface FactItemProps {
 }
 
 const FactItem: React.FC<FactItemProps> = ({ iconName, title, description }) => {
-  const IconComponent = FarmInfoIcons[iconName];
-  if (!IconComponent) {
-    console.warn(`Icon "${iconName}" not found in FarmInfoIcons map. Using a placeholder.`);
-    return (
-      <motion.div
-        className="flex items-start space-x-4"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
-        <div className="flex-shrink-0 p-3 rounded-full bg-dairy-blue/10 text-dairy-blue">
-          <span className="h-6 w-6 flex items-center justify-center text-red-500">?</span>
-        </div>
-        <div>
-          <h3 className="text-xl font-semibold text-dairy-darkBlue mb-1">{title}</h3>
-          <p className="text-dairy-text text-sm">{description}</p>
-        </div>
-      </motion.div>
-    );
-  }
-
+  const IconComponent = LucideIcons[iconName] as LucideIcon | undefined;
   return (
     <motion.div
       className="flex items-start space-x-4"
@@ -49,7 +34,7 @@ const FactItem: React.FC<FactItemProps> = ({ iconName, title, description }) => 
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="flex-shrink-0 p-3 rounded-full bg-dairy-blue/10 text-dairy-blue">
-        <IconComponent className="h-6 w-6" />
+        {IconComponent ? <IconComponent className="h-6 w-6" /> : <span className="h-6 w-6" />}
       </div>
       <div>
         <h3 className="text-xl font-semibold text-dairy-darkBlue mb-1">{title}</h3>
@@ -60,40 +45,35 @@ const FactItem: React.FC<FactItemProps> = ({ iconName, title, description }) => 
 };
 
 const FarmInfoSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [items, setItems] = useState<FarmInfoItemData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('farm_info_items').select('*').order('order_index', { ascending: true });
+      if (error) {
+        toast.error('Failed to load farm info', { description: error.message });
+      } else {
+        setItems(data || []);
+      }
+      setLoading(false);
+    };
+    fetchItems();
+  }, []);
+
+  const getLocalizedText = (item: FarmInfoItemData, field: 'title' | 'description') => {
+    const lang = i18n.language;
+    if (lang === 'ar') return item[`${field}_ar`] || item[`${field}_en`];
+    if (lang === 'fr') return item[`${field}_fr`] || item[`${field}_en`];
+    return item[`${field}_en`];
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
-
-  const factItemsData = [
-    {
-      iconName: 'Leaf',
-      titleKey: 'farm_fact1_title',
-      descriptionKey: 'farm_fact1_description',
-    },
-    {
-      iconName: 'Award',
-      titleKey: 'farm_fact2_title',
-      descriptionKey: 'farm_fact2_description',
-    },
-    {
-      iconName: 'Heart',
-      titleKey: 'farm_fact3_title',
-      descriptionKey: 'farm_fact3_description',
-    },
-    {
-      iconName: 'Droplet',
-      titleKey: 'farm_fact4_title',
-      descriptionKey: 'farm_fact4_description',
-    },
-  ];
 
   return (
     <motion.section
@@ -132,16 +112,20 @@ const FarmInfoSection: React.FC = () => {
             {t('farm_info_description')}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {factItemsData.map((fact, index) => (
-              <FactItem
-                key={index}
-                iconName={fact.iconName}
-                title={t(fact.titleKey)}
-                description={t(fact.descriptionKey)}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center h-40"><Loader2 className="h-8 w-8 animate-spin text-dairy-blue" /></div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {items.map((item) => (
+                <FactItem
+                  key={item.id}
+                  iconName={item.icon_name}
+                  title={getLocalizedText(item, 'title')}
+                  description={getLocalizedText(item, 'description')}
+                />
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.section>
