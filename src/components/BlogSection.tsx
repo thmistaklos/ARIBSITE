@@ -33,7 +33,7 @@ const BlogSection: React.FC = () => {
         .select('id, title_en, title_ar, title_fr, content_en, content_ar, content_fr, image_url')
         .eq('published', true)
         .order('created_at', { ascending: false })
-        .limit(4);
+        .limit(5);
 
       if (error) {
         toast.error('Failed to load blog posts', { description: error.message });
