@@ -17,6 +17,16 @@ interface FarmInfoItemData {
   description_fr: string;
 }
 
+interface SiteContent {
+  title_en: string;
+  title_ar: string;
+  title_fr: string;
+  subtitle_en: string;
+  subtitle_ar: string;
+  subtitle_fr: string;
+  image_url: string;
+}
+
 interface FactItemProps {
   iconName: string;
   title: string;
@@ -45,29 +55,47 @@ const FactItem: React.FC<FactItemProps> = ({ iconName, title, description }) => 
 };
 
 const FarmInfoSection: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [items, setItems] = useState<FarmInfoItemData[]>([]);
+  const [content, setContent] = useState<SiteContent | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchAllData = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from('farm_info_items').select('*').order('order_index', { ascending: true });
-      if (error) {
-        toast.error('Failed to load farm info', { description: error.message });
+      const [itemsResponse, contentResponse] = await Promise.all([
+        supabase.from('farm_info_items').select('*').order('order_index', { ascending: true }),
+        supabase.from('site_content').select('value').eq('key', 'farm_info_content').single(),
+      ]);
+
+      if (itemsResponse.error) {
+        toast.error('Failed to load farm info items', { description: itemsResponse.error.message });
       } else {
-        setItems(data || []);
+        setItems(itemsResponse.data || []);
       }
+
+      if (contentResponse.error && contentResponse.error.code !== 'PGRST116') {
+        toast.error('Failed to load farm info content', { description: contentResponse.error.message });
+      } else {
+        setContent(contentResponse.data?.value || null);
+      }
+
       setLoading(false);
     };
-    fetchItems();
+    fetchAllData();
   }, []);
 
-  const getLocalizedText = (item: FarmInfoItemData, field: 'title' | 'description') => {
+  const getLocalizedItemText = (item: FarmInfoItemData, field: 'title' | 'description') => {
     const lang = i18n.language;
     if (lang === 'ar') return item[`${field}_ar`] || item[`${field}_en`];
     if (lang === 'fr') return item[`${field}_fr`] || item[`${field}_en`];
     return item[`${field}_en`];
+  };
+
+  const getLocalizedContent = (field: 'title' | 'subtitle') => {
+    if (!content) return '';
+    const lang = i18n.language;
+    return content[`${field}_${lang}`] || content[`${field}_en`];
   };
 
   const containerVariants = {
@@ -91,7 +119,7 @@ const FarmInfoSection: React.FC = () => {
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
           <img
-            src="https://labartisan.net/demo/gowala/assets/images/about/home-4/01.png"
+            src={content?.image_url || "https://labartisan.net/demo/gowala/assets/images/about/home-4/01.png"}
             alt="ARIB Dairy Products"
             className="max-w-full h-auto object-contain rounded-lg"
             style={{ maxHeight: '500px' }}
@@ -105,12 +133,18 @@ const FarmInfoSection: React.FC = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-dairy-darkBlue leading-tight">
-            {t('farm_info_title')}
-          </h2>
-          <p className="text-lg text-dairy-text max-w-xl lg:mx-0 mx-auto">
-            {t('farm_info_description')}
-          </p>
+          {loading ? (
+            <Loader2 className="h-8 w-8 animate-spin text-dairy-blue" />
+          ) : (
+            <>
+              <h2 className="text-4xl md:text-5xl font-bold text-dairy-darkBlue leading-tight">
+                {getLocalizedContent('title') || 'Fresh From Our Farm'}
+              </h2>
+              <p className="text-lg text-dairy-text max-w-xl lg:mx-0 mx-auto">
+                {getLocalizedContent('subtitle') || 'Delivering quality and freshness you can taste in every drop.'}
+              </p>
+            </>
+          )}
 
           {loading ? (
             <div className="flex justify-center items-center h-40"><Loader2 className="h-8 w-8 animate-spin text-dairy-blue" /></div>
@@ -120,8 +154,8 @@ const FarmInfoSection: React.FC = () => {
                 <FactItem
                   key={item.id}
                   iconName={item.icon_name}
-                  title={getLocalizedText(item, 'title')}
-                  description={getLocalizedText(item, 'description')}
+                  title={getLocalizedItemText(item, 'title')}
+                  description={getLocalizedItemText(item, 'description')}
                 />
               ))}
             </div>

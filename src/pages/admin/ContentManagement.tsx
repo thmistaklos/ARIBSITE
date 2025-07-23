@@ -4,28 +4,31 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2, Save, Eye } from 'lucide-react';
 import AnimatedButton from '@/components/AnimatedButton';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// Define the schema for the content stored in the 'value' jsonb column
 const contentSchema = z.object({
-  homepage_hero_title: z.string().min(1, { message: 'Title cannot be empty.' }),
-  homepage_hero_subtitle: z.string().min(1, { message: 'Subtitle cannot be empty.' }),
+  title_en: z.string().min(1, { message: 'Title (EN) is required.' }),
+  title_ar: z.string().min(1, { message: 'Title (AR) is required.' }),
+  title_fr: z.string().min(1, { message: 'Title (FR) is required.' }),
+  subtitle_en: z.string().min(1, { message: 'Subtitle (EN) is required.' }),
+  subtitle_ar: z.string().min(1, { message: 'Subtitle (AR) is required.' }),
+  subtitle_fr: z.string().min(1, { message: 'Subtitle (FR) is required.' }),
+  image_url: z.string().url({ message: 'Must be a valid URL.' }).nullable().optional().or(z.literal('')),
 });
 
-// Define the interface for the Supabase row
 interface SiteContentRow {
   id: string;
   key: string;
-  value: z.infer<typeof contentSchema>; // The content_data will be stored in the 'value' column
+  value: z.infer<typeof contentSchema>;
 }
 
 const ContentManagement: React.FC = () => {
@@ -38,12 +41,13 @@ const ContentManagement: React.FC = () => {
   const form = useForm<z.infer<typeof contentSchema>>({
     resolver: zodResolver(contentSchema),
     defaultValues: {
-      homepage_hero_title: '',
-      homepage_hero_subtitle: '',
+      title_en: '', title_ar: '', title_fr: '',
+      subtitle_en: '', subtitle_ar: '', subtitle_fr: '',
+      image_url: '',
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchSiteContent();
   }, []);
 
@@ -51,20 +55,15 @@ const ContentManagement: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('site_content')
-      .select('id, key, value') // Select all columns as per new schema
-      .eq('key', 'homepage_content') // Query by the specific key for homepage content
+      .select('id, key, value')
+      .eq('key', 'farm_info_content')
       .single();
 
-    if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
+    if (error && error.code !== 'PGRST116') {
       toast.error('Failed to fetch site content', { description: error.message });
-      setSiteContentRow(null);
     } else if (data) {
-      setSiteContentRow(data); // Store the full row data
-      form.reset(data.value); // Reset form with the 'value' (jsonb) content
-    } else {
-      // If no row found, initialize with default values
-      setSiteContentRow(null);
-      form.reset(form.defaultValues); // Reset to default form values
+      setSiteContentRow(data);
+      form.reset({ ...form.getValues(), ...data.value });
     }
     setLoading(false);
   };
@@ -73,27 +72,25 @@ const ContentManagement: React.FC = () => {
     setIsSubmitting(true);
     try {
       const contentToSave = {
-        key: 'homepage_content', // The fixed key for homepage content
-        value: values, // The entire form values object goes into the 'value' jsonb column
+        key: 'farm_info_content',
+        value: values,
       };
 
-      if (siteContentRow) { // If an existing row was fetched
+      if (siteContentRow) {
         const { error } = await supabase
           .from('site_content')
           .update(contentToSave)
-          .eq('id', siteContentRow.id); // Update by ID
-
+          .eq('id', siteContentRow.id);
         if (error) throw error;
-        toast.success('Homepage content updated successfully!');
-      } else { // If no existing row, insert a new one
+        toast.success('Farm Info content updated successfully!');
+      } else {
         const { error } = await supabase
           .from('site_content')
           .insert([contentToSave]);
-
         if (error) throw error;
-        toast.success('Homepage content added successfully!');
+        toast.success('Farm Info content saved successfully!');
       }
-      fetchSiteContent(); // Re-fetch to update state and form
+      fetchSiteContent();
     } catch (error: any) {
       toast.error('Failed to save content', { description: error.message });
     } finally {
@@ -102,8 +99,7 @@ const ContentManagement: React.FC = () => {
   };
 
   const handlePreview = () => {
-    const currentValues = form.getValues();
-    setPreviewContent(currentValues);
+    setPreviewContent(form.getValues());
     setIsPreviewOpen(true);
   };
 
@@ -126,32 +122,43 @@ const ContentManagement: React.FC = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <Card className="bg-white border-dairy-blue/20 shadow-md">
               <CardHeader>
-                <CardTitle className="text-dairy-darkBlue">Homepage Hero Section</CardTitle>
+                <CardTitle className="text-dairy-darkBlue">Farm Info Section</CardTitle>
+                <CardDescription>Update the title, subtitle, and image for the farm information section on the homepage.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                <Tabs defaultValue="en" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="en">English</TabsTrigger>
+                    <TabsTrigger value="ar">Arabic</TabsTrigger>
+                    <TabsTrigger value="fr">French</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="en" className="space-y-4 pt-4">
+                    <FormField control={form.control} name="title_en" render={({ field }) => (<FormItem><FormLabel>Title (EN)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="subtitle_en" render={({ field }) => (<FormItem><FormLabel>Subtitle (EN)</FormLabel><FormControl><Textarea {...field} rows={4} /></FormControl><FormMessage /></FormItem>)} />
+                  </TabsContent>
+                  <TabsContent value="ar" className="space-y-4 pt-4">
+                    <FormField control={form.control} name="title_ar" render={({ field }) => (<FormItem><FormLabel>Title (AR)</FormLabel><FormControl><Input {...field} dir="rtl" /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="subtitle_ar" render={({ field }) => (<FormItem><FormLabel>Subtitle (AR)</FormLabel><FormControl><Textarea {...field} rows={4} dir="rtl" /></FormControl><FormMessage /></FormItem>)} />
+                  </TabsContent>
+                  <TabsContent value="fr" className="space-y-4 pt-4">
+                    <FormField control={form.control} name="title_fr" render={({ field }) => (<FormItem><FormLabel>Title (FR)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="subtitle_fr" render={({ field }) => (<FormItem><FormLabel>Subtitle (FR)</FormLabel><FormControl><Textarea {...field} rows={4} /></FormControl><FormMessage /></FormItem>)} />
+                  </TabsContent>
+                </Tabs>
+                <hr className="my-4" />
                 <FormField
                   control={form.control}
-                  name="homepage_hero_title"
+                  name="image_url"
                   render={({ field }) => (
-                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
-                      <FormLabel className="md:text-right text-dairy-text">Hero Title</FormLabel>
-                      <FormControl className="md:col-span-3">
-                        <Input {...field} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
+                    <FormItem>
+                      <FormLabel>Image URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://example.com/image.png" {...field} />
                       </FormControl>
-                      <FormMessage className="md:col-span-4 md:col-start-2" />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="homepage_hero_subtitle"
-                  render={({ field }) => (
-                    <FormItem className="grid grid-cols-1 md:grid-cols-4 items-start gap-4">
-                      <FormLabel className="md:text-right text-dairy-text">Hero Subtitle</FormLabel>
-                      <FormControl className="md:col-span-3">
-                        <Textarea {...field} rows={3} className="bg-dairy-cream/50 border-dairy-blue/30 focus-visible:ring-dairy-blue" />
-                      </FormControl>
-                      <FormMessage className="md:col-span-4 md:col-start-2" />
+                      <FormMessage />
+                      {form.watch('image_url') && (
+                        <img src={form.watch('image_url') || ''} alt="Preview" className="w-48 h-auto object-contain rounded-md mt-2" />
+                      )}
                     </FormItem>
                   )}
                 />
@@ -159,44 +166,26 @@ const ContentManagement: React.FC = () => {
             </Card>
 
             <div className="flex justify-end space-x-2">
-              <AnimatedButton
-                type="button"
-                onClick={handlePreview}
-                variant="outline"
-                className="text-dairy-blue border-dairy-blue hover:bg-dairy-blue hover:text-white"
-                soundOnClick="/sounds/click.mp3"
-              >
-                <Eye className="mr-2 h-4 w-4" /> Live Preview
+              <AnimatedButton type="button" onClick={handlePreview} variant="outline" className="text-dairy-blue border-dairy-blue hover:bg-dairy-blue hover:text-white" soundOnClick="/sounds/click.mp3">
+                <Eye className="mr-2 h-4 w-4" /> Preview
               </AnimatedButton>
               <AnimatedButton type="submit" className="bg-dairy-blue text-white hover:bg-dairy-darkBlue" soundOnClick="/sounds/click.mp3" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" /> Save Changes
-                  </>
-                )}
+                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : <><Save className="mr-2 h-4 w-4" /> Save Changes</>}
               </AnimatedButton>
             </div>
           </form>
         </Form>
       )}
 
-      {/* Live Preview Dialog */}
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[600px] bg-dairy-cream border-dairy-blue/20 shadow-lg">
           <DialogHeader>
-            <DialogTitle className="text-dairy-darkBlue">Content Preview</DialogTitle>
-            <DialogDescription className="text-dairy-text">
-              This is how the sections will look on your homepage.
-            </DialogDescription>
+            <DialogTitle className="text-dairy-darkBlue">Farm Info Preview</DialogTitle>
           </DialogHeader>
           <div className="py-4 text-center space-y-4">
-            <h3 className="text-2xl font-bold text-dairy-darkBlue">Homepage Hero Preview:</h3>
-            <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.homepage_hero_title}</h2>
-            <p className="text-xl text-dairy-text">{previewContent?.homepage_hero_subtitle}</p>
+            <h2 className="text-4xl font-bold text-dairy-darkBlue">{previewContent?.title_en}</h2>
+            <p className="text-xl text-dairy-text">{previewContent?.subtitle_en}</p>
+            {previewContent?.image_url && <img src={previewContent.image_url} alt="Preview" className="w-full h-auto object-contain rounded-md mt-4" />}
           </div>
           <DialogFooter>
             <Button onClick={() => setIsPreviewOpen(false)} className="bg-dairy-blue text-white hover:bg-dairy-darkBlue">Close</Button>
