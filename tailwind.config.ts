@@ -75,6 +75,7 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         'cyan-glow': '#00eeff', // New custom color for the glowing effect
+        'accent-yellow': '#e4ae0b',
       },
       borderRadius: {
         lg: "var(--radius)",

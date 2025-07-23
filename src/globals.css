@@ -85,6 +85,67 @@
   }
 }
 
+/* New Animated Navbar Styles */
+.animated-nav {
+  position: relative;
+}
+
+.animated-nav-container {
+  display: flex;
+  align-items: center;
+  background: rgba(16, 16, 16, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 0.5rem;
+  border-radius: 50px;
+}
+
+.animated-nav-btn {
+  position: relative;
+  padding: 0.75em 1.25em;
+  cursor: pointer;
+  transition: color 0.3s;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  outline: none;
+  white-space: nowrap;
+}
+
+.animated-nav-btn:hover {
+  color: #e4ae0b; /* accent-yellow */
+}
+
+.animated-nav-underline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #e4ae0b; /* accent-yellow */
+  border-radius: 2px;
+}
+
+/* Adjust Language Switcher for new Navbar */
+.animated-nav .bg-dairy-cream {
+  background-color: rgba(30, 30, 30, 0.9) !important;
+  border-color: #e4ae0b !important;
+}
+.animated-nav .text-dairy-darkBlue {
+  color: #fff !important;
+}
+.animated-nav .border-dairy-blue\/30 {
+  border-color: rgba(228, 174, 11, 0.5) !important;
+}
+.animated-nav .hover\:border-dairy-blue:hover {
+  border-color: #e4ae0b !important;
+}
+.animated-nav .flex.items-center.gap-2 {
+  color: #333; /* Text color for items in dropdown */
+}
+.animated-nav .flex.items-center.gap-2:hover {
+  background-color: rgba(228, 174, 11, 0.2);
+}
+
 /* Card Styles */
 .card {
   width: 280px;
