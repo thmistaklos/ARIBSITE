@@ -1,7 +1,7 @@
 {
   "name": "ARIB Dairy",
   "short_name": "ARIB",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#205a8d",
@@ -10,12 +10,14 @@
     {
       "src": "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//2025-07-23_193448.png.192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
