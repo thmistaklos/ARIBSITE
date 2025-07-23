@@ -11,13 +11,17 @@ import './HomeBlogSection.css';
 
 interface BlogPost {
   id: string;
-  title: string;
-  content: string;
+  title_en: string;
+  title_ar: string | null;
+  title_fr: string | null;
+  content_en: string;
+  content_ar: string | null;
+  content_fr: string | null;
   image_url: string | null;
 }
 
 const BlogSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +30,7 @@ const BlogSection: React.FC = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, content, image_url')
+        .select('id, title_en, title_ar, title_fr, content_en, content_ar, content_fr, image_url')
         .eq('published', true)
         .order('created_at', { ascending: false })
         .limit(4);
@@ -42,6 +46,13 @@ const BlogSection: React.FC = () => {
     fetchPosts();
   }, []);
 
+  const getLocalizedText = (post: BlogPost, field: 'title' | 'content') => {
+    const lang = i18n.language;
+    if (lang === 'ar') return post[`${field}_ar`] || post[`${field}_en`];
+    if (lang === 'fr') return post[`${field}_fr`] || post[`${field}_en`];
+    return post[`${field}_en`];
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -51,7 +62,7 @@ const BlogSection: React.FC = () => {
   }
 
   if (posts.length === 0) {
-    return null; // Don't render the section if there are no posts
+    return null;
   }
 
   return (
@@ -68,7 +79,12 @@ const BlogSection: React.FC = () => {
 
         <div className="home-blog-page-content">
           {posts.map((post) => (
-            <HomeBlogPostCard key={post.id} post={post} />
+            <HomeBlogPostCard key={post.id} post={{
+              id: post.id,
+              title: getLocalizedText(post, 'title'),
+              content: getLocalizedText(post, 'content'),
+              image_url: post.image_url
+            }} />
           ))}
         </div>
 

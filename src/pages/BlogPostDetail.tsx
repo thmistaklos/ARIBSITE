@@ -4,21 +4,25 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/lib/supabase'; // Import supabase
+import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 
 interface BlogPost {
   id: string;
-  title: string;
-  image_url: string; // Changed to image_url to match Supabase
-  content: string;
-  author: string; // Added author
-  created_at: string; // Added created_at
+  image_url: string | null;
+  author: string;
+  created_at: string;
+  title_en: string;
+  title_ar: string | null;
+  title_fr: string | null;
+  content_en: string;
+  content_ar: string | null;
+  content_fr: string | null;
 }
 
 const BlogPostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +37,7 @@ const BlogPostDetail: React.FC = () => {
         .from('blog_posts')
         .select('*')
         .eq('id', id)
-        .eq('published', true) // Ensure only published posts are viewable
+        .eq('published', true)
         .single();
 
       if (error) {
@@ -47,6 +51,13 @@ const BlogPostDetail: React.FC = () => {
 
     fetchPost();
   }, [id]);
+
+  const getLocalizedText = (post: BlogPost, field: 'title' | 'content') => {
+    const lang = i18n.language;
+    if (lang === 'ar') return post[`${field}_ar`] || post[`${field}_en`];
+    if (lang === 'fr') return post[`${field}_fr`] || post[`${field}_en`];
+    return post[`${field}_en`];
+  };
 
   if (loading) {
     return (
@@ -72,6 +83,9 @@ const BlogPostDetail: React.FC = () => {
     );
   }
 
+  const title = getLocalizedText(post, 'title');
+  const content = getLocalizedText(post, 'content');
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -84,14 +98,16 @@ const BlogPostDetail: React.FC = () => {
           <ArrowLeft className="mr-2 h-5 w-5" /> {t('back_to_blog')}
         </Link>
 
-        <motion.img
-          src={post.image_url}
-          alt={post.title}
-          className="w-full h-64 md:h-96 object-cover rounded-lg mb-8 shadow-md"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        />
+        {post.image_url && (
+          <motion.img
+            src={post.image_url}
+            alt={title}
+            className="w-full h-64 md:h-96 object-cover rounded-lg mb-8 shadow-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          />
+        )}
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -99,7 +115,7 @@ const BlogPostDetail: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="text-4xl md:text-5xl font-bold text-dairy-darkBlue mb-4"
         >
-          {post.title}
+          {title}
         </motion.h1>
         <p className="text-sm text-gray-500 mb-6">
           By {post.author} on {new Date(post.created_at).toLocaleDateString()}
@@ -110,7 +126,7 @@ const BlogPostDetail: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
           className="text-lg text-dairy-text leading-relaxed mb-8 prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>
     </motion.div>
