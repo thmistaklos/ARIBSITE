@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent, GalleryHorizontal, Leaf } from 'lucide-react'; // Added Leaf icon
+import { LayoutDashboard, Package, Users, FileText, Settings, LogOut, Truck, BookOpen, Newspaper, HelpCircle, Lightbulb, Percent, GalleryHorizontal, Leaf } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/context/AuthContext';
 
 const navItems = [
@@ -20,91 +17,66 @@ const navItems = [
   { name: 'Content', path: '/admin/content', icon: FileText },
   { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
   { name: 'Facts', path: '/admin/facts', icon: Lightbulb },
-  { name: 'Farm Info', path: '/admin/farminfo', icon: Leaf }, // Added new nav item
+  { name: 'Farm Info', path: '/admin/farminfo', icon: Leaf },
   { name: 'Discounts', path: '/admin/discounts', icon: Percent },
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ];
 
-const Sidebar: React.FC = () => {
+const SidebarContent: React.FC = () => {
   const location = useLocation();
-  const isMobile = useIsMobile();
   const { signOut } = useAuth();
 
   const handleLogout = async () => {
     await signOut();
   };
 
-  const renderNavLinks = () => (
-    <nav className="flex flex-col space-y-2 px-2 py-4">
-      {navItems.map((item) => {
-        const isActive = location.pathname === item.path || (location.pathname.startsWith(item.path) && item.path !== '/admin');
-        return (
-          <TooltipProvider key={item.name}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  to={item.path}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-dairy-text transition-all hover:bg-dairy-blue/20 hover:text-dairy-darkBlue",
-                    isActive && "bg-dairy-blue text-dairy-cream hover:bg-dairy-blue hover:text-dairy-cream"
-                  )}
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="text-sm font-medium">{item.name}</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">
+  return (
+    <div className="flex h-full max-h-screen flex-col gap-2 bg-dairy-white">
+      <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+        <Link to="/admin" className="flex items-center gap-2 font-semibold">
+          <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
+          <span className="text-lg font-bold text-dairy-darkBlue">ARIB ADMIN</span>
+        </Link>
+      </div>
+      <div className="flex-1 overflow-auto">
+        <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-dairy-text transition-all hover:bg-dairy-blue/20",
+                  isActive && "bg-dairy-blue text-dairy-cream hover:bg-dairy-blue"
+                )}
+              >
+                <item.icon className="h-4 w-4" />
                 {item.name}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        );
-      })}
-    </nav>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+      <div className="mt-auto p-4 border-t">
+        <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </Button>
+      </div>
+    </div>
   );
+};
 
+const Sidebar: React.FC = () => {
   return (
     <motion.div
       initial={{ x: -200 }}
       animate={{ x: 0 }}
       transition={{ type: 'spring', stiffness: 120, damping: 14 }}
-      className="flex h-full flex-col border-r border-dairy-blue/20 bg-dairy-white shadow-lg"
+      className="h-full"
     >
-      <div className="flex h-16 items-center justify-center border-b border-dairy-blue/20 px-4">
-        <Link to="/admin" className="flex items-center space-x-2">
-          <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
-          <span className="text-xl font-bold text-dairy-darkBlue">ARIB ADMIN</span>
-        </Link>
-      </div>
-      <div className="flex-1 overflow-auto py-4">
-        {isMobile ? (
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="ml-4">
-                <LayoutDashboard className="h-6 w-6 text-dairy-darkBlue" />
-                <span className="sr-only">Toggle dashboard menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="bg-dairy-white p-0">
-              <div className="flex h-16 items-center justify-center border-b border-dairy-blue/20">
-                <Link to="/admin" className="flex items-center space-x-2">
-                  <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" alt="ARIB ADMIN Logo" className="h-8 w-8 object-contain" />
-                  <span className="text-xl font-bold text-dairy-darkBlue">ARIB ADMIN</span>
-                </Link>
-              </div>
-              {renderNavLinks()}
-            </SheetContent>
-          </Sheet>
-        ) : (
-          renderNavLinks()
-        )}
-      </div>
-      <div className="mt-auto border-t border-dairy-blue/20 p-4">
-        <Button variant="ghost" className="w-full justify-start text-dairy-text hover:bg-dairy-blue/20 hover:text-dairy-darkBlue" onClick={handleLogout}>
-          <LogOut className="mr-3 h-5 w-5" />
-          Logout
-        </Button>
-      </div>
+      <SidebarContent />
     </motion.div>
   );
 };
