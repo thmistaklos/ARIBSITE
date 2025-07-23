@@ -27,8 +27,8 @@ const contentSchema = z.object({
 
 interface SiteContentRow {
   id: string;
-  key: string;
-  value: z.infer<typeof contentSchema>;
+  section_name: string;
+  content_data: z.infer<typeof contentSchema>;
 }
 
 const ContentManagement: React.FC = () => {
@@ -55,15 +55,15 @@ const ContentManagement: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('site_content')
-      .select('id, key, value')
-      .eq('key', 'farm_info_content')
+      .select('id, section_name, content_data')
+      .eq('section_name', 'farm_info_content')
       .single();
 
     if (error && error.code !== 'PGRST116') {
       toast.error('Failed to fetch site content', { description: error.message });
     } else if (data) {
       setSiteContentRow(data);
-      form.reset({ ...form.getValues(), ...data.value });
+      form.reset({ ...form.getValues(), ...data.content_data });
     }
     setLoading(false);
   };
@@ -72,8 +72,8 @@ const ContentManagement: React.FC = () => {
     setIsSubmitting(true);
     try {
       const contentToSave = {
-        key: 'farm_info_content',
-        value: values,
+        section_name: 'farm_info_content',
+        content_data: values,
       };
 
       if (siteContentRow) {

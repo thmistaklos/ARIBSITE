@@ -65,7 +65,7 @@ const FarmInfoSection: React.FC = () => {
       setLoading(true);
       const [itemsResponse, contentResponse] = await Promise.all([
         supabase.from('farm_info_items').select('*').order('order_index', { ascending: true }),
-        supabase.from('site_content').select('value').eq('key', 'farm_info_content').single(),
+        supabase.from('site_content').select('content_data').eq('section_name', 'farm_info_content').single(),
       ]);
 
       if (itemsResponse.error) {
@@ -77,7 +77,7 @@ const FarmInfoSection: React.FC = () => {
       if (contentResponse.error && contentResponse.error.code !== 'PGRST116') {
         toast.error('Failed to load farm info content', { description: contentResponse.error.message });
       } else {
-        setContent(contentResponse.data?.value || null);
+        setContent(contentResponse.data?.content_data || null);
       }
 
       setLoading(false);
