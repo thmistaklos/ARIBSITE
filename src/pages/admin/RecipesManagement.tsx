@@ -96,15 +96,15 @@ const RecipesManagement: React.FC = () => {
     try {
       if (selectedFile) {
         const fileName = `${Date.now()}-${selectedFile.name}`;
-        const filePath = `recipe-images/${fileName}`;
+        const filePath = `recipes/${fileName}`;
 
         const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('recipe-images')
+          .from('recipes')
           .upload(filePath, selectedFile, { cacheControl: '3600', upsert: false });
 
         if (uploadError) throw uploadError;
 
-        const { data: publicUrlData } = supabase.storage.from('recipe-images').getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage.from('recipes').getPublicUrl(filePath);
         imageUrl = publicUrlData.publicUrl;
       } else if (!currentRecipe && !imageUrl) {
         toast.error('Image required', { description: 'Please upload an image for the new recipe.' });
