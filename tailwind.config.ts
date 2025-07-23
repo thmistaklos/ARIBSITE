@@ -21,7 +21,8 @@ export default {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
         cairo: ["Cairo", "sans-serif"],
-        exo: ["Exo 2", "sans-serif"], // Added Exo 2 font family
+        exo: ["Exo 2", "sans-serif"],
+        tajawal: ["Tajawal", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
