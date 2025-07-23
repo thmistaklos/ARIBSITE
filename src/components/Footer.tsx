@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
     >
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4 md:px-6">
         <div className="text-center md:text-left mb-4 md:mb-0">
-          <p>&copy; {new Date().getFullYear()} ARIB DAIRY. {t('all_rights_reserved')}</p>
+          <p>&copy; {new Date().getFullYear()} {t('arib_dairy_brand_name')}. {t('all_rights_reserved')}</p>
         </div>
         <div>
           <ul className="example-2 social-icons">

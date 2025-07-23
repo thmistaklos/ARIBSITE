@@ -15,6 +15,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTranslation } from 'react-i18next';
 
 interface BlogPost {
   id: string;
@@ -49,6 +50,7 @@ const BlogManagement: React.FC = () => {
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const { t } = useTranslation();
 
   const form = useForm<z.infer<typeof blogPostSchema>>({
     resolver: zodResolver(blogPostSchema),
@@ -56,7 +58,7 @@ const BlogManagement: React.FC = () => {
       title_en: '', title_ar: '', title_fr: '',
       content_en: '', content_ar: '', content_fr: '',
       image_url: '',
-      author: 'ARIB Dairy Team',
+      author: t('arib_dairy_team'),
       published: false,
     },
   });
@@ -133,7 +135,7 @@ const BlogManagement: React.FC = () => {
     form.reset({
       title_en: '', title_ar: '', title_fr: '',
       content_en: '', content_ar: '', content_fr: '',
-      image_url: '', author: 'ARIB Dairy Team', published: false
+      image_url: '', author: t('arib_dairy_team'), published: false
     });
     setIsDialogOpen(true);
   };

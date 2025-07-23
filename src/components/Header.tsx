@@ -56,7 +56,7 @@ const Header: React.FC = () => {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="https://goykvqomwqwqklyizeed.supabase.co/storage/v1/object/public/logosandstuff//0222-removebg-preview%20(1).png" className="h-10" alt="ARIB DAIRY Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-dairy-darkBlue">ARIB DAIRY</span>
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-dairy-darkBlue">{t('arib_dairy_brand_name')}</span>
         </Link>
         <div className="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
           <div className="relative" ref={langDropdownRef}>
